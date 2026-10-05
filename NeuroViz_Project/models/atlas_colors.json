@@ -1,0 +1,3562 @@
+{
+  "desikan": [
+    {
+      "label_id": 1,
+      "name": "bankssts",
+      "color": "#196428",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 2,
+      "name": "caudalanteriorcingulate",
+      "color": "#7D64A0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 3,
+      "name": "caudalmiddlefrontal",
+      "color": "#641900",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 5,
+      "name": "cuneus",
+      "color": "#DC1464",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 6,
+      "name": "entorhinal",
+      "color": "#DC140A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 7,
+      "name": "fusiform",
+      "color": "#B4DC8C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 8,
+      "name": "inferiorparietal",
+      "color": "#DC3CDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 9,
+      "name": "inferiortemporal",
+      "color": "#B42878",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 10,
+      "name": "isthmuscingulate",
+      "color": "#8C148C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 11,
+      "name": "lateraloccipital",
+      "color": "#141E8C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 12,
+      "name": "lateralorbitofrontal",
+      "color": "#234B32",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 13,
+      "name": "lingual",
+      "color": "#E18C8C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 14,
+      "name": "medialorbitofrontal",
+      "color": "#C8234B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 15,
+      "name": "middletemporal",
+      "color": "#A06432",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 16,
+      "name": "parahippocampal",
+      "color": "#14DC3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 17,
+      "name": "paracentral",
+      "color": "#3CDC3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 18,
+      "name": "parsopercularis",
+      "color": "#DCB48C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 19,
+      "name": "parsorbitalis",
+      "color": "#146432",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 20,
+      "name": "parstriangularis",
+      "color": "#DC3C14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 21,
+      "name": "pericalcarine",
+      "color": "#78643C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 22,
+      "name": "postcentral",
+      "color": "#DC1414",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 23,
+      "name": "posteriorcingulate",
+      "color": "#DCB4DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 24,
+      "name": "precentral",
+      "color": "#3C14DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 25,
+      "name": "precuneus",
+      "color": "#A08CB4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 26,
+      "name": "rostralanteriorcingulate",
+      "color": "#50148C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 27,
+      "name": "rostralmiddlefrontal",
+      "color": "#4B327D",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 28,
+      "name": "superiorfrontal",
+      "color": "#14DCA0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 29,
+      "name": "superiorparietal",
+      "color": "#14B48C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 30,
+      "name": "superiortemporal",
+      "color": "#8CDCDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 31,
+      "name": "supramarginal",
+      "color": "#50A014",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 32,
+      "name": "frontalpole",
+      "color": "#640064",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 33,
+      "name": "temporalpole",
+      "color": "#4614AA",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 34,
+      "name": "transversetemporal",
+      "color": "#9696C8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 35,
+      "name": "insula",
+      "color": "#FFC020",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 1,
+      "name": "bankssts",
+      "color": "#196428",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 2,
+      "name": "caudalanteriorcingulate",
+      "color": "#7D64A0",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 3,
+      "name": "caudalmiddlefrontal",
+      "color": "#641900",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 5,
+      "name": "cuneus",
+      "color": "#DC1464",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 6,
+      "name": "entorhinal",
+      "color": "#DC140A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 7,
+      "name": "fusiform",
+      "color": "#B4DC8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 8,
+      "name": "inferiorparietal",
+      "color": "#DC3CDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 9,
+      "name": "inferiortemporal",
+      "color": "#B42878",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 10,
+      "name": "isthmuscingulate",
+      "color": "#8C148C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 11,
+      "name": "lateraloccipital",
+      "color": "#141E8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 12,
+      "name": "lateralorbitofrontal",
+      "color": "#234B32",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 13,
+      "name": "lingual",
+      "color": "#E18C8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 14,
+      "name": "medialorbitofrontal",
+      "color": "#C8234B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 15,
+      "name": "middletemporal",
+      "color": "#A06432",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 16,
+      "name": "parahippocampal",
+      "color": "#14DC3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 17,
+      "name": "paracentral",
+      "color": "#3CDC3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 18,
+      "name": "parsopercularis",
+      "color": "#DCB48C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 19,
+      "name": "parsorbitalis",
+      "color": "#146432",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 20,
+      "name": "parstriangularis",
+      "color": "#DC3C14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 21,
+      "name": "pericalcarine",
+      "color": "#78643C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 22,
+      "name": "postcentral",
+      "color": "#DC1414",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 23,
+      "name": "posteriorcingulate",
+      "color": "#DCB4DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 24,
+      "name": "precentral",
+      "color": "#3C14DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 25,
+      "name": "precuneus",
+      "color": "#A08CB4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 26,
+      "name": "rostralanteriorcingulate",
+      "color": "#50148C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 27,
+      "name": "rostralmiddlefrontal",
+      "color": "#4B327D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 28,
+      "name": "superiorfrontal",
+      "color": "#14DCA0",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 29,
+      "name": "superiorparietal",
+      "color": "#14B48C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 30,
+      "name": "superiortemporal",
+      "color": "#8CDCDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 31,
+      "name": "supramarginal",
+      "color": "#50A014",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 32,
+      "name": "frontalpole",
+      "color": "#640064",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 33,
+      "name": "temporalpole",
+      "color": "#4614AA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 34,
+      "name": "transversetemporal",
+      "color": "#9696C8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 35,
+      "name": "insula",
+      "color": "#FFC020",
+      "hemi": "rh"
+    }
+  ],
+  "destrieux": [
+    {
+      "label_id": 1,
+      "name": "G_and_S_frontomargin",
+      "color": "#17DC3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 2,
+      "name": "G_and_S_occipital_inf",
+      "color": "#173CB4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 3,
+      "name": "G_and_S_paracentral",
+      "color": "#3F643C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 4,
+      "name": "G_and_S_subcentral",
+      "color": "#3F14DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 5,
+      "name": "G_and_S_transv_frontopol",
+      "color": "#0D00FA",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 6,
+      "name": "G_and_S_cingul-Ant",
+      "color": "#1A3C00",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 7,
+      "name": "G_and_S_cingul-Mid-Ant",
+      "color": "#1A3C4B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 8,
+      "name": "G_and_S_cingul-Mid-Post",
+      "color": "#1A3C96",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 9,
+      "name": "G_cingul-Post-dorsal",
+      "color": "#193CFA",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 10,
+      "name": "G_cingul-Post-ventral",
+      "color": "#3C1919",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 11,
+      "name": "G_cuneus",
+      "color": "#B41414",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 12,
+      "name": "G_front_inf-Opercular",
+      "color": "#DC1464",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 13,
+      "name": "G_front_inf-Orbital",
+      "color": "#8C3C3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 14,
+      "name": "G_front_inf-Triangul",
+      "color": "#B4DC8C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 15,
+      "name": "G_front_middle",
+      "color": "#8C64B4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 16,
+      "name": "G_front_sup",
+      "color": "#B4148C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 17,
+      "name": "G_Ins_lg_and_S_cent_ins",
+      "color": "#170A0A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 18,
+      "name": "G_insular_short",
+      "color": "#E18C8C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 19,
+      "name": "G_occipital_middle",
+      "color": "#B43CB4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 20,
+      "name": "G_occipital_sup",
+      "color": "#14DC3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 21,
+      "name": "G_oc-temp_lat-fusifor",
+      "color": "#3C148C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 22,
+      "name": "G_oc-temp_med-Lingual",
+      "color": "#DCB48C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 23,
+      "name": "G_oc-temp_med-Parahip",
+      "color": "#416414",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 24,
+      "name": "G_orbital",
+      "color": "#DC3C14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 25,
+      "name": "G_pariet_inf-Angular",
+      "color": "#143CDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 26,
+      "name": "G_pariet_inf-Supramar",
+      "color": "#64643C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 27,
+      "name": "G_parietal_sup",
+      "color": "#DCB4DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 28,
+      "name": "G_postcentral",
+      "color": "#14B48C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 29,
+      "name": "G_precentral",
+      "color": "#3C8CB4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 30,
+      "name": "G_precuneus",
+      "color": "#19148C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 31,
+      "name": "G_rectus",
+      "color": "#143C64",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 32,
+      "name": "G_subcallosal",
+      "color": "#3CDC14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 33,
+      "name": "G_temp_sup-G_T_transv",
+      "color": "#3C3CDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 34,
+      "name": "G_temp_sup-Lateral",
+      "color": "#DC3CDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 35,
+      "name": "G_temp_sup-Plan_polar",
+      "color": "#41DC3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 36,
+      "name": "G_temp_sup-Plan_tempo",
+      "color": "#198C14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 37,
+      "name": "G_temporal_inf",
+      "color": "#DCDC64",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 38,
+      "name": "G_temporal_middle",
+      "color": "#B43C3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 39,
+      "name": "Lat_Fis-ant-Horizont",
+      "color": "#3D14DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 40,
+      "name": "Lat_Fis-ant-Vertical",
+      "color": "#3D143C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 41,
+      "name": "Lat_Fis-post",
+      "color": "#3D3C64",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 42,
+      "name": "Medial_wall",
+      "color": "#191919",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 43,
+      "name": "Pole_occipital",
+      "color": "#8C143C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 44,
+      "name": "Pole_temporal",
+      "color": "#DCB414",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 45,
+      "name": "S_calcarine",
+      "color": "#3FB4B4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 46,
+      "name": "S_central",
+      "color": "#DD140A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 47,
+      "name": "S_cingul-Marginalis",
+      "color": "#DD1464",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 48,
+      "name": "S_circular_insula_ant",
+      "color": "#DD3C8C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 49,
+      "name": "S_circular_insula_inf",
+      "color": "#DD14DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 50,
+      "name": "S_circular_insula_sup",
+      "color": "#3DDCDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 51,
+      "name": "S_collat_transv_ant",
+      "color": "#64C8C8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 52,
+      "name": "S_collat_transv_post",
+      "color": "#0AC8C8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 53,
+      "name": "S_front_inf",
+      "color": "#DDDC14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 54,
+      "name": "S_front_middle",
+      "color": "#8D1464",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 55,
+      "name": "S_front_sup",
+      "color": "#3DDC64",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 56,
+      "name": "S_interm_prim-Jensen",
+      "color": "#8D3C14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 57,
+      "name": "S_intrapariet_and_P_trans",
+      "color": "#8F14DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 58,
+      "name": "S_oc_middle_and_Lunatus",
+      "color": "#653CDC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 59,
+      "name": "S_oc_sup_and_transversal",
+      "color": "#15148C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 60,
+      "name": "S_occipital_ant",
+      "color": "#3D14B4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 61,
+      "name": "S_oc-temp_lat",
+      "color": "#DD8C14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 62,
+      "name": "S_oc-temp_med_and_Lingual",
+      "color": "#8D64DC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 63,
+      "name": "S_orbital_lateral",
+      "color": "#DD6414",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 64,
+      "name": "S_orbital_med-olfact",
+      "color": "#B5C814",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 65,
+      "name": "S_orbital-H_Shaped",
+      "color": "#651414",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 66,
+      "name": "S_parieto_occipital",
+      "color": "#6564B4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 67,
+      "name": "S_pericallosal",
+      "color": "#B5DC14",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 68,
+      "name": "S_postcentral",
+      "color": "#158CC8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 69,
+      "name": "S_precentral-inf-part",
+      "color": "#1514F0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 70,
+      "name": "S_precentral-sup-part",
+      "color": "#1514C8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 71,
+      "name": "S_suborbital",
+      "color": "#15143C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 72,
+      "name": "S_subparietal",
+      "color": "#653C3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 73,
+      "name": "S_temporal_inf",
+      "color": "#15B4B4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 74,
+      "name": "S_temporal_sup",
+      "color": "#DFDC3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 75,
+      "name": "S_temporal_transverse",
+      "color": "#DD3C3C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 1,
+      "name": "G_and_S_frontomargin",
+      "color": "#17DC3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 2,
+      "name": "G_and_S_occipital_inf",
+      "color": "#173CB4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 3,
+      "name": "G_and_S_paracentral",
+      "color": "#3F643C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 4,
+      "name": "G_and_S_subcentral",
+      "color": "#3F14DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 5,
+      "name": "G_and_S_transv_frontopol",
+      "color": "#0D00FA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 6,
+      "name": "G_and_S_cingul-Ant",
+      "color": "#1A3C00",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 7,
+      "name": "G_and_S_cingul-Mid-Ant",
+      "color": "#1A3C4B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 8,
+      "name": "G_and_S_cingul-Mid-Post",
+      "color": "#1A3C96",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 9,
+      "name": "G_cingul-Post-dorsal",
+      "color": "#193CFA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 10,
+      "name": "G_cingul-Post-ventral",
+      "color": "#3C1919",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 11,
+      "name": "G_cuneus",
+      "color": "#B41414",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 12,
+      "name": "G_front_inf-Opercular",
+      "color": "#DC1464",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 13,
+      "name": "G_front_inf-Orbital",
+      "color": "#8C3C3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 14,
+      "name": "G_front_inf-Triangul",
+      "color": "#B4DC8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 15,
+      "name": "G_front_middle",
+      "color": "#8C64B4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 16,
+      "name": "G_front_sup",
+      "color": "#B4148C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 17,
+      "name": "G_Ins_lg_and_S_cent_ins",
+      "color": "#170A0A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 18,
+      "name": "G_insular_short",
+      "color": "#E18C8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 19,
+      "name": "G_occipital_middle",
+      "color": "#B43CB4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 20,
+      "name": "G_occipital_sup",
+      "color": "#14DC3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 21,
+      "name": "G_oc-temp_lat-fusifor",
+      "color": "#3C148C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 22,
+      "name": "G_oc-temp_med-Lingual",
+      "color": "#DCB48C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 23,
+      "name": "G_oc-temp_med-Parahip",
+      "color": "#416414",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 24,
+      "name": "G_orbital",
+      "color": "#DC3C14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 25,
+      "name": "G_pariet_inf-Angular",
+      "color": "#143CDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 26,
+      "name": "G_pariet_inf-Supramar",
+      "color": "#64643C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 27,
+      "name": "G_parietal_sup",
+      "color": "#DCB4DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 28,
+      "name": "G_postcentral",
+      "color": "#14B48C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 29,
+      "name": "G_precentral",
+      "color": "#3C8CB4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 30,
+      "name": "G_precuneus",
+      "color": "#19148C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 31,
+      "name": "G_rectus",
+      "color": "#143C64",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 32,
+      "name": "G_subcallosal",
+      "color": "#3CDC14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 33,
+      "name": "G_temp_sup-G_T_transv",
+      "color": "#3C3CDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 34,
+      "name": "G_temp_sup-Lateral",
+      "color": "#DC3CDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 35,
+      "name": "G_temp_sup-Plan_polar",
+      "color": "#41DC3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 36,
+      "name": "G_temp_sup-Plan_tempo",
+      "color": "#198C14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 37,
+      "name": "G_temporal_inf",
+      "color": "#DCDC64",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 38,
+      "name": "G_temporal_middle",
+      "color": "#B43C3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 39,
+      "name": "Lat_Fis-ant-Horizont",
+      "color": "#3D14DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 40,
+      "name": "Lat_Fis-ant-Vertical",
+      "color": "#3D143C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 41,
+      "name": "Lat_Fis-post",
+      "color": "#3D3C64",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 42,
+      "name": "Medial_wall",
+      "color": "#191919",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 43,
+      "name": "Pole_occipital",
+      "color": "#8C143C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 44,
+      "name": "Pole_temporal",
+      "color": "#DCB414",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 45,
+      "name": "S_calcarine",
+      "color": "#3FB4B4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 46,
+      "name": "S_central",
+      "color": "#DD140A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 47,
+      "name": "S_cingul-Marginalis",
+      "color": "#DD1464",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 48,
+      "name": "S_circular_insula_ant",
+      "color": "#DD3C8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 49,
+      "name": "S_circular_insula_inf",
+      "color": "#DD14DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 50,
+      "name": "S_circular_insula_sup",
+      "color": "#3DDCDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 51,
+      "name": "S_collat_transv_ant",
+      "color": "#64C8C8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 52,
+      "name": "S_collat_transv_post",
+      "color": "#0AC8C8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 53,
+      "name": "S_front_inf",
+      "color": "#DDDC14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 54,
+      "name": "S_front_middle",
+      "color": "#8D1464",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 55,
+      "name": "S_front_sup",
+      "color": "#3DDC64",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 56,
+      "name": "S_interm_prim-Jensen",
+      "color": "#8D3C14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 57,
+      "name": "S_intrapariet_and_P_trans",
+      "color": "#8F14DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 58,
+      "name": "S_oc_middle_and_Lunatus",
+      "color": "#653CDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 59,
+      "name": "S_oc_sup_and_transversal",
+      "color": "#15148C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 60,
+      "name": "S_occipital_ant",
+      "color": "#3D14B4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 61,
+      "name": "S_oc-temp_lat",
+      "color": "#DD8C14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 62,
+      "name": "S_oc-temp_med_and_Lingual",
+      "color": "#8D64DC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 63,
+      "name": "S_orbital_lateral",
+      "color": "#DD6414",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 64,
+      "name": "S_orbital_med-olfact",
+      "color": "#B5C814",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 65,
+      "name": "S_orbital-H_Shaped",
+      "color": "#651414",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 66,
+      "name": "S_parieto_occipital",
+      "color": "#6564B4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 67,
+      "name": "S_pericallosal",
+      "color": "#B5DC14",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 68,
+      "name": "S_postcentral",
+      "color": "#158CC8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 69,
+      "name": "S_precentral-inf-part",
+      "color": "#1514F0",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 70,
+      "name": "S_precentral-sup-part",
+      "color": "#1514C8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 71,
+      "name": "S_suborbital",
+      "color": "#15143C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 72,
+      "name": "S_subparietal",
+      "color": "#653C3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 73,
+      "name": "S_temporal_inf",
+      "color": "#15B4B4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 74,
+      "name": "S_temporal_sup",
+      "color": "#DFDC3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 75,
+      "name": "S_temporal_transverse",
+      "color": "#DD3C3C",
+      "hemi": "rh"
+    }
+  ],
+  "hcp_mmp": [
+    {
+      "label_id": 1,
+      "name": "L_V1_ROI",
+      "color": "#3F05FF",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 2,
+      "name": "L_MST_ROI",
+      "color": "#366781",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 3,
+      "name": "L_V6_ROI",
+      "color": "#3E4EB2",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 4,
+      "name": "L_V2_ROI",
+      "color": "#1732E9",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 5,
+      "name": "L_V3_ROI",
+      "color": "#0F28E2",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 6,
+      "name": "L_V4_ROI",
+      "color": "#0E1CD6",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 7,
+      "name": "L_V8_ROI",
+      "color": "#1A2FC9",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 8,
+      "name": "L_4_ROI",
+      "color": "#21B214",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 9,
+      "name": "L_3b_ROI",
+      "color": "#23CD15",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 10,
+      "name": "L_FEF_ROI",
+      "color": "#868F89",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 11,
+      "name": "L_PEF_ROI",
+      "color": "#8DA698",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 12,
+      "name": "L_55b_ROI",
+      "color": "#3E582F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 13,
+      "name": "L_V3A_ROI",
+      "color": "#0739F6",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 14,
+      "name": "L_RSC_ROI",
+      "color": "#994085",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 15,
+      "name": "L_POS2_ROI",
+      "color": "#BA56BC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 16,
+      "name": "L_V7_ROI",
+      "color": "#1246C3",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 17,
+      "name": "L_IPS1_ROI",
+      "color": "#3972A0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 18,
+      "name": "L_FFC_ROI",
+      "color": "#395975",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 19,
+      "name": "L_V3B_ROI",
+      "color": "#192FCE",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 20,
+      "name": "L_LO1_ROI",
+      "color": "#0031B8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 21,
+      "name": "L_LO2_ROI",
+      "color": "#1221B5",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 22,
+      "name": "L_PIT_ROI",
+      "color": "#222BAB",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 23,
+      "name": "L_MT_ROI",
+      "color": "#1F5668",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 24,
+      "name": "L_A1_ROI",
+      "color": "#EB132F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 25,
+      "name": "L_PSL_ROI",
+      "color": "#7A4F38",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 26,
+      "name": "L_SFL_ROI",
+      "color": "#1F3116",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 27,
+      "name": "L_PCV_ROI",
+      "color": "#8A8099",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 28,
+      "name": "L_STV_ROI",
+      "color": "#8E574C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 29,
+      "name": "L_7Pm_ROI",
+      "color": "#95B5BC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 30,
+      "name": "L_7m_ROI",
+      "color": "#2A1F2C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 31,
+      "name": "L_POS1_ROI",
+      "color": "#513662",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 32,
+      "name": "L_23d_ROI",
+      "color": "#7F385B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 33,
+      "name": "L_v23ab_ROI",
+      "color": "#1D000E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 34,
+      "name": "L_d23ab_ROI",
+      "color": "#3F112F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 35,
+      "name": "L_31pv_ROI",
+      "color": "#360B2A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 36,
+      "name": "L_5m_ROI",
+      "color": "#30A330",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 37,
+      "name": "L_5mv_ROI",
+      "color": "#99AC88",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 38,
+      "name": "L_23c_ROI",
+      "color": "#CDBEC2",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 39,
+      "name": "L_5L_ROI",
+      "color": "#409A40",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 40,
+      "name": "L_24dd_ROI",
+      "color": "#45A12C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 41,
+      "name": "L_24dv_ROI",
+      "color": "#779F42",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 42,
+      "name": "L_7AL_ROI",
+      "color": "#73C286",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 43,
+      "name": "L_SCEF_ROI",
+      "color": "#6E9256",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 44,
+      "name": "L_6ma_ROI",
+      "color": "#90B387",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 45,
+      "name": "L_7Am_ROI",
+      "color": "#B8F3E0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 46,
+      "name": "L_7PL_ROI",
+      "color": "#A9F6ED",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 47,
+      "name": "L_7PC_ROI",
+      "color": "#44B16C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 48,
+      "name": "L_LIPv_ROI",
+      "color": "#3F719E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 49,
+      "name": "L_VIP_ROI",
+      "color": "#328189",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 50,
+      "name": "L_MIP_ROI",
+      "color": "#88CECC",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 51,
+      "name": "L_1_ROI",
+      "color": "#14BF26",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 52,
+      "name": "L_2_ROI",
+      "color": "#30B03E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 53,
+      "name": "L_3a_ROI",
+      "color": "#2FD816",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 54,
+      "name": "L_6d_ROI",
+      "color": "#1A9E20",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 55,
+      "name": "L_6mp_ROI",
+      "color": "#409F26",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 56,
+      "name": "L_6v_ROI",
+      "color": "#47A832",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 57,
+      "name": "L_p24pr_ROI",
+      "color": "#92886B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 58,
+      "name": "L_33pr_ROI",
+      "color": "#816A67",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 59,
+      "name": "L_a24pr_ROI",
+      "color": "#B08582",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 60,
+      "name": "L_p32pr_ROI",
+      "color": "#A38E79",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 61,
+      "name": "L_a24_ROI",
+      "color": "#430C19",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 62,
+      "name": "L_d32_ROI",
+      "color": "#5A2932",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 63,
+      "name": "L_8BM_ROI",
+      "color": "#695351",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 64,
+      "name": "L_p32_ROI",
+      "color": "#5F2034",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 65,
+      "name": "L_10r_ROI",
+      "color": "#190C01",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 66,
+      "name": "L_47m_ROI",
+      "color": "#604B42",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 67,
+      "name": "L_8Av_ROI",
+      "color": "#35362B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 68,
+      "name": "L_8Ad_ROI",
+      "color": "#3F4330",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 69,
+      "name": "L_9m_ROI",
+      "color": "#2B2312",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 70,
+      "name": "L_8BL_ROI",
+      "color": "#222714",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 71,
+      "name": "L_9p_ROI",
+      "color": "#262B1C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 72,
+      "name": "L_10d_ROI",
+      "color": "#262318",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 73,
+      "name": "L_8C_ROI",
+      "color": "#655554",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 74,
+      "name": "L_44_ROI",
+      "color": "#58583E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 75,
+      "name": "L_45_ROI",
+      "color": "#3C3F2A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 76,
+      "name": "L_47l_ROI",
+      "color": "#33311F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 77,
+      "name": "L_a47r_ROI",
+      "color": "#4D4C42",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 78,
+      "name": "L_6r_ROI",
+      "color": "#B2D697",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 79,
+      "name": "L_IFJa_ROI",
+      "color": "#7E775F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 80,
+      "name": "L_IFJp_ROI",
+      "color": "#89A084",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 81,
+      "name": "L_IFSp_ROI",
+      "color": "#616257",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 82,
+      "name": "L_IFSa_ROI",
+      "color": "#BCC9B2",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 83,
+      "name": "L_p9-46v_ROI",
+      "color": "#8A9586",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 84,
+      "name": "L_46_ROI",
+      "color": "#CFD9C8",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 85,
+      "name": "L_a9-46v_ROI",
+      "color": "#917080",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 86,
+      "name": "L_9-46d_ROI",
+      "color": "#8C7583",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 87,
+      "name": "L_9a_ROI",
+      "color": "#37342D",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 88,
+      "name": "L_10v_ROI",
+      "color": "#0E230E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 89,
+      "name": "L_a10p_ROI",
+      "color": "#624B59",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 90,
+      "name": "L_10pp_ROI",
+      "color": "#373E3A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 91,
+      "name": "L_11l_ROI",
+      "color": "#816A76",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 92,
+      "name": "L_13l_ROI",
+      "color": "#523C45",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 93,
+      "name": "L_OFC_ROI",
+      "color": "#28231F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 94,
+      "name": "L_47s_ROI",
+      "color": "#422321",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 95,
+      "name": "L_LIPd_ROI",
+      "color": "#9BB4CA",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 96,
+      "name": "L_6a_ROI",
+      "color": "#79C088",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 97,
+      "name": "L_i6-8_ROI",
+      "color": "#5A6253",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 98,
+      "name": "L_s6-8_ROI",
+      "color": "#585C49",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 99,
+      "name": "L_43_ROI",
+      "color": "#918A40",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 100,
+      "name": "L_OP4_ROI",
+      "color": "#729D31",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 101,
+      "name": "L_OP1_ROI",
+      "color": "#639E23",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 102,
+      "name": "L_OP2-3_ROI",
+      "color": "#917F34",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 103,
+      "name": "L_52_ROI",
+      "color": "#D04842",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 104,
+      "name": "L_RI_ROI",
+      "color": "#B23D17",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 105,
+      "name": "L_PFcm_ROI",
+      "color": "#BE9059",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 106,
+      "name": "L_PoI2_ROI",
+      "color": "#837C53",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 107,
+      "name": "L_TA2_ROI",
+      "color": "#822A1B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 108,
+      "name": "L_FOP4_ROI",
+      "color": "#B69481",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 109,
+      "name": "L_MI_ROI",
+      "color": "#9D746A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 110,
+      "name": "L_Pir_ROI",
+      "color": "#5A4241",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 111,
+      "name": "L_AVI_ROI",
+      "color": "#8D4853",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 112,
+      "name": "L_AAIC_ROI",
+      "color": "#55232C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 113,
+      "name": "L_FOP1_ROI",
+      "color": "#A09958",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 114,
+      "name": "L_FOP3_ROI",
+      "color": "#AF8963",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 115,
+      "name": "L_FOP2_ROI",
+      "color": "#639C33",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 116,
+      "name": "L_PFt_ROI",
+      "color": "#81DE86",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 117,
+      "name": "L_AIP_ROI",
+      "color": "#88DCA6",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 118,
+      "name": "L_EC_ROI",
+      "color": "#313023",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 119,
+      "name": "L_PreS_ROI",
+      "color": "#563953",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 120,
+      "name": "L_H_ROI",
+      "color": "#3C3928",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 121,
+      "name": "L_ProS_ROI",
+      "color": "#573BB0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 122,
+      "name": "L_PeEc_ROI",
+      "color": "#3D3E33",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 123,
+      "name": "L_STGa_ROI",
+      "color": "#3A2A1A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 124,
+      "name": "L_PBelt_ROI",
+      "color": "#C31E05",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 125,
+      "name": "L_A5_ROI",
+      "color": "#632706",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 126,
+      "name": "L_PHA1_ROI",
+      "color": "#45324B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 127,
+      "name": "L_PHA3_ROI",
+      "color": "#606671",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 128,
+      "name": "L_STSda_ROI",
+      "color": "#4D3322",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 129,
+      "name": "L_STSdp_ROI",
+      "color": "#493927",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 130,
+      "name": "L_STSvp_ROI",
+      "color": "#473B39",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 131,
+      "name": "L_TGd_ROI",
+      "color": "#232217",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 132,
+      "name": "L_TE1a_ROI",
+      "color": "#0B0E00",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 133,
+      "name": "L_TE1p_ROI",
+      "color": "#60665E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 134,
+      "name": "L_TE2a_ROI",
+      "color": "#43403A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 135,
+      "name": "L_TF_ROI",
+      "color": "#404838",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 136,
+      "name": "L_TE2p_ROI",
+      "color": "#698075",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 137,
+      "name": "L_PHT_ROI",
+      "color": "#D9FCDF",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 138,
+      "name": "L_PH_ROI",
+      "color": "#5883A3",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 139,
+      "name": "L_TPOJ1_ROI",
+      "color": "#7D5A40",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 140,
+      "name": "L_TPOJ2_ROI",
+      "color": "#9CA28A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 141,
+      "name": "L_TPOJ3_ROI",
+      "color": "#799491",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 142,
+      "name": "L_DVT_ROI",
+      "color": "#7870BE",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 143,
+      "name": "L_PGp_ROI",
+      "color": "#9BBEE4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 144,
+      "name": "L_IP2_ROI",
+      "color": "#B0A6AE",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 145,
+      "name": "L_IP1_ROI",
+      "color": "#767980",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 146,
+      "name": "L_IP0_ROI",
+      "color": "#70A0CF",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 147,
+      "name": "L_PFop_ROI",
+      "color": "#BBCD91",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 148,
+      "name": "L_PF_ROI",
+      "color": "#FFFFE2",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 149,
+      "name": "L_PFm_ROI",
+      "color": "#856972",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 150,
+      "name": "L_PGi_ROI",
+      "color": "#353E2E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 151,
+      "name": "L_PGs_ROI",
+      "color": "#3E4339",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 152,
+      "name": "L_V6A_ROI",
+      "color": "#2959A6",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 153,
+      "name": "L_VMV1_ROI",
+      "color": "#3E3D9B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 154,
+      "name": "L_VMV3_ROI",
+      "color": "#31359F",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 155,
+      "name": "L_PHA2_ROI",
+      "color": "#585A59",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 156,
+      "name": "L_V4t_ROI",
+      "color": "#0E4F80",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 157,
+      "name": "L_FST_ROI",
+      "color": "#5C9D99",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 158,
+      "name": "L_V3CD_ROI",
+      "color": "#0F2EB6",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 159,
+      "name": "L_LO3_ROI",
+      "color": "#365EA0",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 160,
+      "name": "L_VMV2_ROI",
+      "color": "#433EA1",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 161,
+      "name": "L_31pd_ROI",
+      "color": "#38162D",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 162,
+      "name": "L_31a_ROI",
+      "color": "#8F6985",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 163,
+      "name": "L_VVC_ROI",
+      "color": "#353D7C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 164,
+      "name": "L_25_ROI",
+      "color": "#24180E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 165,
+      "name": "L_s32_ROI",
+      "color": "#2E2315",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 166,
+      "name": "L_pOFC_ROI",
+      "color": "#4C3035",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 167,
+      "name": "L_PoI1_ROI",
+      "color": "#A46861",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 168,
+      "name": "L_Ig_ROI",
+      "color": "#6E7B24",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 169,
+      "name": "L_FOP5_ROI",
+      "color": "#A36669",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 170,
+      "name": "L_p10p_ROI",
+      "color": "#59404C",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 171,
+      "name": "L_p47r_ROI",
+      "color": "#7E7B70",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 172,
+      "name": "L_TGv_ROI",
+      "color": "#2E332A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 173,
+      "name": "L_MBelt_ROI",
+      "color": "#BB1E18",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 174,
+      "name": "L_LBelt_ROI",
+      "color": "#E9121B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 175,
+      "name": "L_A4_ROI",
+      "color": "#982704",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 176,
+      "name": "L_STSva_ROI",
+      "color": "#282116",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 177,
+      "name": "L_TE1m_ROI",
+      "color": "#3B2D2B",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 178,
+      "name": "L_PI_ROI",
+      "color": "#7A3232",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 179,
+      "name": "L_a32pr_ROI",
+      "color": "#823F57",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 180,
+      "name": "L_p24_ROI",
+      "color": "#7B234A",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 1,
+      "name": "R_V1_ROI",
+      "color": "#3E00FF",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 2,
+      "name": "R_MST_ROI",
+      "color": "#327080",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 3,
+      "name": "R_V6_ROI",
+      "color": "#435AB4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 4,
+      "name": "R_V2_ROI",
+      "color": "#1B38EA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 5,
+      "name": "R_V3_ROI",
+      "color": "#132CE8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 6,
+      "name": "R_V4_ROI",
+      "color": "#112FDC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 7,
+      "name": "R_V8_ROI",
+      "color": "#1744D2",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 8,
+      "name": "R_4_ROI",
+      "color": "#1FBA1A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 9,
+      "name": "R_3b_ROI",
+      "color": "#28C518",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 10,
+      "name": "R_FEF_ROI",
+      "color": "#899B96",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 11,
+      "name": "R_PEF_ROI",
+      "color": "#9DB6A7",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 12,
+      "name": "R_55b_ROI",
+      "color": "#696B4A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 13,
+      "name": "R_V3A_ROI",
+      "color": "#1348F7",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 14,
+      "name": "R_RSC_ROI",
+      "color": "#954588",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 15,
+      "name": "R_POS2_ROI",
+      "color": "#CD6FCD",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 16,
+      "name": "R_V7_ROI",
+      "color": "#1C60C0",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 17,
+      "name": "R_IPS1_ROI",
+      "color": "#3F8DAF",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 18,
+      "name": "R_FFC_ROI",
+      "color": "#346C7A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 19,
+      "name": "R_V3B_ROI",
+      "color": "#2850DE",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 20,
+      "name": "R_LO1_ROI",
+      "color": "#0D43C8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 21,
+      "name": "R_LO2_ROI",
+      "color": "#1342B6",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 22,
+      "name": "R_PIT_ROI",
+      "color": "#254AB8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 23,
+      "name": "R_MT_ROI",
+      "color": "#1F636C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 24,
+      "name": "R_A1_ROI",
+      "color": "#E80A2E",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 25,
+      "name": "R_PSL_ROI",
+      "color": "#BD9488",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 26,
+      "name": "R_SFL_ROI",
+      "color": "#423C2F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 27,
+      "name": "R_PCV_ROI",
+      "color": "#82929D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 28,
+      "name": "R_STV_ROI",
+      "color": "#8B736A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 29,
+      "name": "R_7Pm_ROI",
+      "color": "#99D5C5",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 30,
+      "name": "R_7m_ROI",
+      "color": "#2F3035",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 31,
+      "name": "R_POS1_ROI",
+      "color": "#535376",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 32,
+      "name": "R_23d_ROI",
+      "color": "#873862",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 33,
+      "name": "R_v23ab_ROI",
+      "color": "#1A0B19",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 34,
+      "name": "R_d23ab_ROI",
+      "color": "#3C102C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 35,
+      "name": "R_31pv_ROI",
+      "color": "#441132",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 36,
+      "name": "R_5m_ROI",
+      "color": "#2BB131",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 37,
+      "name": "R_5mv_ROI",
+      "color": "#8BA581",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 38,
+      "name": "R_23c_ROI",
+      "color": "#CDC5C3",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 39,
+      "name": "R_5L_ROI",
+      "color": "#40A343",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 40,
+      "name": "R_24dd_ROI",
+      "color": "#45A730",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 41,
+      "name": "R_24dv_ROI",
+      "color": "#70A142",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 42,
+      "name": "R_7AL_ROI",
+      "color": "#71BB7A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 43,
+      "name": "R_SCEF_ROI",
+      "color": "#8D996F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 44,
+      "name": "R_6ma_ROI",
+      "color": "#96B08B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 45,
+      "name": "R_7Am_ROI",
+      "color": "#A9F9D8",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 46,
+      "name": "R_7PL_ROI",
+      "color": "#9AFDE3",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 47,
+      "name": "R_7PC_ROI",
+      "color": "#47B66A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 48,
+      "name": "R_LIPv_ROI",
+      "color": "#3D81AB",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 49,
+      "name": "R_VIP_ROI",
+      "color": "#368993",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 50,
+      "name": "R_MIP_ROI",
+      "color": "#7ED2C5",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 51,
+      "name": "R_1_ROI",
+      "color": "#1CC72C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 52,
+      "name": "R_2_ROI",
+      "color": "#33B945",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 53,
+      "name": "R_3a_ROI",
+      "color": "#2CE11D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 54,
+      "name": "R_6d_ROI",
+      "color": "#1FA529",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 55,
+      "name": "R_6mp_ROI",
+      "color": "#43A32F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 56,
+      "name": "R_6v_ROI",
+      "color": "#59B942",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 57,
+      "name": "R_p24pr_ROI",
+      "color": "#989478",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 58,
+      "name": "R_33pr_ROI",
+      "color": "#756061",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 59,
+      "name": "R_a24pr_ROI",
+      "color": "#B08684",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 60,
+      "name": "R_p32pr_ROI",
+      "color": "#B09586",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 61,
+      "name": "R_a24_ROI",
+      "color": "#491226",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 62,
+      "name": "R_d32_ROI",
+      "color": "#6D2E41",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 63,
+      "name": "R_8BM_ROI",
+      "color": "#82525C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 64,
+      "name": "R_p32_ROI",
+      "color": "#703750",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 65,
+      "name": "R_10r_ROI",
+      "color": "#1A0408",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 66,
+      "name": "R_47m_ROI",
+      "color": "#4F3432",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 67,
+      "name": "R_8Av_ROI",
+      "color": "#4F4441",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 68,
+      "name": "R_8Ad_ROI",
+      "color": "#373E2C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 69,
+      "name": "R_9m_ROI",
+      "color": "#2B1913",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 70,
+      "name": "R_8BL_ROI",
+      "color": "#232416",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 71,
+      "name": "R_9p_ROI",
+      "color": "#3E3531",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 72,
+      "name": "R_10d_ROI",
+      "color": "#1C1712",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 73,
+      "name": "R_8C_ROI",
+      "color": "#77595E",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 74,
+      "name": "R_44_ROI",
+      "color": "#89665E",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 75,
+      "name": "R_45_ROI",
+      "color": "#5B4239",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 76,
+      "name": "R_47l_ROI",
+      "color": "#331A1B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 77,
+      "name": "R_a47r_ROI",
+      "color": "#524645",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 78,
+      "name": "R_6r_ROI",
+      "color": "#BFD7A3",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 79,
+      "name": "R_IFJa_ROI",
+      "color": "#8A7B68",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 80,
+      "name": "R_IFJp_ROI",
+      "color": "#829C88",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 81,
+      "name": "R_IFSp_ROI",
+      "color": "#7C706F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 82,
+      "name": "R_IFSa_ROI",
+      "color": "#D4D6C4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 83,
+      "name": "R_p9-46v_ROI",
+      "color": "#958F89",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 84,
+      "name": "R_46_ROI",
+      "color": "#C1D5BF",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 85,
+      "name": "R_a9-46v_ROI",
+      "color": "#B1869B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 86,
+      "name": "R_9-46d_ROI",
+      "color": "#A08797",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 87,
+      "name": "R_9a_ROI",
+      "color": "#403737",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 88,
+      "name": "R_10v_ROI",
+      "color": "#001204",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 89,
+      "name": "R_a10p_ROI",
+      "color": "#685B70",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 90,
+      "name": "R_10pp_ROI",
+      "color": "#2A3133",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 91,
+      "name": "R_11l_ROI",
+      "color": "#6A626C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 92,
+      "name": "R_13l_ROI",
+      "color": "#5F5558",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 93,
+      "name": "R_OFC_ROI",
+      "color": "#292624",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 94,
+      "name": "R_47s_ROI",
+      "color": "#412526",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 95,
+      "name": "R_LIPd_ROI",
+      "color": "#91BBC7",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 96,
+      "name": "R_6a_ROI",
+      "color": "#77C88F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 97,
+      "name": "R_i6-8_ROI",
+      "color": "#6B7A6B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 98,
+      "name": "R_s6-8_ROI",
+      "color": "#635D53",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 99,
+      "name": "R_43_ROI",
+      "color": "#A08D45",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 100,
+      "name": "R_OP4_ROI",
+      "color": "#77A331",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 101,
+      "name": "R_OP1_ROI",
+      "color": "#5E9A24",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 102,
+      "name": "R_OP2-3_ROI",
+      "color": "#898235",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 103,
+      "name": "R_52_ROI",
+      "color": "#C6453D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 104,
+      "name": "R_RI_ROI",
+      "color": "#A7562C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 105,
+      "name": "R_PFcm_ROI",
+      "color": "#B5995A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 106,
+      "name": "R_PoI2_ROI",
+      "color": "#7E7E56",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 107,
+      "name": "R_TA2_ROI",
+      "color": "#892B22",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 108,
+      "name": "R_FOP4_ROI",
+      "color": "#CC9E94",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 109,
+      "name": "R_MI_ROI",
+      "color": "#A98276",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 110,
+      "name": "R_Pir_ROI",
+      "color": "#34414B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 111,
+      "name": "R_AVI_ROI",
+      "color": "#9B5160",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 112,
+      "name": "R_AAIC_ROI",
+      "color": "#4E2A35",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 113,
+      "name": "R_FOP1_ROI",
+      "color": "#A18D5B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 114,
+      "name": "R_FOP3_ROI",
+      "color": "#BA9271",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 115,
+      "name": "R_FOP2_ROI",
+      "color": "#61A336",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 116,
+      "name": "R_PFt_ROI",
+      "color": "#68D175",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 117,
+      "name": "R_AIP_ROI",
+      "color": "#84E4AC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 118,
+      "name": "R_EC_ROI",
+      "color": "#2C3326",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 119,
+      "name": "R_PreS_ROI",
+      "color": "#533E5A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 120,
+      "name": "R_H_ROI",
+      "color": "#3B3D2C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 121,
+      "name": "R_ProS_ROI",
+      "color": "#5549B2",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 122,
+      "name": "R_PeEc_ROI",
+      "color": "#343F33",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 123,
+      "name": "R_STGa_ROI",
+      "color": "#33321F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 124,
+      "name": "R_PBelt_ROI",
+      "color": "#C01D0A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 125,
+      "name": "R_A5_ROI",
+      "color": "#6E2703",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 126,
+      "name": "R_PHA1_ROI",
+      "color": "#3C3E4E",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 127,
+      "name": "R_PHA3_ROI",
+      "color": "#4C6A72",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 128,
+      "name": "R_STSda_ROI",
+      "color": "#463828",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 129,
+      "name": "R_STSdp_ROI",
+      "color": "#5D3A30",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 130,
+      "name": "R_STSvp_ROI",
+      "color": "#59313D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 131,
+      "name": "R_TGd_ROI",
+      "color": "#1F261C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 132,
+      "name": "R_TE1a_ROI",
+      "color": "#070C00",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 133,
+      "name": "R_TE1p_ROI",
+      "color": "#696D68",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 134,
+      "name": "R_TE2a_ROI",
+      "color": "#413F3B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 135,
+      "name": "R_TF_ROI",
+      "color": "#3B5140",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 136,
+      "name": "R_TE2p_ROI",
+      "color": "#5F8678",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 137,
+      "name": "R_PHT_ROI",
+      "color": "#C2FAD4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 138,
+      "name": "R_PH_ROI",
+      "color": "#4690A6",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 139,
+      "name": "R_TPOJ1_ROI",
+      "color": "#7E6452",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 140,
+      "name": "R_TPOJ2_ROI",
+      "color": "#8AB08F",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 141,
+      "name": "R_TPOJ3_ROI",
+      "color": "#619B8C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 142,
+      "name": "R_DVT_ROI",
+      "color": "#7D89CB",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 143,
+      "name": "R_PGp_ROI",
+      "color": "#90D6DD",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 144,
+      "name": "R_IP2_ROI",
+      "color": "#B9B5B5",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 145,
+      "name": "R_IP1_ROI",
+      "color": "#7C7B81",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 146,
+      "name": "R_IP0_ROI",
+      "color": "#6BB3D7",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 147,
+      "name": "R_PFop_ROI",
+      "color": "#AAC988",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 148,
+      "name": "R_PF_ROI",
+      "color": "#FFFFDD",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 149,
+      "name": "R_PFm_ROI",
+      "color": "#A07C86",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 150,
+      "name": "R_PGi_ROI",
+      "color": "#363E31",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 151,
+      "name": "R_PGs_ROI",
+      "color": "#594F4C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 152,
+      "name": "R_V6A_ROI",
+      "color": "#3264AA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 153,
+      "name": "R_VMV1_ROI",
+      "color": "#334CA6",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 154,
+      "name": "R_VMV3_ROI",
+      "color": "#2A45AB",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 155,
+      "name": "R_PHA2_ROI",
+      "color": "#4A6661",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 156,
+      "name": "R_V4t_ROI",
+      "color": "#0D6980",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 157,
+      "name": "R_FST_ROI",
+      "color": "#49A495",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 158,
+      "name": "R_V3CD_ROI",
+      "color": "#1649CC",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 159,
+      "name": "R_LO3_ROI",
+      "color": "#386DAA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 160,
+      "name": "R_VMV2_ROI",
+      "color": "#3B4CAD",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 161,
+      "name": "R_31pd_ROI",
+      "color": "#4E1B3C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 162,
+      "name": "R_31a_ROI",
+      "color": "#8D6B86",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 163,
+      "name": "R_VVC_ROI",
+      "color": "#355087",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 164,
+      "name": "R_25_ROI",
+      "color": "#1A130C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 165,
+      "name": "R_s32_ROI",
+      "color": "#1B1309",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 166,
+      "name": "R_pOFC_ROI",
+      "color": "#4D353D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 167,
+      "name": "R_PoI1_ROI",
+      "color": "#A66B67",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 168,
+      "name": "R_Ig_ROI",
+      "color": "#6C8229",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 169,
+      "name": "R_FOP5_ROI",
+      "color": "#B86A77",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 170,
+      "name": "R_p10p_ROI",
+      "color": "#5C4653",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 171,
+      "name": "R_p47r_ROI",
+      "color": "#957A7A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 172,
+      "name": "R_TGv_ROI",
+      "color": "#384136",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 173,
+      "name": "R_MBelt_ROI",
+      "color": "#BC111A",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 174,
+      "name": "R_LBelt_ROI",
+      "color": "#D8181C",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 175,
+      "name": "R_A4_ROI",
+      "color": "#962808",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 176,
+      "name": "R_STSva_ROI",
+      "color": "#312823",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 177,
+      "name": "R_TE1m_ROI",
+      "color": "#52363B",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 178,
+      "name": "R_PI_ROI",
+      "color": "#813B3E",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 179,
+      "name": "R_a32pr_ROI",
+      "color": "#98516D",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 180,
+      "name": "R_p24_ROI",
+      "color": "#7A2C51",
+      "hemi": "rh"
+    }
+  ],
+  "yeo7": [
+    {
+      "label_id": 1,
+      "name": "7Networks_1",
+      "color": "#781286",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 2,
+      "name": "7Networks_2",
+      "color": "#4682B4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 3,
+      "name": "7Networks_3",
+      "color": "#00760E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 4,
+      "name": "7Networks_4",
+      "color": "#C43AFA",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 5,
+      "name": "7Networks_5",
+      "color": "#DCF8A4",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 6,
+      "name": "7Networks_6",
+      "color": "#E69422",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 7,
+      "name": "7Networks_7",
+      "color": "#CD3E4E",
+      "hemi": "lh"
+    },
+    {
+      "label_id": 1,
+      "name": "7Networks_1",
+      "color": "#781286",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 2,
+      "name": "7Networks_2",
+      "color": "#4682B4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 3,
+      "name": "7Networks_3",
+      "color": "#00760E",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 4,
+      "name": "7Networks_4",
+      "color": "#C43AFA",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 5,
+      "name": "7Networks_5",
+      "color": "#DCF8A4",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 6,
+      "name": "7Networks_6",
+      "color": "#E69422",
+      "hemi": "rh"
+    },
+    {
+      "label_id": 7,
+      "name": "7Networks_7",
+      "color": "#CD3E4E",
+      "hemi": "rh"
+    }
+  ]
+}

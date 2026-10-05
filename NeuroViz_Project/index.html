@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroViz - 多模态脑影像集成分析平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=46">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 顶部工具栏 -->
+    <header class="toolbar" id="toolbar">
+        <div class="toolbar-left">
+            <div class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span class="logo-text">Neuro<span class="accent">Viz</span></span>
+            </div>
+            <nav class="nav-tabs" id="navTabs">
+                <button class="nav-tab active" data-module="module1">
+                    <i class="fa-solid fa-puzzle-piece"></i> 结构分区
+                </button>
+                <button class="nav-tab" data-module="module2">
+                    <i class="fa-solid fa-network-wired"></i> 功能网络
+                </button>
+                <button class="nav-tab" data-module="module3">
+                    <i class="fa-solid fa-project-diagram"></i> 白质连接
+                </button>
+                <button class="nav-tab" data-module="module4">
+                    <i class="fa-solid fa-chart-line"></i> 交互分析
+                </button>
+            </nav>
+        </div>
+        <div class="toolbar-center">
+            <button class="tool-btn" id="btnImport" title="导入数据">
+                <i class="fa-solid fa-upload"></i> 导入数据
+            </button>
+            <input type="file" id="fileInput" accept=".nii,.nii.gz,.mgh,.mgz,.gii,.csv,.json,.trk,.tck" multiple hidden>
+        </div>
+        <div class="toolbar-right">
+            <div class="user-area" id="userArea">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span class="user-name" id="userName">未登录</span>
+                <button class="login-btn" id="btnLogin">
+                    <i class="fa-solid fa-right-to-bracket"></i> 登录
+                </button>
+            </div>
+            <!-- 登录后下拉菜单 -->
+            <div class="user-dropdown" id="userDropdown">
+                <div class="dropdown-item" data-action="settings">
+                    <i class="fa-solid fa-gear"></i> 个人设置
+                </div>
+                <div class="dropdown-item" data-action="history">
+                    <i class="fa-solid fa-clock-rotate-left"></i> 历史记录
+                </div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" data-action="logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> 退出登录
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== 登录弹窗 ==================== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-card" id="loginCard">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-right-to-bracket"></i> <span id="loginTitle">欢迎使用 NeuroViz</span></h3>
+                <button class="modal-close" id="btnCloseLogin">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 步骤1：输入邮箱 -->
+                <div class="login-step active" id="loginStep1">
+                    <p class="step-desc">请输入您的邮箱地址以开始使用</p>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-envelope"></i> 邮箱</label>
+                        <input type="email" id="loginEmail" placeholder="name@example.com" autocomplete="email">
+                    </div>
+                    <p class="form-hint" style="text-align:left;margin-bottom:16px;">
+                        <i class="fa-solid fa-circle-info" style="color:var(--primary);"></i>
+                        若邮箱未注册，将自动为您创建新账户
+                    </p>
+                    <button class="btn-primary full-width" id="btnCheckEmail">
+                        <i class="fa-solid fa-arrow-right"></i> 继续
+                    </button>
+                </div>
+                <!-- 步骤2：输入密码 + 验证码（已注册用户） -->
+                <div class="login-step" id="loginStep2">
+                    <p class="step-desc" id="loginEmailDisplay"></p>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> 密码</label>
+                        <input type="password" id="loginPassword" placeholder="请输入密码" autocomplete="current-password">
+                    </div>
+                    <div class="form-group captcha-group">
+                        <label><i class="fa-solid fa-shield-halved"></i> 真人验证</label>
+                        <div class="captcha-box">
+                            <canvas id="captchaCanvas" width="140" height="48"></canvas>
+                            <button class="btn-refresh-captcha" id="btnRefreshCaptcha" title="刷新验证码">
+                                <i class="fa-solid fa-rotate"></i>
+                            </button>
+                            <input type="text" id="captchaInput" placeholder="请输入验证码" maxlength="6" autocomplete="off">
+                        </div>
+                    </div>
+                    <p class="form-hint" style="text-align:left;margin-bottom:16px;color:#888;">
+                        <i class="fa-solid fa-triangle-exclamation" style="color:#ff9800;"></i>
+                        新设备登录需通过验证
+                    </p>
+                    <button class="btn-primary full-width" id="btnSubmitLogin">
+                        <i class="fa-solid fa-right-to-bracket"></i> 登 录
+                    </button>
+                    <p class="form-hint" style="margin-top:10px;">
+                        <a href="#" id="linkForgotPwd" style="color:var(--primary);text-decoration:none;">忘记密码？</a>
+                    </p>
+                </div>
+                <!-- 步骤3：新用户设置密码 -->
+                <div class="login-step" id="loginStep3">
+                    <p class="step-desc">检测到新邮箱，请设置密码完成注册</p>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> 设置密码</label>
+                        <input type="password" id="regPassword" placeholder="至少8位，含字母和数字" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> 确认密码</label>
+                        <input type="password" id="regConfirmPwd" placeholder="再次输入密码">
+                    </div>
+                    <div class="form-group captcha-group">
+                        <label><i class="fa-solid fa-shield-halved"></i> 真人验证</label>
+                        <div class="captcha-box">
+                            <canvas id="captchaCanvasReg" width="140" height="48"></canvas>
+                            <button class="btn-refresh-captcha" id="btnRefreshCaptchaReg" title="刷新验证码">
+                                <i class="fa-solid fa-rotate"></i>
+                            </button>
+                            <input type="text" id="captchaInputReg" placeholder="请输入验证码" maxlength="6" autocomplete="off">
+                        </div>
+                    </div>
+                    <button class="btn-primary full-width" id="btnSubmitRegister">
+                        <i class="fa-solid fa-user-plus"></i> 注册并登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 个人设置弹窗 ==================== -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card modal-wide">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-gear"></i> 个人设置</h3>
+                <button class="modal-close" id="btnCloseSettings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 头像与昵称 -->
+                <div class="settings-section">
+                    <h4 class="settings-section-title">基本信息</h4>
+                    <div class="settings-avatar-row">
+                        <div class="settings-avatar-preview" id="settingsAvatarPreview">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="settings-avatar-actions">
+                            <button class="btn-outline-sm" id="btnChangeAvatar">
+                                <i class="fa-solid fa-camera"></i> 更换头像
+                            </button>
+                            <input type="file" id="avatarFileInput" accept="image/*" hidden>
+                            <span class="hint">支持 JPG/PNG，最大 5MB</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>昵称</label>
+                        <input type="text" id="settingsNickname" placeholder="请输入昵称" maxlength="20">
+                    </div>
+                </div>
+                <!-- 绑定手机号 -->
+                <div class="settings-section">
+                    <h4 class="settings-section-title">安全设置</h4>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-mobile-screen"></i> 手机号绑定</label>
+                        <div class="phone-bind-row">
+                            <input type="tel" id="settingsPhone" placeholder="请输入手机号" maxlength="11">
+                            <button class="btn-outline-sm" id="btnBindPhone">发送验证码</button>
+                        </div>
+                        <p class="form-hint" style="text-align:left;">绑定后可使用手机号登录</p>
+                    </div>
+                    <div class="form-group phone-code-row" style="display:none;" id="phoneCodeRow">
+                        <label><i class="fa-solid fa-key"></i> 短信验证码</label>
+                        <input type="text" id="phoneCodeInput" placeholder="请输入6位验证码" maxlength="6">
+                    </div>
+                </div>
+                <!-- 加入组织 -->
+                <div class="settings-section">
+                    <h4 class="settings-section-title">组织信息</h4>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-building-columns"></i> 组织类型</label>
+                        <select id="settingsOrgType" class="select-sm" style="width:100%;padding:10px 14px;font-size:14px;">
+                            <option value="">请选择组织类型</option>
+                            <option value="university">大学</option>
+                            <option value="research">研究所</option>
+                            <option value="hospital">医院</option>
+                            <option value="company">公司</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>组织名称</label>
+                        <input type="text" id="settingsOrgName" placeholder="请输入组织名称">
+                    </div>
+                    <div class="form-group">
+                        <label>部门/科室</label>
+                        <input type="text" id="settingsOrgDept" placeholder="请输入部门或科室">
+                    </div>
+                </div>
+                <div class="settings-actions">
+                    <button class="btn-primary full-width" id="btnSaveSettings">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 历史记录弹窗 ==================== -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-card modal-wide">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> 历史上传数据</h3>
+                <button class="modal-close" id="btnCloseHistory">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="history-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="historySearch" placeholder="按名称搜索历史记录...">
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="history-empty">
+                        <i class="fa-solid fa-inbox"></i>
+                        <p>暂无历史记录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 数据命名弹窗 ==================== -->
+    <div class="modal-overlay" id="dataNameModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-tag"></i> 命名本次数据</h3>
+                <button class="modal-close" id="btnCloseDataName">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="step-desc">请为本次上传的数据及可视化结果命名</p>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-pen-to-square"></i> 数据名称</label>
+                    <input type="text" id="dataNameInput" placeholder="可选，默认为上传时间命名" maxlength="50">
+                </div>
+                <p class="form-hint" style="text-align:left;margin-bottom:16px;">
+                    默认名称：<span id="defaultDataName"></span>
+                </p>
+                <div class="data-name-actions">
+                    <button class="btn-outline" id="btnSkipName">跳过，使用默认名称</button>
+                    <button class="btn-primary" id="btnConfirmName">确认并加载</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 数据导入面板 ==================== -->
+    <div class="modal-overlay" id="importModal">
+        <div class="modal-card modal-wide">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-upload"></i> 导入多模态脑影像数据</h3>
+                <button class="modal-close" id="btnCloseImport">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="import-dropzone" id="dropZone">
+                    <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                    <p>拖拽文件到此处或点击选择</p>
+                    <span class="hint">支持 NIfTI (.nii/.nii.gz)、FreeSurfer (.mgh/.mgz)、GIFTI (.gii)、DTI (.trk/.tck)、CSV/JSON 格式</span>
+                </div>
+                <div class="import-modules">
+                    <div class="import-module-card" data-type="structural">
+                        <i class="fa-solid fa-brain"></i>
+                        <h4>结构像数据</h4>
+                        <p>T1w 结构像、分区标注文件</p>
+                    </div>
+                    <div class="import-module-card" data-type="functional">
+                        <i class="fa-solid fa-wave-square"></i>
+                        <h4>功能像数据</h4>
+                        <p>静息态/任务态 fMRI、功能连接矩阵</p>
+                    </div>
+                    <div class="import-module-card" data-type="diffusion">
+                        <i class="fa-solid fa-draw-polygon"></i>
+                        <h4>弥散像数据</h4>
+                        <p>DTI 纤维束追踪结果 (.trk/.tck)</p>
+                    </div>
+                </div>
+                <button class="btn-primary full-width" id="btnLoadDemo">加载演示数据集</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 重命名弹窗 ==================== -->
+    <div class="modal-overlay" id="renameModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square"></i> 重命名</h3>
+                <button class="modal-close" id="btnCloseRename">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>新名称</label>
+                    <input type="text" id="renameInput" placeholder="请输入新名称" maxlength="50">
+                </div>
+                <button class="btn-primary full-width" id="btnConfirmRename">确认重命名</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 数据来源引用面板 ==================== -->
+    <div class="citation-bar" id="citationBar">
+        <div class="citation-content">
+            <i class="fa-solid fa-book-open"></i>
+            <span class="citation-text">
+                当前显示基于公开标准脑模板的演示数据。数据来源：
+                <a href="https://www.bic.mni.mcgill.ca/ServicesAtlases/ICBM152NLin2009" target="_blank" rel="noopener">ICBM MNI152 模板</a> (MNI, McGill Univ.)、
+                <a href="https://www.nature.com/articles/nature18933" target="_blank" rel="noopener">HCP MMP 1.0 图谱</a> (Glasser et al., 2016, Nature)、
+                <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011" target="_blank" rel="noopener">Yeo 7/17 网络</a> (Yeo et al., 2011, J. Neurophysiol.)、
+                <a href="https://www.nitrc.org/projects/jhu_dti" target="_blank" rel="noopener">JHU DTI 白质图谱</a> (Hua et al., 2008, NeuroImage)、
+                <a href="https://www.gin.cnrs.fr/en/tools/aal/" target="_blank" rel="noopener">AAL 图谱</a> (Tzourio-Mazoyer et al., 2002, NeuroImage)、
+                <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/DestrieuxAtlas" target="_blank" rel="noopener">Destrieux 图谱</a> (Destrieux et al., 2010, NeuroImage)
+            </span>
+            <button class="citation-toggle" id="btnCitationToggle" title="收起">
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent">
+        <!-- 模块1: 结构分区可视化 -->
+        <section class="module-panel active" id="module1">
+            <div class="module-grid-structural">
+                <div class="panel panel-main">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-cube"></i> 3D 脑区结构视图</h3>
+                        <div class="panel-controls">
+                            <select id="atlasSelect" class="select-sm">
+                                <option value="hcp_mmp">HCP MMP 1.0 (360区)</option>
+                                <option value="destrieux">Destrieux (148区)</option>
+                                <option value="desikan">Desikan-Killiany (68区)</option>
+                                <option value="yeo7">Yeo 7Networks (7网络)</option>
+                            </select>
+                            <select id="hemiSelect" class="select-sm">
+                                <option value="both">双侧半球</option>
+                                <option value="left">左侧半球</option>
+                                <option value="right">右侧半球</option>
+                            </select>
+                            <button class="icon-btn" id="btnResetView1" title="重置视角"><i class="fa-solid fa-rotate"></i></button>
+                            <button class="icon-btn" id="btnScreenshot1" title="截图保存"><i class="fa-solid fa-camera"></i></button>
+                        </div>
+                    </div>
+                    <div class="viewer-container" id="viewer3D1">
+                        <div class="viewer-watermark" id="watermark1">数据来源：ICBM MNI152 / HCP MMP 1.0 Atlas (Glasser et al., 2016)</div>
+                    </div>
+                </div>
+                <div class="panel panel-side">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-list"></i> 结构分区图例</h3>
+                        <button class="icon-btn" id="btnClearFocus1" title="清除高亮" style="font-size:11px;">
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
+                    </div>
+                    <div class="legend-search">
+                        <i class="fa-solid fa-magnifying-glass legend-search-icon"></i>
+                        <input type="text" id="legendSearchInput" placeholder="搜索脑区名称跳转..." autocomplete="off">
+                        <button class="legend-search-btn" id="legendSearchBtn">搜索</button>
+                        <span class="legend-search-hint" id="legendSearchHint"></span>
+                    </div>
+                    <div class="legend-container" id="structuralLegend">
+                        <div class="legend-section">
+                            <h4>皮层分区</h4>
+                            <div class="legend-list" id="corticalLegend"></div>
+                        </div>
+                        <div class="legend-section">
+                            <h4>皮层下结构</h4>
+                            <div class="legend-list" id="subcorticalLegend"></div>
+                        </div>
+                        <div class="legend-section">
+                            <h4>小脑分区</h4>
+                            <div class="legend-list" id="cerebellarLegend"></div>
+                        </div>
+                        <div class="legend-section">
+                            <h4>白质与脑室</h4>
+                            <div class="legend-list" id="whiteMatterLegend"></div>
+                        </div>
+                    </div>
+                    <div class="panel-header" style="border-top: 1px solid var(--border);">
+                        <h3><i class="fa-solid fa-info-circle"></i> 选中区域信息</h3>
+                    </div>
+                    <div class="region-info" id="regionInfo1">
+                        <p class="placeholder">点击右侧分区名称查看详情并跳转3D视图</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模块2: 功能网络可视化 -->
+        <section class="module-panel" id="module2">
+            <div class="module-tabs" id="funcTabs">
+                <button class="func-tab active" data-view="network3d">网络3D视图</button>
+                <button class="func-tab" data-view="connectivity">连接矩阵</button>
+                <button class="func-tab" data-view="chord">弦图</button>
+                <button class="func-tab" data-view="circular">环形图</button>
+                <button class="func-tab" data-view="activation">激活叠加</button>
+            </div>
+            <div class="module-grid-functional">
+                <div class="panel panel-main func-view active" id="view-network3d">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-cube"></i> 静息态功能网络 3D 视图</h3>
+                        <div class="panel-controls">
+                            <select id="yeoSelect" class="select-sm">
+                                <option value="7">Yeo 7 网络</option>
+                                <option value="17">Yeo 17 网络</option>
+                            </select>
+                            <button class="icon-btn" id="btnResetView2" title="重置视角"><i class="fa-solid fa-rotate"></i></button>
+                        </div>
+                    </div>
+                    <div class="viewer-container" id="viewer3D2">
+                        <div class="viewer-watermark">数据来源：Yeo et al., 2011, J. Neurophysiol.</div>
+                    </div>
+                </div>
+                <div class="panel panel-main func-view" id="view-connectivity">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-table-cells"></i> ROI-to-ROI 功能连接热力图</h3>
+                    </div>
+                    <div class="chart-container" id="chartHeatmap"></div>
+                </div>
+                <div class="panel panel-main func-view" id="view-chord">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-circle-nodes"></i> 功能连接弦图</h3>
+                    </div>
+                    <div class="chart-container" id="chartChord"></div>
+                </div>
+                <div class="panel panel-main func-view" id="view-circular">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-arrows-spin"></i> 功能连接环形图</h3>
+                    </div>
+                    <div class="chart-container" id="chartCircular"></div>
+                </div>
+                <div class="panel panel-main func-view" id="view-activation">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-fire"></i> 任务态 fMRI 激活叠加</h3>
+                        <div class="panel-controls">
+                            <select id="taskSelect" class="select-sm">
+                                <option value="motor">运动任务</option>
+                                <option value="language">语言任务</option>
+                                <option value="workingMemory">工作记忆任务</option>
+                                <option value="emotion">情绪任务</option>
+                            </select>
+                            <input type="range" id="thresholdSlider" min="1" max="10" value="5" class="slider-sm">
+                            <span class="slider-label" id="thresholdValue">阈值: 5.0</span>
+                        </div>
+                    </div>
+                    <div class="viewer-container" id="viewer3DActivation">
+                        <div class="viewer-watermark">数据来源：Yeo et al., 2011, J. Neurophysiol.</div>
+                    </div>
+                </div>
+                <div class="panel panel-side">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-palette"></i> 网络图例</h3>
+                    </div>
+                    <div class="legend-container" id="networkLegend"></div>
+                    <div class="panel-header" style="border-top: 1px solid var(--border);">
+                        <h3><i class="fa-solid fa-chart-bar"></i> 网络统计</h3>
+                    </div>
+                    <div class="stats-container" id="networkStats"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模块3: 白质连接可视化 -->
+        <section class="module-panel" id="module3">
+            <div class="module-grid-white">
+                <div class="panel panel-main">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-project-diagram"></i> DTI 纤维束追踪 3D 视图</h3>
+                        <div class="panel-controls">
+                            <select id="tractSelect" class="select-sm" multiple size="1">
+                                <option value="all" selected>全部纤维束</option>
+                                <option value="arcuate">弓状束 (Arcuate)</option>
+                                <option value="cingulum">扣带束 (Cingulum)</option>
+                                <option value="cst">皮质脊髓束 (CST)</option>
+                                <option value="ilf">下纵束 (ILF)</option>
+                                <option value="slf">上纵束 (SLF)</option>
+                                <option value="uncinate">钩束 (Uncinate)</option>
+                                <option value="forcepsMajor">胼胝体大钳</option>
+                                <option value="forcepsMinor">胼胝体小钳</option>
+                            </select>
+                            <label class="toggle-label">
+                                <input type="checkbox" id="toggleFuncOverlay" checked>
+                                <span>功能网络叠加</span>
+                            </label>
+                            <button class="icon-btn" id="btnResetView3" title="重置视角"><i class="fa-solid fa-rotate"></i></button>
+                        </div>
+                    </div>
+                    <div class="viewer-container" id="viewer3D3">
+                        <div class="viewer-watermark">数据来源：JHU DTI White Matter Atlas (Hua et al., 2008, NeuroImage)</div>
+                    </div>
+                </div>
+                <div class="panel panel-side">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-list-check"></i> 纤维束信息</h3>
+                    </div>
+                    <div class="tract-info" id="tractInfo">
+                        <div class="tract-card" data-tract="arcuate">
+                            <div class="tract-color" style="background:#FF6B6B;"></div>
+                            <div class="tract-detail">
+                                <strong>弓状束 (Arcuate Fasciculus)</strong>
+                                <p>连接 Broca 区与 Wernicke 区，参与语言处理</p>
+                                <span class="tract-stat">纤维数: ~12,500 | 平均FA: 0.45</span>
+                            </div>
+                        </div>
+                        <div class="tract-card" data-tract="cingulum">
+                            <div class="tract-color" style="background:#4ECDC4;"></div>
+                            <div class="tract-detail">
+                                <strong>扣带束 (Cingulum Bundle)</strong>
+                                <p>连接边缘系统结构，参与情绪与记忆</p>
+                                <span class="tract-stat">纤维数: ~10,200 | 平均FA: 0.42</span>
+                            </div>
+                        </div>
+                        <div class="tract-card" data-tract="cst">
+                            <div class="tract-color" style="background:#FFE66D;"></div>
+                            <div class="tract-detail">
+                                <strong>皮质脊髓束 (CST)</strong>
+                                <p>连接运动皮层与脊髓，控制随意运动</p>
+                                <span class="tract-stat">纤维数: ~8,800 | 平均FA: 0.52</span>
+                            </div>
+                        </div>
+                        <div class="tract-card" data-tract="ilf">
+                            <div class="tract-color" style="background:#A8E6CF;"></div>
+                            <div class="tract-detail">
+                                <strong>下纵束 (ILF)</strong>
+                                <p>连接枕叶与颞叶前部，参与视觉识别</p>
+                                <span class="tract-stat">纤维数: ~7,500 | 平均FA: 0.40</span>
+                            </div>
+                        </div>
+                        <div class="tract-card" data-tract="slf">
+                            <div class="tract-color" style="background:#FF8B94;"></div>
+                            <div class="tract-detail">
+                                <strong>上纵束 (SLF)</strong>
+                                <p>连接额叶-顶叶-颞叶，参与空间注意</p>
+                                <span class="tract-stat">纤维数: ~11,000 | 平均FA: 0.44</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模块4: 交互与分析 -->
+        <section class="module-panel" id="module4">
+            <div class="module-grid-analysis">
+                <div class="panel panel-multi-view">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-grip"></i> 多视图联动</h3>
+                        <div class="panel-controls">
+                            <button class="icon-btn active view-mode-btn" data-mode="quad">
+                                <i class="fa-solid fa-table-cells"></i>
+                            </button>
+                            <button class="icon-btn view-mode-btn" data-mode="single3d">
+                                <i class="fa-solid fa-cube"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="multi-view-grid" id="multiViewGrid">
+                        <div class="slice-view" id="viewAxial">
+                            <div class="slice-label">轴位 (Axial)</div>
+                            <canvas id="canvasAxial"></canvas>
+                        </div>
+                        <div class="slice-view" id="viewSagittal">
+                            <div class="slice-label">矢状位 (Sagittal)</div>
+                            <canvas id="canvasSagittal"></canvas>
+                        </div>
+                        <div class="slice-view" id="viewCoronal">
+                            <div class="slice-label">冠状位 (Coronal)</div>
+                            <canvas id="canvasCoronal"></canvas>
+                        </div>
+                        <div class="slice-view" id="view3DQuad">
+                            <div class="slice-label">3D 渲染</div>
+                            <div class="viewer-container" id="viewer3D4">
+                                <div class="viewer-watermark">数据来源：ICBM MNI152 / HCP MMP 1.0 Atlas (Glasser et al., 2016)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slice-controls">
+                        <div class="slider-group">
+                            <label>轴位切片</label>
+                            <input type="range" id="sliderAxial" min="0" max="100" value="50">
+                        </div>
+                        <div class="slider-group">
+                            <label>矢状位切片</label>
+                            <input type="range" id="sliderSagittal" min="0" max="100" value="50">
+                        </div>
+                        <div class="slider-group">
+                            <label>冠状位切片</label>
+                            <input type="range" id="sliderCoronal" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-side-analysis">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-magnifying-glass"></i> 分区信息查询</h3>
+                    </div>
+                    <div class="query-box">
+                        <input type="text" id="regionSearch" placeholder="搜索脑区名称...">
+                        <div class="query-result" id="queryResult">
+                            <p class="placeholder">点击3D视图中的脑区或搜索查看详情</p>
+                        </div>
+                    </div>
+                    <div class="panel-header" style="border-top: 1px solid var(--border);">
+                        <h3><i class="fa-solid fa-chart-simple"></i> 个体-模板对比</h3>
+                    </div>
+                    <div class="comparison-container" id="comparisonChart"></div>
+                    <div class="panel-header" style="border-top: 1px solid var(--border);">
+                        <h3><i class="fa-solid fa-download"></i> 结果导出</h3>
+                    </div>
+                    <div class="export-buttons">
+                        <button class="btn-export" id="btnExportScreenshot">
+                            <i class="fa-solid fa-camera"></i> 高清截图
+                        </button>
+                        <button class="btn-export" id="btnExportVideo">
+                            <i class="fa-solid fa-video"></i> 旋转视频
+                        </button>
+                        <button class="btn-export" id="btnExportReport">
+                            <i class="fa-solid fa-file-pdf"></i> 数据报表
+                        </button>
+                        <button class="btn-export" id="btnExportData">
+                            <i class="fa-solid fa-file-csv"></i> 导出CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 状态栏 -->
+    <footer class="status-bar">
+        <span id="statusText"><i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> 就绪 — 标准脑模板已加载，可导入数据或查看演示</span>
+        <span class="status-right">
+            <span id="memoryUsage">内存: -- MB</span>
+            <span id="fpsCounter">FPS: --</span>
+        </span>
+    </footer>
+
+    <script src="js/atlas_data.js?v=46"></script>
+    <script src="js/data.js?v=46"></script>
+    <script type="module" src="js/three-brain.js?v=46"></script>
+    <script src="js/charts.js?v=46"></script>
+    <script src="js/app.js?v=46"></script>
+</body>
+</html>

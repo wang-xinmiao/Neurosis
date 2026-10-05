@@ -1,0 +1,1498 @@
+{
+  "L_V1_ROI": {
+    "name": "左初级视皮层 V1",
+    "color": "#3f05ff"
+  },
+  "L_MST_ROI": {
+    "name": "左内侧上颞区 MST",
+    "color": "#4685a7"
+  },
+  "L_V6_ROI": {
+    "name": "左第六视皮层 V6",
+    "color": "#5065e7"
+  },
+  "L_V2_ROI": {
+    "name": "左次级视皮层 V2",
+    "color": "#1936ff"
+  },
+  "L_V3_ROI": {
+    "name": "左第三视皮层 V3",
+    "color": "#102dff"
+  },
+  "L_V4_ROI": {
+    "name": "左第四视皮层 V4",
+    "color": "#1021ff"
+  },
+  "L_V8_ROI": {
+    "name": "左第八视皮层 V8",
+    "color": "#203bff"
+  },
+  "L_4_ROI": {
+    "name": "左中央前回 4",
+    "color": "#2ae719"
+  },
+  "L_3b_ROI": {
+    "name": "左中央后回 3b 区",
+    "color": "#2bff1a"
+  },
+  "L_FEF_ROI": {
+    "name": "左额眼区",
+    "color": "#aeb9b2"
+  },
+  "L_PEF_ROI": {
+    "name": "左后眼区 PEF",
+    "color": "#b7d7c5"
+  },
+  "L_55b_ROI": {
+    "name": "左岛叶 55b 区",
+    "color": "#50723d"
+  },
+  "L_V3A_ROI": {
+    "name": "左第三视皮层 A V3A",
+    "color": "#073bff"
+  },
+  "L_RSC_ROI": {
+    "name": "左压后皮层 RSC",
+    "color": "#c653ac"
+  },
+  "L_POS2_ROI": {
+    "name": "左顶枕沟 2",
+    "color": "#f16ff4"
+  },
+  "L_V7_ROI": {
+    "name": "左第七视皮层 V7",
+    "color": "#175bfd"
+  },
+  "L_IPS1_ROI": {
+    "name": "左顶内沟 IPS1",
+    "color": "#4a94d0"
+  },
+  "L_FFC_ROI": {
+    "name": "左梭状回面部区 FFC",
+    "color": "#4a7398"
+  },
+  "L_V3B_ROI": {
+    "name": "左第三视皮层 B V3B",
+    "color": "#1e3aff"
+  },
+  "L_LO1_ROI": {
+    "name": "左外侧枕叶 1",
+    "color": "#003fef"
+  },
+  "L_LO2_ROI": {
+    "name": "左外侧枕叶 2",
+    "color": "#172aeb"
+  },
+  "L_PIT_ROI": {
+    "name": "左颞下后部视觉区 PIT",
+    "color": "#2c37de"
+  },
+  "L_MT_ROI": {
+    "name": "左中颞区 MT",
+    "color": "#286f87"
+  },
+  "L_A1_ROI": {
+    "name": "左初级听皮层 A1",
+    "color": "#ff1433"
+  },
+  "L_PSL_ROI": {
+    "name": "左上顶小叶外侧 PSL",
+    "color": "#9e6648"
+  },
+  "L_SFL_ROI": {
+    "name": "左额岛盖沟 SFL",
+    "color": "#283f1c"
+  },
+  "L_PCV_ROI": {
+    "name": "左压后皮层 PCV",
+    "color": "#b3a6c6"
+  },
+  "L_STV_ROI": {
+    "name": "左颞上视觉区 STV",
+    "color": "#b87162"
+  },
+  "L_7Pm_ROI": {
+    "name": "左顶上小叶后内侧 7Pm",
+    "color": "#c1ebf4"
+  },
+  "L_7m_ROI": {
+    "name": "左顶上小叶内侧 7m",
+    "color": "#362839"
+  },
+  "L_POS1_ROI": {
+    "name": "左顶枕沟 1",
+    "color": "#69467f"
+  },
+  "L_23d_ROI": {
+    "name": "左后扣带回 23d",
+    "color": "#a54876"
+  },
+  "L_v23ab_ROI": {
+    "name": "左腹侧后扣带 v23ab",
+    "color": "#250012"
+  },
+  "L_d23ab_ROI": {
+    "name": "左背侧后扣带 d23ab",
+    "color": "#51163d"
+  },
+  "L_31pv_ROI": {
+    "name": "左后扣带回 31pv",
+    "color": "#460e36"
+  },
+  "L_5m_ROI": {
+    "name": "左旁中央小叶后部 5m",
+    "color": "#3ed33e"
+  },
+  "L_5mv_ROI": {
+    "name": "左旁中央小叶后部 5mv",
+    "color": "#c6dfb0"
+  },
+  "L_23c_ROI": {
+    "name": "左后扣带回 23c",
+    "color": "#ffecf1"
+  },
+  "L_5L_ROI": {
+    "name": "左顶上小叶前外侧 5L",
+    "color": "#53c853"
+  },
+  "L_24dd_ROI": {
+    "name": "左背侧前扣带回 24dd",
+    "color": "#59d139"
+  },
+  "L_24dv_ROI": {
+    "name": "左腹侧前扣带回 24dv",
+    "color": "#9ace55"
+  },
+  "L_7AL_ROI": {
+    "name": "左顶上小叶前外侧 7AL",
+    "color": "#95fcae"
+  },
+  "L_SCEF_ROI": {
+    "name": "左辅助眼区",
+    "color": "#8fbd6f"
+  },
+  "L_6ma_ROI": {
+    "name": "左辅助运动区 6ma",
+    "color": "#bbe8af"
+  },
+  "L_7Am_ROI": {
+    "name": "左顶上小叶前内侧 7Am",
+    "color": "#c1ffeb"
+  },
+  "L_7PL_ROI": {
+    "name": "左顶上小叶后外侧 7PL",
+    "color": "#affff5"
+  },
+  "L_7PC_ROI": {
+    "name": "左顶上小叶中央 7PC",
+    "color": "#58e68c"
+  },
+  "L_LIPv_ROI": {
+    "name": "左腹侧顶内沟外侧",
+    "color": "#5192cd"
+  },
+  "L_VIP_ROI": {
+    "name": "左腹顶内沟 VIP",
+    "color": "#41a7b2"
+  },
+  "L_MIP_ROI": {
+    "name": "左内侧顶内沟 MIP",
+    "color": "#a8fffc"
+  },
+  "L_1_ROI": {
+    "name": "左中央后回 1 区",
+    "color": "#19f831"
+  },
+  "L_2_ROI": {
+    "name": "左中央后回 2 区",
+    "color": "#3ee450"
+  },
+  "L_3a_ROI": {
+    "name": "左中央后回 3a 区",
+    "color": "#37ff19"
+  },
+  "L_6d_ROI": {
+    "name": "左背外侧前运动区 6d",
+    "color": "#21cd29"
+  },
+  "L_6mp_ROI": {
+    "name": "左辅助运动区内侧 6mp",
+    "color": "#53ce31"
+  },
+  "L_6v_ROI": {
+    "name": "左腹侧前运动区 6v",
+    "color": "#5cda40"
+  },
+  "L_p24pr_ROI": {
+    "name": "左后扣带回前部 p24pr",
+    "color": "#bdb08b"
+  },
+  "L_33pr_ROI": {
+    "name": "左旁嗅皮层 33pr",
+    "color": "#a78985"
+  },
+  "L_a24pr_ROI": {
+    "name": "左前扣带回前部 a24pr",
+    "color": "#e4aca8"
+  },
+  "L_p32pr_ROI": {
+    "name": "左后扣带回 32 前部",
+    "color": "#d3b89d"
+  },
+  "L_a24_ROI": {
+    "name": "左前扣带回前部 a24",
+    "color": "#570f20"
+  },
+  "L_d32_ROI": {
+    "name": "左背侧前扣带 32",
+    "color": "#753540"
+  },
+  "L_8BM_ROI": {
+    "name": "左额叶 8BM 区",
+    "color": "#886b69"
+  },
+  "L_p32_ROI": {
+    "name": "左后扣带回 32",
+    "color": "#7b2943"
+  },
+  "L_10r_ROI": {
+    "name": "左额极前部 10r",
+    "color": "#200f01"
+  },
+  "L_47m_ROI": {
+    "name": "左额下回眶部内侧 47m",
+    "color": "#7c6155"
+  },
+  "L_8Av_ROI": {
+    "name": "左额眼区腹侧 8Av",
+    "color": "#444637"
+  },
+  "L_8Ad_ROI": {
+    "name": "左额眼区背侧 8Ad",
+    "color": "#51573e"
+  },
+  "L_9m_ROI": {
+    "name": "左内侧前额叶 9m",
+    "color": "#372d17"
+  },
+  "L_8BL_ROI": {
+    "name": "左额叶 8BL 区",
+    "color": "#2c321a"
+  },
+  "L_9p_ROI": {
+    "name": "左前额叶 9p",
+    "color": "#313724"
+  },
+  "L_10d_ROI": {
+    "name": "左背外侧前额叶 10d",
+    "color": "#312d1f"
+  },
+  "L_8C_ROI": {
+    "name": "左额叶 8C 区",
+    "color": "#836e6d"
+  },
+  "L_44_ROI": {
+    "name": "左布洛卡区 44",
+    "color": "#727250"
+  },
+  "L_45_ROI": {
+    "name": "左布洛卡区 45",
+    "color": "#4e5136"
+  },
+  "L_47l_ROI": {
+    "name": "左额下回眶部外侧 47l",
+    "color": "#423f28"
+  },
+  "L_a47r_ROI": {
+    "name": "左额下回前部 a47r",
+    "color": "#646255"
+  },
+  "L_6r_ROI": {
+    "name": "左外侧前运动区 6r",
+    "color": "#d4ffb3"
+  },
+  "L_IFJa_ROI": {
+    "name": "左额下连接前部 IFJa",
+    "color": "#a39a7b"
+  },
+  "L_IFJp_ROI": {
+    "name": "左额下连接后部 IFJp",
+    "color": "#b2d0ab"
+  },
+  "L_IFSp_ROI": {
+    "name": "左额下沟后部 IFSp",
+    "color": "#7e7f71"
+  },
+  "L_IFSa_ROI": {
+    "name": "左额下沟前部 IFSa",
+    "color": "#eeffe1"
+  },
+  "L_p9-46v_ROI": {
+    "name": "左背外侧前额叶后部 p9-46v",
+    "color": "#b3c1ae"
+  },
+  "L_46_ROI": {
+    "name": "左背外侧前额叶 46",
+    "color": "#f3ffeb"
+  },
+  "L_a9-46v_ROI": {
+    "name": "左背外侧前额叶前部 a9-46v",
+    "color": "#bc91a6"
+  },
+  "L_9-46d_ROI": {
+    "name": "左背外侧前额叶 9-46d",
+    "color": "#b698aa"
+  },
+  "L_9a_ROI": {
+    "name": "左前额叶 9a",
+    "color": "#47433a"
+  },
+  "L_10v_ROI": {
+    "name": "左腹内侧前额叶 10v",
+    "color": "#122d12"
+  },
+  "L_a10p_ROI": {
+    "name": "左额极前部 a10p",
+    "color": "#7f6173"
+  },
+  "L_10pp_ROI": {
+    "name": "左额极后部 10pp",
+    "color": "#47504b"
+  },
+  "L_11l_ROI": {
+    "name": "左眶额外侧 11l",
+    "color": "#a78999"
+  },
+  "L_13l_ROI": {
+    "name": "左岛叶 13l",
+    "color": "#6a4e59"
+  },
+  "L_OFC_ROI": {
+    "name": "左眶额皮层 OFC",
+    "color": "#342d28"
+  },
+  "L_47s_ROI": {
+    "name": "左额下回眶部 47s",
+    "color": "#552d2a"
+  },
+  "L_LIPd_ROI": {
+    "name": "左背侧顶内沟外侧",
+    "color": "#c3e3ff"
+  },
+  "L_6a_ROI": {
+    "name": "左背侧前运动区 6a",
+    "color": "#9df9b0"
+  },
+  "L_i6-8_ROI": {
+    "name": "左额中回后部 i6-8",
+    "color": "#757f6b"
+  },
+  "L_s6-8_ROI": {
+    "name": "左额上回后部 s6-8",
+    "color": "#72775e"
+  },
+  "L_43_ROI": {
+    "name": "左中央后下回 43",
+    "color": "#bcb353"
+  },
+  "L_OP4_ROI": {
+    "name": "左顶叶岛盖 4",
+    "color": "#94cc3f"
+  },
+  "L_OP1_ROI": {
+    "name": "左顶叶岛盖 1",
+    "color": "#80cd2d"
+  },
+  "L_OP2-3_ROI": {
+    "name": "左顶叶岛盖 2-3",
+    "color": "#bca543"
+  },
+  "L_52_ROI": {
+    "name": "左岛叶 52 区",
+    "color": "#ff5850"
+  },
+  "L_RI_ROI": {
+    "name": "左岛盖后部 RI",
+    "color": "#e74f1d"
+  },
+  "L_PFcm_ROI": {
+    "name": "左顶下小叶 PFcm",
+    "color": "#f7bb73"
+  },
+  "L_PoI2_ROI": {
+    "name": "左中央后岛盖 2",
+    "color": "#aaa16b"
+  },
+  "L_TA2_ROI": {
+    "name": "左颞叶听觉联合区 TA2",
+    "color": "#a93623"
+  },
+  "L_FOP4_ROI": {
+    "name": "左额叶岛盖 4",
+    "color": "#ecc0a7"
+  },
+  "L_MI_ROI": {
+    "name": "左岛叶运动区 MI",
+    "color": "#cc9689"
+  },
+  "L_Pir_ROI": {
+    "name": "左梨状皮层 Pir",
+    "color": "#755554"
+  },
+  "L_AVI_ROI": {
+    "name": "左前腹岛叶 AVI",
+    "color": "#b75d6b"
+  },
+  "L_AAIC_ROI": {
+    "name": "左前岛叶前部 AAIC",
+    "color": "#6e2d39"
+  },
+  "L_FOP1_ROI": {
+    "name": "左额叶岛盖 1",
+    "color": "#d0c672"
+  },
+  "L_FOP3_ROI": {
+    "name": "左额叶岛盖 3",
+    "color": "#e3b280"
+  },
+  "L_FOP2_ROI": {
+    "name": "左额叶岛盖 2",
+    "color": "#80ca42"
+  },
+  "L_PFt_ROI": {
+    "name": "左顶下小叶 PFt",
+    "color": "#94ff99"
+  },
+  "L_AIP_ROI": {
+    "name": "左前顶内沟 AIP",
+    "color": "#9dffc0"
+  },
+  "L_EC_ROI": {
+    "name": "左嗅周皮层 EC",
+    "color": "#3f3e2d"
+  },
+  "L_PreS_ROI": {
+    "name": "左旁海马回前部 PreS",
+    "color": "#6f4a6b"
+  },
+  "L_H_ROI": {
+    "name": "左海马 H",
+    "color": "#4e4a34"
+  },
+  "L_ProS_ROI": {
+    "name": "左海马旁回后部 ProS",
+    "color": "#714ce4"
+  },
+  "L_PeEc_ROI": {
+    "name": "左嗅周皮层后部 PeEc",
+    "color": "#4f5042"
+  },
+  "L_STGa_ROI": {
+    "name": "左颞上回前部 STGa",
+    "color": "#4b3621"
+  },
+  "L_PBelt_ROI": {
+    "name": "左后听觉带 PBelt",
+    "color": "#fd2706"
+  },
+  "L_A5_ROI": {
+    "name": "左听觉联合区 A5",
+    "color": "#803207"
+  },
+  "L_PHA1_ROI": {
+    "name": "左海马旁回 1",
+    "color": "#594161"
+  },
+  "L_PHA3_ROI": {
+    "name": "左海马旁回 3",
+    "color": "#7c8492"
+  },
+  "L_STSda_ROI": {
+    "name": "左颞上沟背前 STSda",
+    "color": "#64422c"
+  },
+  "L_STSdp_ROI": {
+    "name": "左颞上沟背后 STSdp",
+    "color": "#5e4a32"
+  },
+  "L_STSvp_ROI": {
+    "name": "左颞上沟腹后 STSvp",
+    "color": "#5c4c4a"
+  },
+  "L_TGd_ROI": {
+    "name": "左颞极背侧 TGd",
+    "color": "#2d2c1d"
+  },
+  "L_TE1a_ROI": {
+    "name": "左颞下回前部 TE1a",
+    "color": "#0e1200"
+  },
+  "L_TE1p_ROI": {
+    "name": "左颞下回后部 TE1p",
+    "color": "#7c847a"
+  },
+  "L_TE2a_ROI": {
+    "name": "左颞下回前部 TE2a",
+    "color": "#57534b"
+  },
+  "L_TF_ROI": {
+    "name": "左颞下回后部 TF",
+    "color": "#535d48"
+  },
+  "L_TE2p_ROI": {
+    "name": "左颞下回后部 TE2p",
+    "color": "#88a698"
+  },
+  "L_PHT_ROI": {
+    "name": "左颞叶海马旁回 PHT",
+    "color": "#dbffe1"
+  },
+  "L_PH_ROI": {
+    "name": "左海马旁回 PH",
+    "color": "#72aad3"
+  },
+  "L_TPOJ1_ROI": {
+    "name": "左颞顶枕交界 1",
+    "color": "#a27553"
+  },
+  "L_TPOJ2_ROI": {
+    "name": "左颞顶枕交界 2",
+    "color": "#cad2b3"
+  },
+  "L_TPOJ3_ROI": {
+    "name": "左颞顶枕交界 3",
+    "color": "#9dc0bc"
+  },
+  "L_DVT_ROI": {
+    "name": "左背侧视觉通路颞顶区",
+    "color": "#9b91f7"
+  },
+  "L_PGp_ROI": {
+    "name": "左角回 PGp",
+    "color": "#add4ff"
+  },
+  "L_IP2_ROI": {
+    "name": "左顶内沟 2",
+    "color": "#e4d7e2"
+  },
+  "L_IP1_ROI": {
+    "name": "左顶内沟 1",
+    "color": "#999da6"
+  },
+  "L_IP0_ROI": {
+    "name": "左顶内沟 0",
+    "color": "#89c5ff"
+  },
+  "L_PFop_ROI": {
+    "name": "左顶盖区 PFop",
+    "color": "#e8ffb4"
+  },
+  "L_PF_ROI": {
+    "name": "左顶下小叶 PF",
+    "color": "#ffffe2"
+  },
+  "L_PFm_ROI": {
+    "name": "左顶下小叶 PFm",
+    "color": "#ac8894"
+  },
+  "L_PGi_ROI": {
+    "name": "左顶下小叶 PGi",
+    "color": "#44503b"
+  },
+  "L_PGs_ROI": {
+    "name": "左缘上回 PGs",
+    "color": "#50574a"
+  },
+  "L_V6A_ROI": {
+    "name": "左第六视皮层 A V6A",
+    "color": "#3573d7"
+  },
+  "L_VMV1_ROI": {
+    "name": "左腹内侧视觉区 VMV1",
+    "color": "#504fc9"
+  },
+  "L_VMV3_ROI": {
+    "name": "左腹内侧视觉区 VMV3",
+    "color": "#3f44ce"
+  },
+  "L_PHA2_ROI": {
+    "name": "左海马旁回 2",
+    "color": "#727573"
+  },
+  "L_V4t_ROI": {
+    "name": "左颞区 V4t",
+    "color": "#1266a6"
+  },
+  "L_FST_ROI": {
+    "name": "左颞上沟底部 FST",
+    "color": "#77ccc6"
+  },
+  "L_V3CD_ROI": {
+    "name": "左第三视皮层 CD V3CD",
+    "color": "#133bec"
+  },
+  "L_LO3_ROI": {
+    "name": "左外侧枕叶 3",
+    "color": "#467ad0"
+  },
+  "L_VMV2_ROI": {
+    "name": "左腹内侧视觉区 VMV2",
+    "color": "#5750d1"
+  },
+  "L_31pd_ROI": {
+    "name": "左后扣带回 31pd",
+    "color": "#481c3a"
+  },
+  "L_31a_ROI": {
+    "name": "左后扣带回 31a",
+    "color": "#b988ac"
+  },
+  "L_VVC_ROI": {
+    "name": "左腹侧视觉皮层 VVC",
+    "color": "#444fa1"
+  },
+  "L_25_ROI": {
+    "name": "左膝下前扣带 25",
+    "color": "#2e1f12"
+  },
+  "L_s32_ROI": {
+    "name": "左辅助运动区前部",
+    "color": "#3b2d1b"
+  },
+  "L_pOFC_ROI": {
+    "name": "左眶额后部 pOFC",
+    "color": "#623e44"
+  },
+  "L_PoI1_ROI": {
+    "name": "左中央后岛盖 1",
+    "color": "#d5877e"
+  },
+  "L_Ig_ROI": {
+    "name": "左颗粒岛叶 Ig",
+    "color": "#8f9f2e"
+  },
+  "L_FOP5_ROI": {
+    "name": "左额叶岛盖 5",
+    "color": "#d38488"
+  },
+  "L_p10p_ROI": {
+    "name": "左额极后部 p10p",
+    "color": "#735362"
+  },
+  "L_p47r_ROI": {
+    "name": "左额下回后部 p47r",
+    "color": "#a39f91"
+  },
+  "L_TGv_ROI": {
+    "name": "左颞极腹侧 TGv",
+    "color": "#3b4236"
+  },
+  "L_MBelt_ROI": {
+    "name": "左内侧听觉带 MBelt",
+    "color": "#f3261f"
+  },
+  "L_LBelt_ROI": {
+    "name": "左外侧听觉带 LBelt",
+    "color": "#ff131d"
+  },
+  "L_A4_ROI": {
+    "name": "左听觉联合区 A4",
+    "color": "#c53205"
+  },
+  "L_STSva_ROI": {
+    "name": "左颞上沟腹前 STSva",
+    "color": "#342a1c"
+  },
+  "L_TE1m_ROI": {
+    "name": "左颞下回中部 TE1m",
+    "color": "#4c3a37"
+  },
+  "L_PI_ROI": {
+    "name": "左顶叶岛盖后部 PI",
+    "color": "#9e4141"
+  },
+  "L_a32pr_ROI": {
+    "name": "左前扣带 32 前部",
+    "color": "#a95171"
+  },
+  "L_p24_ROI": {
+    "name": "左后扣带回前部 p24",
+    "color": "#9f2d60"
+  },
+  "R_V1_ROI": {
+    "name": "右初级视皮层 V1",
+    "color": "#3e00ff"
+  },
+  "R_MST_ROI": {
+    "name": "右内侧上颞区 MST",
+    "color": "#4191a6"
+  },
+  "R_V6_ROI": {
+    "name": "右第六视皮层 V6",
+    "color": "#5775ea"
+  },
+  "R_V2_ROI": {
+    "name": "右次级视皮层 V2",
+    "color": "#1d3dff"
+  },
+  "R_V3_ROI": {
+    "name": "右第三视皮层 V3",
+    "color": "#1430ff"
+  },
+  "R_V4_ROI": {
+    "name": "右第四视皮层 V4",
+    "color": "#1336ff"
+  },
+  "R_V8_ROI": {
+    "name": "右第八视皮层 V8",
+    "color": "#1b52ff"
+  },
+  "R_4_ROI": {
+    "name": "右中央前回 4",
+    "color": "#28f121"
+  },
+  "R_3b_ROI": {
+    "name": "右中央后回 3b 区",
+    "color": "#33ff1f"
+  },
+  "R_FEF_ROI": {
+    "name": "右额眼区",
+    "color": "#b2c9c3"
+  },
+  "R_PEF_ROI": {
+    "name": "右后眼区 PEF",
+    "color": "#ccecd9"
+  },
+  "R_55b_ROI": {
+    "name": "右岛叶 55b 区",
+    "color": "#888b60"
+  },
+  "R_V3A_ROI": {
+    "name": "右第三视皮层 A V3A",
+    "color": "#134aff"
+  },
+  "R_RSC_ROI": {
+    "name": "右压后皮层 RSC",
+    "color": "#c159b0"
+  },
+  "R_POS2_ROI": {
+    "name": "右顶枕沟 2",
+    "color": "#ff8aff"
+  },
+  "R_V7_ROI": {
+    "name": "右第七视皮层 V7",
+    "color": "#247cf9"
+  },
+  "R_IPS1_ROI": {
+    "name": "右顶内沟 IPS1",
+    "color": "#51b7e3"
+  },
+  "R_FFC_ROI": {
+    "name": "右梭状回面部区 FFC",
+    "color": "#438c9e"
+  },
+  "R_V3B_ROI": {
+    "name": "右第三视皮层 B V3B",
+    "color": "#2d5bff"
+  },
+  "R_LO1_ROI": {
+    "name": "右外侧枕叶 1",
+    "color": "#1055ff"
+  },
+  "R_LO2_ROI": {
+    "name": "右外侧枕叶 2",
+    "color": "#1855ec"
+  },
+  "R_PIT_ROI": {
+    "name": "右颞下后部视觉区 PIT",
+    "color": "#3060ef"
+  },
+  "R_MT_ROI": {
+    "name": "右中颞区 MT",
+    "color": "#28808c"
+  },
+  "R_A1_ROI": {
+    "name": "右初级听皮层 A1",
+    "color": "#ff0a32"
+  },
+  "R_PSL_ROI": {
+    "name": "右上顶小叶外侧 PSL",
+    "color": "#f5c0b0"
+  },
+  "R_SFL_ROI": {
+    "name": "右额岛盖沟 SFL",
+    "color": "#554e3d"
+  },
+  "R_PCV_ROI": {
+    "name": "右压后皮层 PCV",
+    "color": "#a9bdcc"
+  },
+  "R_STV_ROI": {
+    "name": "右颞上视觉区 STV",
+    "color": "#b49589"
+  },
+  "R_7Pm_ROI": {
+    "name": "右顶上小叶后内侧 7Pm",
+    "color": "#b7ffeb"
+  },
+  "R_7m_ROI": {
+    "name": "右顶上小叶内侧 7m",
+    "color": "#3d3e44"
+  },
+  "R_POS1_ROI": {
+    "name": "右顶枕沟 1",
+    "color": "#6b6b99"
+  },
+  "R_23d_ROI": {
+    "name": "右后扣带回 23d",
+    "color": "#af487f"
+  },
+  "R_v23ab_ROI": {
+    "name": "右腹侧后扣带 v23ab",
+    "color": "#210e20"
+  },
+  "R_d23ab_ROI": {
+    "name": "右背侧后扣带 d23ab",
+    "color": "#4e1439"
+  },
+  "R_31pv_ROI": {
+    "name": "右后扣带回 31pv",
+    "color": "#581641"
+  },
+  "R_5m_ROI": {
+    "name": "右旁中央小叶后部 5m",
+    "color": "#37e63f"
+  },
+  "R_5mv_ROI": {
+    "name": "右旁中央小叶后部 5mv",
+    "color": "#b4d6a7"
+  },
+  "R_23c_ROI": {
+    "name": "右后扣带回 23c",
+    "color": "#fff5f2"
+  },
+  "R_5L_ROI": {
+    "name": "右顶上小叶前外侧 5L",
+    "color": "#53d357"
+  },
+  "R_24dd_ROI": {
+    "name": "右背侧前扣带回 24dd",
+    "color": "#59d93e"
+  },
+  "R_24dv_ROI": {
+    "name": "右腹侧前扣带回 24dv",
+    "color": "#91d155"
+  },
+  "R_7AL_ROI": {
+    "name": "右顶上小叶前外侧 7AL",
+    "color": "#92f39e"
+  },
+  "R_SCEF_ROI": {
+    "name": "右辅助眼区",
+    "color": "#b7c690"
+  },
+  "R_6ma_ROI": {
+    "name": "右辅助运动区 6ma",
+    "color": "#c3e4b4"
+  },
+  "R_7Am_ROI": {
+    "name": "右顶上小叶前内侧 7Am",
+    "color": "#adffdd"
+  },
+  "R_7PL_ROI": {
+    "name": "右顶上小叶后外侧 7PL",
+    "color": "#9bffe4"
+  },
+  "R_7PC_ROI": {
+    "name": "右顶上小叶中央 7PC",
+    "color": "#5cec89"
+  },
+  "R_LIPv_ROI": {
+    "name": "右腹侧顶内沟外侧",
+    "color": "#4fa7de"
+  },
+  "R_VIP_ROI": {
+    "name": "右腹顶内沟 VIP",
+    "color": "#46b2bf"
+  },
+  "R_MIP_ROI": {
+    "name": "右内侧顶内沟 MIP",
+    "color": "#99ffef"
+  },
+  "R_1_ROI": {
+    "name": "右中央后回 1 区",
+    "color": "#23ff38"
+  },
+  "R_2_ROI": {
+    "name": "右中央后回 2 区",
+    "color": "#42f059"
+  },
+  "R_3a_ROI": {
+    "name": "右中央后回 3a 区",
+    "color": "#31ff20"
+  },
+  "R_6d_ROI": {
+    "name": "右背外侧前运动区 6d",
+    "color": "#28d635"
+  },
+  "R_6mp_ROI": {
+    "name": "右辅助运动区内侧 6mp",
+    "color": "#57d33d"
+  },
+  "R_6v_ROI": {
+    "name": "右腹侧前运动区 6v",
+    "color": "#73f055"
+  },
+  "R_p24pr_ROI": {
+    "name": "右后扣带回前部 p24pr",
+    "color": "#c5c09c"
+  },
+  "R_33pr_ROI": {
+    "name": "右旁嗅皮层 33pr",
+    "color": "#987c7e"
+  },
+  "R_a24pr_ROI": {
+    "name": "右前扣带回前部 a24pr",
+    "color": "#e4aeab"
+  },
+  "R_p32pr_ROI": {
+    "name": "右后扣带回 32 前部",
+    "color": "#e4c1ae"
+  },
+  "R_a24_ROI": {
+    "name": "右前扣带回前部 a24",
+    "color": "#5e1731"
+  },
+  "R_d32_ROI": {
+    "name": "右背侧前扣带 32",
+    "color": "#8d3b54"
+  },
+  "R_8BM_ROI": {
+    "name": "右额叶 8BM 区",
+    "color": "#a96a77"
+  },
+  "R_p32_ROI": {
+    "name": "右后扣带回 32",
+    "color": "#914768"
+  },
+  "R_10r_ROI": {
+    "name": "右额极前部 10r",
+    "color": "#21050a"
+  },
+  "R_47m_ROI": {
+    "name": "右额下回眶部内侧 47m",
+    "color": "#664341"
+  },
+  "R_8Av_ROI": {
+    "name": "右额眼区腹侧 8Av",
+    "color": "#665854"
+  },
+  "R_8Ad_ROI": {
+    "name": "右额眼区背侧 8Ad",
+    "color": "#475039"
+  },
+  "R_9m_ROI": {
+    "name": "右内侧前额叶 9m",
+    "color": "#372018"
+  },
+  "R_8BL_ROI": {
+    "name": "右额叶 8BL 区",
+    "color": "#2d2e1c"
+  },
+  "R_9p_ROI": {
+    "name": "右前额叶 9p",
+    "color": "#50443f"
+  },
+  "R_10d_ROI": {
+    "name": "右背外侧前额叶 10d",
+    "color": "#241d17"
+  },
+  "R_8C_ROI": {
+    "name": "右额叶 8C 区",
+    "color": "#9a737a"
+  },
+  "R_44_ROI": {
+    "name": "右布洛卡区 44",
+    "color": "#b2847a"
+  },
+  "R_45_ROI": {
+    "name": "右布洛卡区 45",
+    "color": "#76554a"
+  },
+  "R_47l_ROI": {
+    "name": "右额下回眶部外侧 47l",
+    "color": "#422123"
+  },
+  "R_a47r_ROI": {
+    "name": "右额下回前部 a47r",
+    "color": "#6a5b59"
+  },
+  "R_6r_ROI": {
+    "name": "右外侧前运动区 6r",
+    "color": "#e2ffc1"
+  },
+  "R_IFJa_ROI": {
+    "name": "右额下连接前部 IFJa",
+    "color": "#b39f87"
+  },
+  "R_IFJp_ROI": {
+    "name": "右额下连接后部 IFJp",
+    "color": "#a9cab0"
+  },
+  "R_IFSp_ROI": {
+    "name": "右额下沟后部 IFSp",
+    "color": "#a19190"
+  },
+  "R_IFSa_ROI": {
+    "name": "右额下沟前部 IFSa",
+    "color": "#fcffe9"
+  },
+  "R_p9-46v_ROI": {
+    "name": "右背外侧前额叶后部 p9-46v",
+    "color": "#c1b9b2"
+  },
+  "R_46_ROI": {
+    "name": "右背外侧前额叶 46",
+    "color": "#e7ffe4"
+  },
+  "R_a9-46v_ROI": {
+    "name": "右背外侧前额叶前部 a9-46v",
+    "color": "#e6aec9"
+  },
+  "R_9-46d_ROI": {
+    "name": "右背外侧前额叶 9-46d",
+    "color": "#d0afc4"
+  },
+  "R_9a_ROI": {
+    "name": "右前额叶 9a",
+    "color": "#534747"
+  },
+  "R_10v_ROI": {
+    "name": "右腹内侧前额叶 10v",
+    "color": "#001705"
+  },
+  "R_a10p_ROI": {
+    "name": "右额极前部 a10p",
+    "color": "#877691"
+  },
+  "R_10pp_ROI": {
+    "name": "右额极后部 10pp",
+    "color": "#363f42"
+  },
+  "R_11l_ROI": {
+    "name": "右眶额外侧 11l",
+    "color": "#897f8c"
+  },
+  "R_13l_ROI": {
+    "name": "右岛叶 13l",
+    "color": "#7b6e72"
+  },
+  "R_OFC_ROI": {
+    "name": "右眶额皮层 OFC",
+    "color": "#35312e"
+  },
+  "R_47s_ROI": {
+    "name": "右额下回眶部 47s",
+    "color": "#543031"
+  },
+  "R_LIPd_ROI": {
+    "name": "右背侧顶内沟外侧",
+    "color": "#b9efff"
+  },
+  "R_6a_ROI": {
+    "name": "右背侧前运动区 6a",
+    "color": "#97ffb6"
+  },
+  "R_i6-8_ROI": {
+    "name": "右额中回后部 i6-8",
+    "color": "#8b9e8b"
+  },
+  "R_s6-8_ROI": {
+    "name": "右额上回后部 s6-8",
+    "color": "#80786b"
+  },
+  "R_43_ROI": {
+    "name": "右中央后下回 43",
+    "color": "#d0b759"
+  },
+  "R_OP4_ROI": {
+    "name": "右顶叶岛盖 4",
+    "color": "#9ad33f"
+  },
+  "R_OP1_ROI": {
+    "name": "右顶叶岛盖 1",
+    "color": "#7ac82e"
+  },
+  "R_OP2-3_ROI": {
+    "name": "右顶叶岛盖 2-3",
+    "color": "#b2a944"
+  },
+  "R_52_ROI": {
+    "name": "右岛叶 52 区",
+    "color": "#ff584e"
+  },
+  "R_RI_ROI": {
+    "name": "右岛盖后部 RI",
+    "color": "#d96f39"
+  },
+  "R_PFcm_ROI": {
+    "name": "右顶下小叶 PFcm",
+    "color": "#ebc675"
+  },
+  "R_PoI2_ROI": {
+    "name": "右中央后岛盖 2",
+    "color": "#a3a36f"
+  },
+  "R_TA2_ROI": {
+    "name": "右颞叶听觉联合区 TA2",
+    "color": "#b2372c"
+  },
+  "R_FOP4_ROI": {
+    "name": "右额叶岛盖 4",
+    "color": "#ffc5b9"
+  },
+  "R_MI_ROI": {
+    "name": "右岛叶运动区 MI",
+    "color": "#dba999"
+  },
+  "R_Pir_ROI": {
+    "name": "右梨状皮层 Pir",
+    "color": "#435461"
+  },
+  "R_AVI_ROI": {
+    "name": "右前腹岛叶 AVI",
+    "color": "#c9697c"
+  },
+  "R_AAIC_ROI": {
+    "name": "右前岛叶前部 AAIC",
+    "color": "#653644"
+  },
+  "R_FOP1_ROI": {
+    "name": "右额叶岛盖 1",
+    "color": "#d1b776"
+  },
+  "R_FOP3_ROI": {
+    "name": "右额叶岛盖 3",
+    "color": "#f1bd92"
+  },
+  "R_FOP2_ROI": {
+    "name": "右额叶岛盖 2",
+    "color": "#7ed346"
+  },
+  "R_PFt_ROI": {
+    "name": "右顶下小叶 PFt",
+    "color": "#7eff8e"
+  },
+  "R_AIP_ROI": {
+    "name": "右前顶内沟 AIP",
+    "color": "#93ffc0"
+  },
+  "R_EC_ROI": {
+    "name": "右嗅周皮层 EC",
+    "color": "#394231"
+  },
+  "R_PreS_ROI": {
+    "name": "右旁海马回前部 PreS",
+    "color": "#6b5075"
+  },
+  "R_H_ROI": {
+    "name": "右海马 H",
+    "color": "#4c4f39"
+  },
+  "R_ProS_ROI": {
+    "name": "右海马旁回后部 ProS",
+    "color": "#6e5ee7"
+  },
+  "R_PeEc_ROI": {
+    "name": "右嗅周皮层后部 PeEc",
+    "color": "#435142"
+  },
+  "R_STGa_ROI": {
+    "name": "右颞上回前部 STGa",
+    "color": "#424128"
+  },
+  "R_PBelt_ROI": {
+    "name": "右后听觉带 PBelt",
+    "color": "#f9250c"
+  },
+  "R_A5_ROI": {
+    "name": "右听觉联合区 A5",
+    "color": "#8f3203"
+  },
+  "R_PHA1_ROI": {
+    "name": "右海马旁回 1",
+    "color": "#4e5065"
+  },
+  "R_PHA3_ROI": {
+    "name": "右海马旁回 3",
+    "color": "#628994"
+  },
+  "R_STSda_ROI": {
+    "name": "右颞上沟背前 STSda",
+    "color": "#5b4834"
+  },
+  "R_STSdp_ROI": {
+    "name": "右颞上沟背后 STSdp",
+    "color": "#784b3e"
+  },
+  "R_STSvp_ROI": {
+    "name": "右颞上沟腹后 STSvp",
+    "color": "#733f4f"
+  },
+  "R_TGd_ROI": {
+    "name": "右颞极背侧 TGd",
+    "color": "#283124"
+  },
+  "R_TE1a_ROI": {
+    "name": "右颞下回前部 TE1a",
+    "color": "#090f00"
+  },
+  "R_TE1p_ROI": {
+    "name": "右颞下回后部 TE1p",
+    "color": "#888d87"
+  },
+  "R_TE2a_ROI": {
+    "name": "右颞下回前部 TE2a",
+    "color": "#54514c"
+  },
+  "R_TF_ROI": {
+    "name": "右颞下回后部 TF",
+    "color": "#4c6953"
+  },
+  "R_TE2p_ROI": {
+    "name": "右颞下回后部 TE2p",
+    "color": "#7bae9c"
+  },
+  "R_PHT_ROI": {
+    "name": "右颞叶海马旁回 PHT",
+    "color": "#c5ffd8"
+  },
+  "R_PH_ROI": {
+    "name": "右海马旁回 PH",
+    "color": "#5bbbd7"
+  },
+  "R_TPOJ1_ROI": {
+    "name": "右颞顶枕交界 1",
+    "color": "#a3826a"
+  },
+  "R_TPOJ2_ROI": {
+    "name": "右颞顶枕交界 2",
+    "color": "#b3e4b9"
+  },
+  "R_TPOJ3_ROI": {
+    "name": "右颞顶枕交界 3",
+    "color": "#7ec9b6"
+  },
+  "R_DVT_ROI": {
+    "name": "右背侧视觉通路颞顶区",
+    "color": "#9dacff"
+  },
+  "R_PGp_ROI": {
+    "name": "右角回 PGp",
+    "color": "#a6f6ff"
+  },
+  "R_IP2_ROI": {
+    "name": "右顶内沟 2",
+    "color": "#f0ebeb"
+  },
+  "R_IP1_ROI": {
+    "name": "右顶内沟 1",
+    "color": "#a19fa7"
+  },
+  "R_IP0_ROI": {
+    "name": "右顶内沟 0",
+    "color": "#7ed4ff"
+  },
+  "R_PFop_ROI": {
+    "name": "右顶盖区 PFop",
+    "color": "#d7ffac"
+  },
+  "R_PF_ROI": {
+    "name": "右顶下小叶 PF",
+    "color": "#ffffdd"
+  },
+  "R_PFm_ROI": {
+    "name": "右顶下小叶 PFm",
+    "color": "#d0a1ae"
+  },
+  "R_PGi_ROI": {
+    "name": "右顶下小叶 PGi",
+    "color": "#46503f"
+  },
+  "R_PGs_ROI": {
+    "name": "右缘上回 PGs",
+    "color": "#736662"
+  },
+  "R_V6A_ROI": {
+    "name": "右第六视皮层 A V6A",
+    "color": "#4182dd"
+  },
+  "R_VMV1_ROI": {
+    "name": "右腹内侧视觉区 VMV1",
+    "color": "#4262d7"
+  },
+  "R_VMV3_ROI": {
+    "name": "右腹内侧视觉区 VMV3",
+    "color": "#3659de"
+  },
+  "R_PHA2_ROI": {
+    "name": "右海马旁回 2",
+    "color": "#60847e"
+  },
+  "R_V4t_ROI": {
+    "name": "右颞区 V4t",
+    "color": "#1088a6"
+  },
+  "R_FST_ROI": {
+    "name": "右颞上沟底部 FST",
+    "color": "#5ed5c1"
+  },
+  "R_V3CD_ROI": {
+    "name": "右第三视皮层 CD V3CD",
+    "color": "#1b5bff"
+  },
+  "R_LO3_ROI": {
+    "name": "右外侧枕叶 3",
+    "color": "#488ddd"
+  },
+  "R_VMV2_ROI": {
+    "name": "右腹内侧视觉区 VMV2",
+    "color": "#4c62e0"
+  },
+  "R_31pd_ROI": {
+    "name": "右后扣带回 31pd",
+    "color": "#65234d"
+  },
+  "R_31a_ROI": {
+    "name": "右后扣带回 31a",
+    "color": "#b78bae"
+  },
+  "R_VVC_ROI": {
+    "name": "右腹侧视觉皮层 VVC",
+    "color": "#4468af"
+  },
+  "R_25_ROI": {
+    "name": "右膝下前扣带 25",
+    "color": "#21180f"
+  },
+  "R_s32_ROI": {
+    "name": "右辅助运动区前部",
+    "color": "#23180b"
+  },
+  "R_pOFC_ROI": {
+    "name": "右眶额后部 pOFC",
+    "color": "#64444f"
+  },
+  "R_PoI1_ROI": {
+    "name": "右中央后岛盖 1",
+    "color": "#d78b85"
+  },
+  "R_Ig_ROI": {
+    "name": "右颗粒岛叶 Ig",
+    "color": "#8ca935"
+  },
+  "R_FOP5_ROI": {
+    "name": "右额叶岛盖 5",
+    "color": "#ef899a"
+  },
+  "R_p10p_ROI": {
+    "name": "右额极后部 p10p",
+    "color": "#775b6b"
+  },
+  "R_p47r_ROI": {
+    "name": "右额下回后部 p47r",
+    "color": "#c19e9e"
+  },
+  "R_TGv_ROI": {
+    "name": "右颞极腹侧 TGv",
+    "color": "#485446"
+  },
+  "R_MBelt_ROI": {
+    "name": "右内侧听觉带 MBelt",
+    "color": "#f41621"
+  },
+  "R_LBelt_ROI": {
+    "name": "右外侧听觉带 LBelt",
+    "color": "#ff1c21"
+  },
+  "R_A4_ROI": {
+    "name": "右听觉联合区 A4",
+    "color": "#c3340a"
+  },
+  "R_STSva_ROI": {
+    "name": "右颞上沟腹前 STSva",
+    "color": "#3f342d"
+  },
+  "R_TE1m_ROI": {
+    "name": "右颞下回中部 TE1m",
+    "color": "#6a464c"
+  },
+  "R_PI_ROI": {
+    "name": "右顶叶岛盖后部 PI",
+    "color": "#a74c50"
+  },
+  "R_a32pr_ROI": {
+    "name": "右前扣带 32 前部",
+    "color": "#c5698d"
+  },
+  "R_p24_ROI": {
+    "name": "右后扣带回前部 p24",
+    "color": "#9e3969"
+  },
+  "lh_7Networks_1": {
+    "name": "7Networks_1",
+    "color": "#9c17ae"
+  },
+  "lh_7Networks_2": {
+    "name": "7Networks_2",
+    "color": "#5ba8ea"
+  },
+  "lh_7Networks_3": {
+    "name": "7Networks_3",
+    "color": "#009912"
+  },
+  "lh_7Networks_4": {
+    "name": "7Networks_4",
+    "color": "#c73bff"
+  },
+  "lh_7Networks_5": {
+    "name": "7Networks_5",
+    "color": "#e2ffa8"
+  },
+  "lh_7Networks_6": {
+    "name": "7Networks_6",
+    "color": "#ffa425"
+  },
+  "lh_7Networks_7": {
+    "name": "7Networks_7",
+    "color": "#ff4d61"
+  },
+  "rh_7Networks_1": {
+    "name": "7Networks_1",
+    "color": "#9c17ae"
+  },
+  "rh_7Networks_2": {
+    "name": "7Networks_2",
+    "color": "#5ba8ea"
+  },
+  "rh_7Networks_3": {
+    "name": "7Networks_3",
+    "color": "#009912"
+  },
+  "rh_7Networks_4": {
+    "name": "7Networks_4",
+    "color": "#c73bff"
+  },
+  "rh_7Networks_5": {
+    "name": "7Networks_5",
+    "color": "#e2ffa8"
+  },
+  "rh_7Networks_6": {
+    "name": "7Networks_6",
+    "color": "#ffa425"
+  },
+  "rh_7Networks_7": {
+    "name": "7Networks_7",
+    "color": "#ff4d61"
+  }
+}
