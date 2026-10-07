@@ -1,0 +1,17 @@
+# GitHub Linguist 语言统计配置
+# 说明：仅影响统计显示，不影响任何代码功能
+
+# 第三方库（Three.js / ECharts / Font Awesome 等）标记为 vendored
+docs/vendor/** linguist-vendored
+vendor/** linguist-vendored
+
+# 3D 模型文件为数据文件，不参与语言统计
+*.obj linguist-generated
+*.mgz linguist-generated
+*.annot linguist-generated
+
+# 旧版本备份不参与统计
+legacy/** linguist-documentation
+
+# 大文件标记
+*.pdf linguist-documentation
