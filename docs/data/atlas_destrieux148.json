@@ -1,0 +1,2312 @@
+{
+ "id": "destrieux148",
+ "name": "Destrieux 皮层分区（148区）",
+ "citation": "Destrieux et al., 2010, NeuroImage",
+ "regions": [
+  {
+   "id": 2,
+   "name_zh": "左额缘脑沟回",
+   "name_en": "l_G_and_S_frontomargin",
+   "color": [
+    234,
+    58,
+    92
+   ],
+   "volume_mm3": 2116.0,
+   "centroid_mm": [
+    -37.2,
+    -82.4,
+    -13.0
+   ]
+  },
+  {
+   "id": 3,
+   "name_zh": "左枕下脑沟回",
+   "name_en": "l_G_and_S_occipital_inf",
+   "color": [
+    58,
+    143,
+    234
+   ],
+   "volume_mm3": 4238.0,
+   "centroid_mm": [
+    -8.1,
+    -34.1,
+    67.5
+   ]
+  },
+  {
+   "id": 4,
+   "name_zh": "左旁中央脑沟回",
+   "name_en": "l_G_and_S_paracentral",
+   "color": [
+    195,
+    234,
+    58
+   ],
+   "volume_mm3": 4215.0,
+   "centroid_mm": [
+    -56.0,
+    -11.5,
+    14.6
+   ]
+  },
+  {
+   "id": 5,
+   "name_zh": "左中央下脑沟回",
+   "name_en": "l_G_and_S_subcentral",
+   "color": [
+    222,
+    58,
+    234
+   ],
+   "volume_mm3": 1806.0,
+   "centroid_mm": [
+    -14.6,
+    63.4,
+    -0.7
+   ]
+  },
+  {
+   "id": 6,
+   "name_zh": "左额极横脑沟回",
+   "name_en": "l_G_and_S_transv_frontopol",
+   "color": [
+    58,
+    234,
+    171
+   ],
+   "volume_mm3": 3932.0,
+   "centroid_mm": [
+    -8.3,
+    39.2,
+    9.8
+   ]
+  },
+  {
+   "id": 7,
+   "name_zh": "左前扣带脑沟回",
+   "name_en": "l_G_and_S_cingul-Ant",
+   "color": [
+    234,
+    120,
+    58
+   ],
+   "volume_mm3": 2540.0,
+   "centroid_mm": [
+    -7.7,
+    15.7,
+    35.0
+   ]
+  },
+  {
+   "id": 8,
+   "name_zh": "左中前扣带脑沟回",
+   "name_en": "l_G_and_S_cingul-Mid-Ant",
+   "color": [
+    68,
+    58,
+    234
+   ],
+   "volume_mm3": 3260.0,
+   "centroid_mm": [
+    -7.5,
+    -11.7,
+    41.0
+   ]
+  },
+  {
+   "id": 9,
+   "name_zh": "左中后扣带脑沟回",
+   "name_en": "l_G_and_S_cingul-Mid-Post",
+   "color": [
+    99,
+    234,
+    58
+   ],
+   "volume_mm3": 1949.0,
+   "centroid_mm": [
+    -3.6,
+    -38.9,
+    30.3
+   ]
+  },
+  {
+   "id": 10,
+   "name_zh": "左后扣带脑回背侧",
+   "name_en": "l_G_cingul-Post-dorsal",
+   "color": [
+    234,
+    58,
+    151
+   ],
+   "volume_mm3": 635.0,
+   "centroid_mm": [
+    -7.9,
+    -48.4,
+    5.5
+   ]
+  },
+  {
+   "id": 11,
+   "name_zh": "左后扣带脑回腹侧",
+   "name_en": "l_G_cingul-Post-ventral",
+   "color": [
+    58,
+    202,
+    234
+   ],
+   "volume_mm3": 2867.0,
+   "centroid_mm": [
+    -5.2,
+    -82.0,
+    16.9
+   ]
+  },
+  {
+   "id": 12,
+   "name_zh": "左楔叶脑回",
+   "name_en": "l_G_cuneus",
+   "color": [
+    234,
+    215,
+    58
+   ],
+   "volume_mm3": 3597.0,
+   "centroid_mm": [
+    -50.0,
+    11.5,
+    9.0
+   ]
+  },
+  {
+   "id": 13,
+   "name_zh": "左额下脑回岛盖部",
+   "name_en": "l_G_front_inf-Opercular",
+   "color": [
+    163,
+    58,
+    234
+   ],
+   "volume_mm3": 712.0,
+   "centroid_mm": [
+    -43.8,
+    30.7,
+    -10.2
+   ]
+  },
+  {
+   "id": 14,
+   "name_zh": "左额下脑回眶部",
+   "name_en": "l_G_front_inf-Orbital",
+   "color": [
+    58,
+    234,
+    112
+   ],
+   "volume_mm3": 1853.0,
+   "centroid_mm": [
+    -49.6,
+    30.2,
+    4.6
+   ]
+  },
+  {
+   "id": 15,
+   "name_zh": "左额下脑回三角部",
+   "name_en": "l_G_front_inf-Triangul",
+   "color": [
+    234,
+    61,
+    58
+   ],
+   "volume_mm3": 8297.0,
+   "centroid_mm": [
+    -36.1,
+    32.3,
+    32.4
+   ]
+  },
+  {
+   "id": 16,
+   "name_zh": "左额中脑回",
+   "name_en": "l_G_front_middle",
+   "color": [
+    58,
+    107,
+    234
+   ],
+   "volume_mm3": 19355.0,
+   "centroid_mm": [
+    -9.9,
+    26.0,
+    45.8
+   ]
+  },
+  {
+   "id": 17,
+   "name_zh": "左额上脑回",
+   "name_en": "l_G_front_sup",
+   "color": [
+    158,
+    234,
+    58
+   ],
+   "volume_mm3": 1321.0,
+   "centroid_mm": [
+    -38.2,
+    -8.6,
+    0.9
+   ]
+  },
+  {
+   "id": 18,
+   "name_zh": "左岛长脑回及中央岛沟",
+   "name_en": "l_G_Ins_lg_and_S_cent_ins",
+   "color": [
+    234,
+    58,
+    210
+   ],
+   "volume_mm3": 1453.0,
+   "centroid_mm": [
+    -37.1,
+    8.6,
+    -1.8
+   ]
+  },
+  {
+   "id": 19,
+   "name_zh": "左岛短脑回",
+   "name_en": "l_G_insular_short",
+   "color": [
+    58,
+    234,
+    207
+   ],
+   "volume_mm3": 3513.0,
+   "centroid_mm": [
+    -39.5,
+    -83.7,
+    11.8
+   ]
+  },
+  {
+   "id": 20,
+   "name_zh": "左枕中脑回",
+   "name_en": "l_G_occipital_middle",
+   "color": [
+    234,
+    156,
+    58
+   ],
+   "volume_mm3": 2521.0,
+   "centroid_mm": [
+    -14.6,
+    -88.8,
+    27.3
+   ]
+  },
+  {
+   "id": 21,
+   "name_zh": "左枕上脑回",
+   "name_en": "l_G_occipital_sup",
+   "color": [
+    105,
+    58,
+    234
+   ],
+   "volume_mm3": 4254.0,
+   "centroid_mm": [
+    -34.7,
+    -54.3,
+    -19.6
+   ]
+  },
+  {
+   "id": 22,
+   "name_zh": "左颞枕外侧梭状脑回",
+   "name_en": "l_G_oc-temp_lat-fusifor",
+   "color": [
+    63,
+    234,
+    58
+   ],
+   "volume_mm3": 5350.0,
+   "centroid_mm": [
+    -10.6,
+    -72.7,
+    -5.3
+   ]
+  },
+  {
+   "id": 23,
+   "name_zh": "左颞枕内侧舌回",
+   "name_en": "l_G_oc-temp_med-Lingual",
+   "color": [
+    234,
+    58,
+    114
+   ],
+   "volume_mm3": 4517.0,
+   "centroid_mm": [
+    -23.2,
+    -20.1,
+    -25.5
+   ]
+  },
+  {
+   "id": 24,
+   "name_zh": "左颞枕内侧海马旁脑回",
+   "name_en": "l_G_oc-temp_med-Parahip",
+   "color": [
+    58,
+    166,
+    234
+   ],
+   "volume_mm3": 6143.0,
+   "centroid_mm": [
+    -27.9,
+    35.1,
+    -17.7
+   ]
+  },
+  {
+   "id": 25,
+   "name_zh": "左眶脑回",
+   "name_en": "l_G_orbital",
+   "color": [
+    217,
+    234,
+    58
+   ],
+   "volume_mm3": 4808.0,
+   "centroid_mm": [
+    -42.5,
+    -67.3,
+    37.0
+   ]
+  },
+  {
+   "id": 26,
+   "name_zh": "左顶下角脑回",
+   "name_en": "l_G_pariet_inf-Angular",
+   "color": [
+    200,
+    58,
+    234
+   ],
+   "volume_mm3": 5839.0,
+   "centroid_mm": [
+    -55.9,
+    -36.7,
+    31.1
+   ]
+  },
+  {
+   "id": 27,
+   "name_zh": "左顶下缘上脑回",
+   "name_en": "l_G_pariet_inf-Supramar",
+   "color": [
+    58,
+    234,
+    148
+   ],
+   "volume_mm3": 5342.0,
+   "centroid_mm": [
+    -21.1,
+    -60.2,
+    58.0
+   ]
+  },
+  {
+   "id": 28,
+   "name_zh": "左顶上脑回",
+   "name_en": "l_G_parietal_sup",
+   "color": [
+    234,
+    97,
+    58
+   ],
+   "volume_mm3": 5259.0,
+   "centroid_mm": [
+    -44.3,
+    -24.8,
+    53.6
+   ]
+  },
+  {
+   "id": 29,
+   "name_zh": "左中央后脑回",
+   "name_en": "l_G_postcentral",
+   "color": [
+    58,
+    71,
+    234
+   ],
+   "volume_mm3": 7429.0,
+   "centroid_mm": [
+    -42.2,
+    -9.2,
+    50.3
+   ]
+  },
+  {
+   "id": 30,
+   "name_zh": "左中央前脑回",
+   "name_en": "l_G_precentral",
+   "color": [
+    122,
+    234,
+    58
+   ],
+   "volume_mm3": 5278.0,
+   "centroid_mm": [
+    -6.2,
+    -58.5,
+    41.0
+   ]
+  },
+  {
+   "id": 31,
+   "name_zh": "左前楔脑回",
+   "name_en": "l_G_precuneus",
+   "color": [
+    234,
+    58,
+    173
+   ],
+   "volume_mm3": 2990.0,
+   "centroid_mm": [
+    -4.6,
+    37.8,
+    -20.5
+   ]
+  },
+  {
+   "id": 32,
+   "name_zh": "左直脑回",
+   "name_en": "l_G_rectus",
+   "color": [
+    58,
+    225,
+    234
+   ],
+   "volume_mm3": 406.0,
+   "centroid_mm": [
+    -4.5,
+    14.8,
+    -10.2
+   ]
+  },
+  {
+   "id": 33,
+   "name_zh": "左胼胝体下脑回",
+   "name_en": "l_G_subcallosal",
+   "color": [
+    234,
+    192,
+    58
+   ],
+   "volume_mm3": 1367.0,
+   "centroid_mm": [
+    -47.6,
+    -19.4,
+    5.9
+   ]
+  },
+  {
+   "id": 34,
+   "name_zh": "左颞上颞横脑回",
+   "name_en": "l_G_temp_sup-G_T_transv",
+   "color": [
+    141,
+    58,
+    234
+   ],
+   "volume_mm3": 5812.0,
+   "centroid_mm": [
+    -58.4,
+    -12.6,
+    -5.6
+   ]
+  },
+  {
+   "id": 35,
+   "name_zh": "左颞上外侧脑回",
+   "name_en": "l_G_temp_sup-Lateral",
+   "color": [
+    58,
+    234,
+    90
+   ],
+   "volume_mm3": 1402.0,
+   "centroid_mm": [
+    -41.2,
+    4.6,
+    -20.3
+   ]
+  },
+  {
+   "id": 36,
+   "name_zh": "左颞上极平面脑回",
+   "name_en": "l_G_temp_sup-Plan_polar",
+   "color": [
+    234,
+    58,
+    78
+   ],
+   "volume_mm3": 2099.0,
+   "centroid_mm": [
+    -57.2,
+    -37.9,
+    16.0
+   ]
+  },
+  {
+   "id": 37,
+   "name_zh": "左颞上颞平面脑回",
+   "name_en": "l_G_temp_sup-Plan_tempo",
+   "color": [
+    58,
+    129,
+    234
+   ],
+   "volume_mm3": 5710.0,
+   "centroid_mm": [
+    -51.4,
+    -34.2,
+    -26.8
+   ]
+  },
+  {
+   "id": 38,
+   "name_zh": "左颞下脑回",
+   "name_en": "l_G_temporal_inf",
+   "color": [
+    181,
+    234,
+    58
+   ],
+   "volume_mm3": 7073.0,
+   "centroid_mm": [
+    -59.7,
+    -30.5,
+    -13.5
+   ]
+  },
+  {
+   "id": 39,
+   "name_zh": "左颞中脑回",
+   "name_en": "l_G_temporal_middle",
+   "color": [
+    234,
+    58,
+    232
+   ],
+   "volume_mm3": 431.0,
+   "centroid_mm": [
+    -39.4,
+    31.5,
+    -3.5
+   ]
+  },
+  {
+   "id": 40,
+   "name_zh": "左外侧裂前水平部",
+   "name_en": "l_Lat_Fis-ant-Horizont",
+   "color": [
+    58,
+    234,
+    185
+   ],
+   "volume_mm3": 660.0,
+   "centroid_mm": [
+    -43.9,
+    21.3,
+    7.0
+   ]
+  },
+  {
+   "id": 41,
+   "name_zh": "左外侧裂前垂直部",
+   "name_en": "l_Lat_Fis-ant-Vertical",
+   "color": [
+    234,
+    133,
+    58
+   ],
+   "volume_mm3": 2232.0,
+   "centroid_mm": [
+    -40.4,
+    -33.5,
+    16.7
+   ]
+  },
+  {
+   "id": 44,
+   "name_zh": "左枕极",
+   "name_en": "l_Pole_occipital",
+   "color": [
+    234,
+    58,
+    137
+   ],
+   "volume_mm3": 3444.0,
+   "centroid_mm": [
+    -35.8,
+    5.3,
+    -38.4
+   ]
+  },
+  {
+   "id": 45,
+   "name_zh": "左颞极",
+   "name_en": "l_Pole_temporal",
+   "color": [
+    58,
+    188,
+    234
+   ],
+   "volume_mm3": 4142.0,
+   "centroid_mm": [
+    -16.1,
+    -66.4,
+    4.3
+   ]
+  },
+  {
+   "id": 46,
+   "name_zh": "左距状沟",
+   "name_en": "l_S_calcarine",
+   "color": [
+    234,
+    229,
+    58
+   ],
+   "volume_mm3": 6482.0,
+   "centroid_mm": [
+    -36.2,
+    -20.4,
+    45.4
+   ]
+  },
+  {
+   "id": 47,
+   "name_zh": "左中央沟",
+   "name_en": "l_S_central",
+   "color": [
+    177,
+    58,
+    234
+   ],
+   "volume_mm3": 2479.0,
+   "centroid_mm": [
+    -13.5,
+    -36.7,
+    46.8
+   ]
+  },
+  {
+   "id": 48,
+   "name_zh": "左扣带边缘沟",
+   "name_en": "l_S_cingul-Marginalis",
+   "color": [
+    58,
+    234,
+    126
+   ],
+   "volume_mm3": 1324.0,
+   "centroid_mm": [
+    -30.3,
+    21.4,
+    -9.9
+   ]
+  },
+  {
+   "id": 49,
+   "name_zh": "左岛前环沟",
+   "name_en": "l_S_circular_insula_ant",
+   "color": [
+    234,
+    75,
+    58
+   ],
+   "volume_mm3": 3733.0,
+   "centroid_mm": [
+    -40.9,
+    -12.6,
+    -7.3
+   ]
+  },
+  {
+   "id": 50,
+   "name_zh": "左岛下环沟",
+   "name_en": "l_S_circular_insula_inf",
+   "color": [
+    58,
+    93,
+    234
+   ],
+   "volume_mm3": 3750.0,
+   "centroid_mm": [
+    -35.9,
+    5.9,
+    10.4
+   ]
+  },
+  {
+   "id": 51,
+   "name_zh": "左岛上环沟",
+   "name_en": "l_S_circular_insula_sup",
+   "color": [
+    144,
+    234,
+    58
+   ],
+   "volume_mm3": 1552.0,
+   "centroid_mm": [
+    -40.9,
+    -21.7,
+    -27.0
+   ]
+  },
+  {
+   "id": 52,
+   "name_zh": "左前横侧沟",
+   "name_en": "l_S_collat_transv_ant",
+   "color": [
+    234,
+    58,
+    196
+   ],
+   "volume_mm3": 395.0,
+   "centroid_mm": [
+    -24.7,
+    -78.8,
+    -8.6
+   ]
+  },
+  {
+   "id": 53,
+   "name_zh": "左后横侧沟",
+   "name_en": "l_S_collat_transv_post",
+   "color": [
+    58,
+    234,
+    221
+   ],
+   "volume_mm3": 2673.0,
+   "centroid_mm": [
+    -39.4,
+    23.4,
+    20.9
+   ]
+  },
+  {
+   "id": 54,
+   "name_zh": "左额下沟",
+   "name_en": "l_S_front_inf",
+   "color": [
+    234,
+    170,
+    58
+   ],
+   "volume_mm3": 1962.0,
+   "centroid_mm": [
+    -27.2,
+    43.5,
+    19.6
+   ]
+  },
+  {
+   "id": 55,
+   "name_zh": "左额中沟",
+   "name_en": "l_S_front_middle",
+   "color": [
+    119,
+    58,
+    234
+   ],
+   "volume_mm3": 4131.0,
+   "centroid_mm": [
+    -23.8,
+    19.4,
+    43.9
+   ]
+  },
+  {
+   "id": 56,
+   "name_zh": "左额上沟",
+   "name_en": "l_S_front_sup",
+   "color": [
+    58,
+    234,
+    67
+   ],
+   "volume_mm3": 330.0,
+   "centroid_mm": [
+    -50.8,
+    -52.9,
+    31.0
+   ]
+  },
+  {
+   "id": 57,
+   "name_zh": "左詹森中间沟",
+   "name_en": "l_S_interm_prim-Jensen",
+   "color": [
+    234,
+    58,
+    100
+   ],
+   "volume_mm3": 4104.0,
+   "centroid_mm": [
+    -29.0,
+    -60.3,
+    38.5
+   ]
+  },
+  {
+   "id": 58,
+   "name_zh": "左顶内及顶横沟",
+   "name_en": "l_S_intrapariet_and_P_trans",
+   "color": [
+    58,
+    152,
+    234
+   ],
+   "volume_mm3": 1211.0,
+   "centroid_mm": [
+    -31.5,
+    -86.4,
+    3.9
+   ]
+  },
+  {
+   "id": 59,
+   "name_zh": "左枕中及月状沟",
+   "name_en": "l_S_oc_middle_and_Lunatus",
+   "color": [
+    203,
+    234,
+    58
+   ],
+   "volume_mm3": 1665.0,
+   "centroid_mm": [
+    -27.4,
+    -80.4,
+    18.9
+   ]
+  },
+  {
+   "id": 60,
+   "name_zh": "左枕上及横沟",
+   "name_en": "l_S_oc_sup_and_transversal",
+   "color": [
+    214,
+    58,
+    234
+   ],
+   "volume_mm3": 825.0,
+   "centroid_mm": [
+    -42.9,
+    -69.0,
+    0.6
+   ]
+  },
+  {
+   "id": 61,
+   "name_zh": "左枕前沟",
+   "name_en": "l_S_occipital_ant",
+   "color": [
+    58,
+    234,
+    162
+   ],
+   "volume_mm3": 1227.0,
+   "centroid_mm": [
+    -43.2,
+    -51.8,
+    -14.8
+   ]
+  },
+  {
+   "id": 62,
+   "name_zh": "左颞枕外侧沟",
+   "name_en": "l_S_oc-temp_lat",
+   "color": [
+    234,
+    111,
+    58
+   ],
+   "volume_mm3": 3461.0,
+   "centroid_mm": [
+    -28.9,
+    -48.9,
+    -12.0
+   ]
+  },
+  {
+   "id": 63,
+   "name_zh": "左颞枕内侧及舌沟",
+   "name_en": "l_S_oc-temp_med_and_Lingual",
+   "color": [
+    60,
+    58,
+    234
+   ],
+   "volume_mm3": 583.0,
+   "centroid_mm": [
+    -41.1,
+    42.1,
+    -2.5
+   ]
+  },
+  {
+   "id": 64,
+   "name_zh": "左眶外侧沟",
+   "name_en": "l_S_orbital_lateral",
+   "color": [
+    108,
+    234,
+    58
+   ],
+   "volume_mm3": 1317.0,
+   "centroid_mm": [
+    -12.5,
+    24.2,
+    -19.3
+   ]
+  },
+  {
+   "id": 65,
+   "name_zh": "左眶内侧嗅沟",
+   "name_en": "l_S_orbital_med-olfact",
+   "color": [
+    234,
+    58,
+    159
+   ],
+   "volume_mm3": 2092.0,
+   "centroid_mm": [
+    -25.7,
+    35.7,
+    -13.7
+   ]
+  },
+  {
+   "id": 66,
+   "name_zh": "左眶H形沟",
+   "name_en": "l_S_orbital-H_Shaped",
+   "color": [
+    58,
+    211,
+    234
+   ],
+   "volume_mm3": 2905.0,
+   "centroid_mm": [
+    -15.4,
+    -68.1,
+    22.8
+   ]
+  },
+  {
+   "id": 67,
+   "name_zh": "左顶枕沟",
+   "name_en": "l_S_parieto_occipital",
+   "color": [
+    234,
+    206,
+    58
+   ],
+   "volume_mm3": 2323.0,
+   "centroid_mm": [
+    -4.5,
+    -2.1,
+    19.0
+   ]
+  },
+  {
+   "id": 68,
+   "name_zh": "左胼周沟",
+   "name_en": "l_S_pericallosal",
+   "color": [
+    155,
+    58,
+    234
+   ],
+   "volume_mm3": 3911.0,
+   "centroid_mm": [
+    -37.8,
+    -35.2,
+    45.2
+   ]
+  },
+  {
+   "id": 69,
+   "name_zh": "左中央后沟",
+   "name_en": "l_S_postcentral",
+   "color": [
+    58,
+    234,
+    104
+   ],
+   "volume_mm3": 2334.0,
+   "centroid_mm": [
+    -44.3,
+    4.0,
+    26.8
+   ]
+  },
+  {
+   "id": 70,
+   "name_zh": "左中央前沟下部",
+   "name_en": "l_S_precentral-inf-part",
+   "color": [
+    234,
+    58,
+    64
+   ],
+   "volume_mm3": 2277.0,
+   "centroid_mm": [
+    -29.2,
+    -8.3,
+    52.0
+   ]
+  },
+  {
+   "id": 71,
+   "name_zh": "左中央前沟上部",
+   "name_en": "l_S_precentral-sup-part",
+   "color": [
+    58,
+    115,
+    234
+   ],
+   "volume_mm3": 1381.0,
+   "centroid_mm": [
+    -7.2,
+    39.4,
+    -10.7
+   ]
+  },
+  {
+   "id": 72,
+   "name_zh": "左眶下沟",
+   "name_en": "l_S_suborbital",
+   "color": [
+    167,
+    234,
+    58
+   ],
+   "volume_mm3": 1724.0,
+   "centroid_mm": [
+    -9.9,
+    -48.6,
+    35.1
+   ]
+  },
+  {
+   "id": 73,
+   "name_zh": "左顶下沟",
+   "name_en": "l_S_subparietal",
+   "color": [
+    234,
+    58,
+    218
+   ],
+   "volume_mm3": 1483.0,
+   "centroid_mm": [
+    -52.6,
+    -35.8,
+    -17.3
+   ]
+  },
+  {
+   "id": 74,
+   "name_zh": "左颞下沟",
+   "name_en": "l_S_temporal_inf",
+   "color": [
+    58,
+    234,
+    199
+   ],
+   "volume_mm3": 7621.0,
+   "centroid_mm": [
+    -49.6,
+    -41.4,
+    3.4
+   ]
+  },
+  {
+   "id": 75,
+   "name_zh": "左颞上沟",
+   "name_en": "l_S_temporal_sup",
+   "color": [
+    234,
+    147,
+    58
+   ],
+   "volume_mm3": 631.0,
+   "centroid_mm": [
+    -51.1,
+    -25.1,
+    3.3
+   ]
+  },
+  {
+   "id": 1002,
+   "name_zh": "右额缘脑沟回",
+   "name_en": "r_G_and_S_frontomargin",
+   "color": [
+    234,
+    58,
+    92
+   ],
+   "volume_mm3": 2763.0,
+   "centroid_mm": [
+    41.5,
+    -78.4,
+    -11.9
+   ]
+  },
+  {
+   "id": 1003,
+   "name_zh": "右枕下脑沟回",
+   "name_en": "r_G_and_S_occipital_inf",
+   "color": [
+    58,
+    143,
+    234
+   ],
+   "volume_mm3": 3670.0,
+   "centroid_mm": [
+    7.0,
+    -33.4,
+    67.7
+   ]
+  },
+  {
+   "id": 1004,
+   "name_zh": "右旁中央脑沟回",
+   "name_en": "r_G_and_S_paracentral",
+   "color": [
+    195,
+    234,
+    58
+   ],
+   "volume_mm3": 3458.0,
+   "centroid_mm": [
+    56.7,
+    -9.8,
+    15.3
+   ]
+  },
+  {
+   "id": 1005,
+   "name_zh": "右中央下脑沟回",
+   "name_en": "r_G_and_S_subcentral",
+   "color": [
+    222,
+    58,
+    234
+   ],
+   "volume_mm3": 2539.0,
+   "centroid_mm": [
+    16.7,
+    63.2,
+    1.5
+   ]
+  },
+  {
+   "id": 1006,
+   "name_zh": "右额极横脑沟回",
+   "name_en": "r_G_and_S_transv_frontopol",
+   "color": [
+    58,
+    234,
+    171
+   ],
+   "volume_mm3": 5216.0,
+   "centroid_mm": [
+    9.1,
+    39.1,
+    7.5
+   ]
+  },
+  {
+   "id": 1007,
+   "name_zh": "右前扣带脑沟回",
+   "name_en": "r_G_and_S_cingul-Ant",
+   "color": [
+    234,
+    120,
+    58
+   ],
+   "volume_mm3": 3253.0,
+   "centroid_mm": [
+    8.0,
+    16.1,
+    35.7
+   ]
+  },
+  {
+   "id": 1008,
+   "name_zh": "右中前扣带脑沟回",
+   "name_en": "r_G_and_S_cingul-Mid-Ant",
+   "color": [
+    68,
+    58,
+    234
+   ],
+   "volume_mm3": 3488.0,
+   "centroid_mm": [
+    7.0,
+    -10.6,
+    41.8
+   ]
+  },
+  {
+   "id": 1009,
+   "name_zh": "右中后扣带脑沟回",
+   "name_en": "r_G_and_S_cingul-Mid-Post",
+   "color": [
+    99,
+    234,
+    58
+   ],
+   "volume_mm3": 1854.0,
+   "centroid_mm": [
+    3.7,
+    -38.7,
+    31.3
+   ]
+  },
+  {
+   "id": 1010,
+   "name_zh": "右后扣带脑回背侧",
+   "name_en": "r_G_cingul-Post-dorsal",
+   "color": [
+    234,
+    58,
+    151
+   ],
+   "volume_mm3": 862.0,
+   "centroid_mm": [
+    8.5,
+    -49.9,
+    6.8
+   ]
+  },
+  {
+   "id": 1011,
+   "name_zh": "右后扣带脑回腹侧",
+   "name_en": "r_G_cingul-Post-ventral",
+   "color": [
+    58,
+    202,
+    234
+   ],
+   "volume_mm3": 2969.0,
+   "centroid_mm": [
+    6.2,
+    -79.0,
+    18.6
+   ]
+  },
+  {
+   "id": 1012,
+   "name_zh": "右楔叶脑回",
+   "name_en": "r_G_cuneus",
+   "color": [
+    234,
+    215,
+    58
+   ],
+   "volume_mm3": 3545.0,
+   "centroid_mm": [
+    50.9,
+    9.1,
+    7.9
+   ]
+  },
+  {
+   "id": 1013,
+   "name_zh": "右额下脑回岛盖部",
+   "name_en": "r_G_front_inf-Opercular",
+   "color": [
+    163,
+    58,
+    234
+   ],
+   "volume_mm3": 467.0,
+   "centroid_mm": [
+    48.5,
+    33.0,
+    -7.7
+   ]
+  },
+  {
+   "id": 1014,
+   "name_zh": "右额下脑回眶部",
+   "name_en": "r_G_front_inf-Orbital",
+   "color": [
+    58,
+    234,
+    112
+   ],
+   "volume_mm3": 1856.0,
+   "centroid_mm": [
+    51.9,
+    28.8,
+    8.1
+   ]
+  },
+  {
+   "id": 1015,
+   "name_zh": "右额下脑回三角部",
+   "name_en": "r_G_front_inf-Triangul",
+   "color": [
+    234,
+    61,
+    58
+   ],
+   "volume_mm3": 7820.0,
+   "centroid_mm": [
+    37.4,
+    33.1,
+    31.7
+   ]
+  },
+  {
+   "id": 1016,
+   "name_zh": "右额中脑回",
+   "name_en": "r_G_front_middle",
+   "color": [
+    58,
+    107,
+    234
+   ],
+   "volume_mm3": 17402.0,
+   "centroid_mm": [
+    10.4,
+    27.6,
+    45.5
+   ]
+  },
+  {
+   "id": 1017,
+   "name_zh": "右额上脑回",
+   "name_en": "r_G_front_sup",
+   "color": [
+    158,
+    234,
+    58
+   ],
+   "volume_mm3": 1301.0,
+   "centroid_mm": [
+    39.4,
+    -4.1,
+    -3.2
+   ]
+  },
+  {
+   "id": 1018,
+   "name_zh": "右岛长脑回及中央岛沟",
+   "name_en": "r_G_Ins_lg_and_S_cent_ins",
+   "color": [
+    234,
+    58,
+    210
+   ],
+   "volume_mm3": 1145.0,
+   "centroid_mm": [
+    38.6,
+    9.2,
+    -1.6
+   ]
+  },
+  {
+   "id": 1019,
+   "name_zh": "右岛短脑回",
+   "name_en": "r_G_insular_short",
+   "color": [
+    58,
+    234,
+    207
+   ],
+   "volume_mm3": 3813.0,
+   "centroid_mm": [
+    40.8,
+    -80.9,
+    14.4
+   ]
+  },
+  {
+   "id": 1020,
+   "name_zh": "右枕中脑回",
+   "name_en": "r_G_occipital_middle",
+   "color": [
+    234,
+    156,
+    58
+   ],
+   "volume_mm3": 3158.0,
+   "centroid_mm": [
+    18.9,
+    -85.0,
+    31.9
+   ]
+  },
+  {
+   "id": 1021,
+   "name_zh": "右枕上脑回",
+   "name_en": "r_G_occipital_sup",
+   "color": [
+    105,
+    58,
+    234
+   ],
+   "volume_mm3": 3745.0,
+   "centroid_mm": [
+    33.9,
+    -52.0,
+    -19.0
+   ]
+  },
+  {
+   "id": 1022,
+   "name_zh": "右颞枕外侧梭状脑回",
+   "name_en": "r_G_oc-temp_lat-fusifor",
+   "color": [
+    63,
+    234,
+    58
+   ],
+   "volume_mm3": 5427.0,
+   "centroid_mm": [
+    11.2,
+    -66.8,
+    -3.9
+   ]
+  },
+  {
+   "id": 1023,
+   "name_zh": "右颞枕内侧舌回",
+   "name_en": "r_G_oc-temp_med-Lingual",
+   "color": [
+    234,
+    58,
+    114
+   ],
+   "volume_mm3": 4606.0,
+   "centroid_mm": [
+    25.1,
+    -17.8,
+    -26.4
+   ]
+  },
+  {
+   "id": 1024,
+   "name_zh": "右颞枕内侧海马旁脑回",
+   "name_en": "r_G_oc-temp_med-Parahip",
+   "color": [
+    58,
+    166,
+    234
+   ],
+   "volume_mm3": 7311.0,
+   "centroid_mm": [
+    28.6,
+    34.9,
+    -17.8
+   ]
+  },
+  {
+   "id": 1025,
+   "name_zh": "右眶脑回",
+   "name_en": "r_G_orbital",
+   "color": [
+    217,
+    234,
+    58
+   ],
+   "volume_mm3": 4468.0,
+   "centroid_mm": [
+    45.5,
+    -62.1,
+    38.9
+   ]
+  },
+  {
+   "id": 1026,
+   "name_zh": "右顶下角脑回",
+   "name_en": "r_G_pariet_inf-Angular",
+   "color": [
+    200,
+    58,
+    234
+   ],
+   "volume_mm3": 5626.0,
+   "centroid_mm": [
+    57.3,
+    -32.1,
+    32.0
+   ]
+  },
+  {
+   "id": 1027,
+   "name_zh": "右顶下缘上脑回",
+   "name_en": "r_G_pariet_inf-Supramar",
+   "color": [
+    58,
+    234,
+    148
+   ],
+   "volume_mm3": 4264.0,
+   "centroid_mm": [
+    21.8,
+    -56.2,
+    60.8
+   ]
+  },
+  {
+   "id": 1028,
+   "name_zh": "右顶上脑回",
+   "name_en": "r_G_parietal_sup",
+   "color": [
+    234,
+    97,
+    58
+   ],
+   "volume_mm3": 4936.0,
+   "centroid_mm": [
+    43.7,
+    -23.8,
+    54.4
+   ]
+  },
+  {
+   "id": 1029,
+   "name_zh": "右中央后脑回",
+   "name_en": "r_G_postcentral",
+   "color": [
+    58,
+    71,
+    234
+   ],
+   "volume_mm3": 7652.0,
+   "centroid_mm": [
+    42.2,
+    -7.8,
+    49.9
+   ]
+  },
+  {
+   "id": 1030,
+   "name_zh": "右中央前脑回",
+   "name_en": "r_G_precentral",
+   "color": [
+    122,
+    234,
+    58
+   ],
+   "volume_mm3": 5242.0,
+   "centroid_mm": [
+    6.5,
+    -60.0,
+    42.8
+   ]
+  },
+  {
+   "id": 1031,
+   "name_zh": "右前楔脑回",
+   "name_en": "r_G_precuneus",
+   "color": [
+    234,
+    58,
+    173
+   ],
+   "volume_mm3": 2297.0,
+   "centroid_mm": [
+    5.4,
+    34.4,
+    -21.1
+   ]
+  },
+  {
+   "id": 1032,
+   "name_zh": "右直脑回",
+   "name_en": "r_G_rectus",
+   "color": [
+    58,
+    225,
+    234
+   ],
+   "volume_mm3": 419.0,
+   "centroid_mm": [
+    5.4,
+    14.5,
+    -13.2
+   ]
+  },
+  {
+   "id": 1033,
+   "name_zh": "右胼胝体下脑回",
+   "name_en": "r_G_subcallosal",
+   "color": [
+    234,
+    192,
+    58
+   ],
+   "volume_mm3": 1008.0,
+   "centroid_mm": [
+    48.6,
+    -17.0,
+    5.7
+   ]
+  },
+  {
+   "id": 1034,
+   "name_zh": "右颞上颞横脑回",
+   "name_en": "r_G_temp_sup-G_T_transv",
+   "color": [
+    141,
+    58,
+    234
+   ],
+   "volume_mm3": 5174.0,
+   "centroid_mm": [
+    60.2,
+    -10.3,
+    -5.0
+   ]
+  },
+  {
+   "id": 1035,
+   "name_zh": "右颞上外侧脑回",
+   "name_en": "r_G_temp_sup-Lateral",
+   "color": [
+    58,
+    234,
+    90
+   ],
+   "volume_mm3": 1576.0,
+   "centroid_mm": [
+    42.9,
+    5.5,
+    -19.7
+   ]
+  },
+  {
+   "id": 1036,
+   "name_zh": "右颞上极平面脑回",
+   "name_en": "r_G_temp_sup-Plan_polar",
+   "color": [
+    234,
+    58,
+    78
+   ],
+   "volume_mm3": 1522.0,
+   "centroid_mm": [
+    58.6,
+    -32.0,
+    16.8
+   ]
+  },
+  {
+   "id": 1037,
+   "name_zh": "右颞上颞平面脑回",
+   "name_en": "r_G_temp_sup-Plan_tempo",
+   "color": [
+    58,
+    129,
+    234
+   ],
+   "volume_mm3": 5629.0,
+   "centroid_mm": [
+    53.0,
+    -32.5,
+    -26.5
+   ]
+  },
+  {
+   "id": 1038,
+   "name_zh": "右颞下脑回",
+   "name_en": "r_G_temporal_inf",
+   "color": [
+    181,
+    234,
+    58
+   ],
+   "volume_mm3": 7593.0,
+   "centroid_mm": [
+    61.2,
+    -28.2,
+    -13.5
+   ]
+  },
+  {
+   "id": 1039,
+   "name_zh": "右颞中脑回",
+   "name_en": "r_G_temporal_middle",
+   "color": [
+    234,
+    58,
+    232
+   ],
+   "volume_mm3": 583.0,
+   "centroid_mm": [
+    41.5,
+    28.6,
+    1.7
+   ]
+  },
+  {
+   "id": 1040,
+   "name_zh": "右外侧裂前水平部",
+   "name_en": "r_Lat_Fis-ant-Horizont",
+   "color": [
+    58,
+    234,
+    185
+   ],
+   "volume_mm3": 393.0,
+   "centroid_mm": [
+    46.2,
+    20.8,
+    8.4
+   ]
+  },
+  {
+   "id": 1041,
+   "name_zh": "右外侧裂前垂直部",
+   "name_en": "r_Lat_Fis-ant-Vertical",
+   "color": [
+    234,
+    133,
+    58
+   ],
+   "volume_mm3": 3012.0,
+   "centroid_mm": [
+    40.3,
+    -27.5,
+    17.3
+   ]
+  },
+  {
+   "id": 1044,
+   "name_zh": "右枕极",
+   "name_en": "r_Pole_occipital",
+   "color": [
+    234,
+    58,
+    137
+   ],
+   "volume_mm3": 4337.0,
+   "centroid_mm": [
+    38.7,
+    6.2,
+    -37.8
+   ]
+  },
+  {
+   "id": 1045,
+   "name_zh": "右颞极",
+   "name_en": "r_Pole_temporal",
+   "color": [
+    58,
+    188,
+    234
+   ],
+   "volume_mm3": 4078.0,
+   "centroid_mm": [
+    17.7,
+    -63.7,
+    5.1
+   ]
+  },
+  {
+   "id": 1046,
+   "name_zh": "右距状沟",
+   "name_en": "r_S_calcarine",
+   "color": [
+    234,
+    229,
+    58
+   ],
+   "volume_mm3": 6624.0,
+   "centroid_mm": [
+    36.3,
+    -19.1,
+    45.5
+   ]
+  },
+  {
+   "id": 1047,
+   "name_zh": "右中央沟",
+   "name_en": "r_S_central",
+   "color": [
+    177,
+    58,
+    234
+   ],
+   "volume_mm3": 2907.0,
+   "centroid_mm": [
+    12.6,
+    -36.0,
+    46.8
+   ]
+  },
+  {
+   "id": 1048,
+   "name_zh": "右扣带边缘沟",
+   "name_en": "r_S_cingul-Marginalis",
+   "color": [
+    58,
+    234,
+    126
+   ],
+   "volume_mm3": 1326.0,
+   "centroid_mm": [
+    32.0,
+    22.7,
+    -7.5
+   ]
+  },
+  {
+   "id": 1049,
+   "name_zh": "右岛前环沟",
+   "name_en": "r_S_circular_insula_ant",
+   "color": [
+    234,
+    75,
+    58
+   ],
+   "volume_mm3": 3080.0,
+   "centroid_mm": [
+    42.9,
+    -11.1,
+    -7.8
+   ]
+  },
+  {
+   "id": 1050,
+   "name_zh": "右岛下环沟",
+   "name_en": "r_S_circular_insula_inf",
+   "color": [
+    58,
+    93,
+    234
+   ],
+   "volume_mm3": 3041.0,
+   "centroid_mm": [
+    36.9,
+    6.9,
+    9.8
+   ]
+  },
+  {
+   "id": 1051,
+   "name_zh": "右岛上环沟",
+   "name_en": "r_S_circular_insula_sup",
+   "color": [
+    144,
+    234,
+    58
+   ],
+   "volume_mm3": 1475.0,
+   "centroid_mm": [
+    42.4,
+    -20.7,
+    -26.9
+   ]
+  },
+  {
+   "id": 1052,
+   "name_zh": "右前横侧沟",
+   "name_en": "r_S_collat_transv_ant",
+   "color": [
+    234,
+    58,
+    196
+   ],
+   "volume_mm3": 403.0,
+   "centroid_mm": [
+    26.3,
+    -78.1,
+    -9.0
+   ]
+  },
+  {
+   "id": 1053,
+   "name_zh": "右后横侧沟",
+   "name_en": "r_S_collat_transv_post",
+   "color": [
+    58,
+    234,
+    221
+   ],
+   "volume_mm3": 2527.0,
+   "centroid_mm": [
+    39.9,
+    25.6,
+    20.9
+   ]
+  },
+  {
+   "id": 1054,
+   "name_zh": "右额下沟",
+   "name_en": "r_S_front_inf",
+   "color": [
+    234,
+    170,
+    58
+   ],
+   "volume_mm3": 2476.0,
+   "centroid_mm": [
+    28.9,
+    42.1,
+    21.0
+   ]
+  },
+  {
+   "id": 1055,
+   "name_zh": "右额中沟",
+   "name_en": "r_S_front_middle",
+   "color": [
+    119,
+    58,
+    234
+   ],
+   "volume_mm3": 3158.0,
+   "centroid_mm": [
+    24.1,
+    19.1,
+    45.3
+   ]
+  },
+  {
+   "id": 1056,
+   "name_zh": "右额上沟",
+   "name_en": "r_S_front_sup",
+   "color": [
+    58,
+    234,
+    67
+   ],
+   "volume_mm3": 546.0,
+   "centroid_mm": [
+    49.4,
+    -44.4,
+    32.8
+   ]
+  },
+  {
+   "id": 1057,
+   "name_zh": "右詹森中间沟",
+   "name_en": "r_S_interm_prim-Jensen",
+   "color": [
+    234,
+    58,
+    100
+   ],
+   "volume_mm3": 3363.0,
+   "centroid_mm": [
+    29.5,
+    -56.8,
+    43.1
+   ]
+  },
+  {
+   "id": 1058,
+   "name_zh": "右顶内及顶横沟",
+   "name_en": "r_S_intrapariet_and_P_trans",
+   "color": [
+    58,
+    152,
+    234
+   ],
+   "volume_mm3": 1098.0,
+   "centroid_mm": [
+    34.1,
+    -82.6,
+    6.7
+   ]
+  },
+  {
+   "id": 1059,
+   "name_zh": "右枕中及月状沟",
+   "name_en": "r_S_oc_middle_and_Lunatus",
+   "color": [
+    203,
+    234,
+    58
+   ],
+   "volume_mm3": 2104.0,
+   "centroid_mm": [
+    28.4,
+    -77.0,
+    22.1
+   ]
+  },
+  {
+   "id": 1060,
+   "name_zh": "右枕上及横沟",
+   "name_en": "r_S_oc_sup_and_transversal",
+   "color": [
+    214,
+    58,
+    234
+   ],
+   "volume_mm3": 575.0,
+   "centroid_mm": [
+    43.8,
+    -66.3,
+    3.5
+   ]
+  },
+  {
+   "id": 1061,
+   "name_zh": "右枕前沟",
+   "name_en": "r_S_occipital_ant",
+   "color": [
+    58,
+    234,
+    162
+   ],
+   "volume_mm3": 1065.0,
+   "centroid_mm": [
+    43.9,
+    -50.7,
+    -15.2
+   ]
+  },
+  {
+   "id": 1062,
+   "name_zh": "右颞枕外侧沟",
+   "name_en": "r_S_oc-temp_lat",
+   "color": [
+    234,
+    111,
+    58
+   ],
+   "volume_mm3": 3389.0,
+   "centroid_mm": [
+    30.1,
+    -47.1,
+    -12.1
+   ]
+  },
+  {
+   "id": 1063,
+   "name_zh": "右颞枕内侧及舌沟",
+   "name_en": "r_S_oc-temp_med_and_Lingual",
+   "color": [
+    60,
+    58,
+    234
+   ],
+   "volume_mm3": 514.0,
+   "centroid_mm": [
+    43.1,
+    40.6,
+    -2.5
+   ]
+  },
+  {
+   "id": 1064,
+   "name_zh": "右眶外侧沟",
+   "name_en": "r_S_orbital_lateral",
+   "color": [
+    108,
+    234,
+    58
+   ],
+   "volume_mm3": 1395.0,
+   "centroid_mm": [
+    13.0,
+    24.7,
+    -18.9
+   ]
+  },
+  {
+   "id": 1065,
+   "name_zh": "右眶内侧嗅沟",
+   "name_en": "r_S_orbital_med-olfact",
+   "color": [
+    234,
+    58,
+    159
+   ],
+   "volume_mm3": 2578.0,
+   "centroid_mm": [
+    26.1,
+    35.4,
+    -14.1
+   ]
+  },
+  {
+   "id": 1066,
+   "name_zh": "右眶H形沟",
+   "name_en": "r_S_orbital-H_Shaped",
+   "color": [
+    58,
+    211,
+    234
+   ],
+   "volume_mm3": 3074.0,
+   "centroid_mm": [
+    17.0,
+    -67.0,
+    24.5
+   ]
+  },
+  {
+   "id": 1067,
+   "name_zh": "右顶枕沟",
+   "name_en": "r_S_parieto_occipital",
+   "color": [
+    234,
+    206,
+    58
+   ],
+   "volume_mm3": 2417.0,
+   "centroid_mm": [
+    5.8,
+    -2.1,
+    19.4
+   ]
+  },
+  {
+   "id": 1068,
+   "name_zh": "右胼周沟",
+   "name_en": "r_S_pericallosal",
+   "color": [
+    155,
+    58,
+    234
+   ],
+   "volume_mm3": 3439.0,
+   "centroid_mm": [
+    36.7,
+    -33.3,
+    47.3
+   ]
+  },
+  {
+   "id": 1069,
+   "name_zh": "右中央后沟",
+   "name_en": "r_S_postcentral",
+   "color": [
+    58,
+    234,
+    104
+   ],
+   "volume_mm3": 2308.0,
+   "centroid_mm": [
+    43.5,
+    5.7,
+    28.0
+   ]
+  },
+  {
+   "id": 1070,
+   "name_zh": "右中央前沟下部",
+   "name_en": "r_S_precentral-inf-part",
+   "color": [
+    234,
+    58,
+    64
+   ],
+   "volume_mm3": 2127.0,
+   "centroid_mm": [
+    27.5,
+    -7.7,
+    53.2
+   ]
+  },
+  {
+   "id": 1071,
+   "name_zh": "右中央前沟上部",
+   "name_en": "r_S_precentral-sup-part",
+   "color": [
+    58,
+    115,
+    234
+   ],
+   "volume_mm3": 694.0,
+   "centroid_mm": [
+    7.3,
+    41.3,
+    -13.0
+   ]
+  },
+  {
+   "id": 1072,
+   "name_zh": "右眶下沟",
+   "name_en": "r_S_suborbital",
+   "color": [
+    167,
+    234,
+    58
+   ],
+   "volume_mm3": 1887.0,
+   "centroid_mm": [
+    9.4,
+    -48.5,
+    36.2
+   ]
+  },
+  {
+   "id": 1073,
+   "name_zh": "右顶下沟",
+   "name_en": "r_S_subparietal",
+   "color": [
+    234,
+    58,
+    218
+   ],
+   "volume_mm3": 1171.0,
+   "centroid_mm": [
+    53.4,
+    -34.5,
+    -16.5
+   ]
+  },
+  {
+   "id": 1074,
+   "name_zh": "右颞下沟",
+   "name_en": "r_S_temporal_inf",
+   "color": [
+    58,
+    234,
+    199
+   ],
+   "volume_mm3": 9877.0,
+   "centroid_mm": [
+    50.1,
+    -37.8,
+    2.9
+   ]
+  },
+  {
+   "id": 1075,
+   "name_zh": "右颞上沟",
+   "name_en": "r_S_temporal_sup",
+   "color": [
+    234,
+    147,
+    58
+   ],
+   "volume_mm3": 537.0,
+   "centroid_mm": [
+    52.7,
+    -21.8,
+    5.8
+   ]
+  }
+ ],
+ "total_regions": 144
+}

@@ -17,7 +17,7 @@ class NeuroVizApp {
         this.pendingFiles = null;
 
         // Parcellation data
-        this.currentAtlas = 'hcp_mmp';
+        this.currentAtlas = 'hcp360';
         this.currentHemi = 'both';
         this.atlasColorMap = this.buildAtlasColorMap();
 
@@ -845,35 +845,46 @@ class NeuroVizApp {
     async initModule1() {
         if (this.viewers['viewer1']) return;
 
-        const viewer = new BrainViewer('viewer3D1', {
-            onRegionClick: (userData) => this.handleRegionClick(userData, 'regionInfo1'),
+        // ===== 结构分区模块（NiiVue 引擎）=====
+        // 数据源：NIfTI 标准图谱 + JSON 颜色表
+        // 高亮交互：直接修改 LUT（查找表），不再依赖颜色近似匹配
+        const viewer = new NiiVueViewer('viewer3D1', {
+            onRegionPick: (info) => this._onNiiRegionPick(info),
         });
         this.viewers['viewer1'] = viewer;
 
-        await viewer.createFullBrain(this.currentAtlas, this.currentHemi);
-
-        viewer.addSubcorticalStructures([
-            ...SUBCORTICAL_STRUCTURES,
-            ...CEREBELLAR_REGIONS,
-            ...WHITE_MATTER_STRUCTURES,
-        ]);
+        try {
+            await viewer.loadAtlas(this.currentAtlas);
+        } catch (e) {
+            console.error('[NeuroViz] 初始化加载失败:', e);
+            this.setToast('数据加载失败: ' + (e && e.message ? e.message : e), 'error');
+            throw e;
+        }
 
         this.buildStructuralLegend();
         this.setupLegendSearch();
         this.setupAtlasControls();
         this.updateAtlasWatermark();
 
-        // 清除高亮按钮
         const btnClearFocus = document.getElementById('btnClearFocus1');
         if (btnClearFocus) {
             btnClearFocus.addEventListener('click', () => {
-                viewer.clearCorticalFocus();
-                viewer.clearSubcorticalFocus();
-                viewer.resetView();
+                viewer.clearHighlight();
                 document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
                 document.getElementById('regionInfo1').innerHTML = '<p class="placeholder">点击右侧分区名称查看详情并跳转3D视图</p>';
             });
         }
+    }
+
+    /** 模型内点击拾取后的联动：图例选中 + 信息卡 */
+    _onNiiRegionPick(info) {
+        const viewer = this.viewers['viewer1'];
+        document.querySelectorAll('#structuralLegend .legend-item').forEach(el => {
+            const sameId = Number(el.dataset.region) === info.id;
+            const sameVol = el.dataset.volindex === String(viewer.highlight ? viewer.highlight.volIndex : -1);
+            el.classList.toggle('selected', sameId && sameVol);
+        });
+        this.showRegionInfoFromMeta(info, 'regionInfo1');
     }
 
     // 将 hex 颜色字符串 "#RRGGBB" 解析为 {r, g, b} (0-1) 对象
@@ -994,128 +1005,41 @@ class NeuroVizApp {
     }
 
     buildStructuralLegend() {
+        const viewer = this.viewers['viewer1'];
+        if (!viewer || !viewer.atlasMeta) return;
+        const data = viewer.getAllLegendData();
         const corticalEl = document.getElementById('corticalLegend');
         const subcorticalEl = document.getElementById('subcorticalLegend');
-        const cerebellarEl = document.getElementById('cerebellarLegend');
-        const whiteMatterEl = document.getElementById('whiteMatterLegend');
+        const hex = (rgb) => '#' + rgb.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
 
-        // 脑叶英文 → 中文
-        const lobeMap = {
-            frontal: '额叶', parietal: '顶叶', temporal: '颞叶',
-            occipital: '枕叶', insula: '岛叶', cingulate: '扣带/内侧',
-            '其他皮层': '其他皮层'
-        };
-        // 渲染全部皮层分区（不只是前16个）
-        const atlasRegions = (typeof ATLAS_REGIONS !== 'undefined' ? ATLAS_REGIONS[this.currentAtlas] : []) || [];
-        corticalEl.innerHTML = atlasRegions.map(r => {
-            const aliases = (r.aliases || []).join(' ');
-            return `
-            <div class="legend-item" data-region="${r.id}" data-color="${r.color}" data-type="cortical" data-aliases="${aliases}">
-                <div class="legend-color" style="background:${r.color};"></div>
-                <span class="legend-name">${r.name}</span>
-                <span style="font-size:10px;color:var(--text-muted);">${lobeMap[r.lobe] || r.lobe}</span>
-            </div>
-        `}).join('');
+        // 皮层/网络分区（当前图谱）
+        corticalEl.innerHTML = data.cortical.regions.map(r => `
+            <div class="legend-item" data-region="${r.id}" data-volindex="${viewer.atlasIndex}" data-aliases="${r.name_en}">
+                <div class="legend-color" style="background:${hex(r.color)};"></div>
+                <span class="legend-name">${r.name_zh}</span>
+                <span style="font-size:10px;color:var(--text-muted);">${(r.volume_mm3 / 1000).toFixed(1)} cm³</span>
+            </div>`).join('');
 
-        subcorticalEl.innerHTML = SUBCORTICAL_STRUCTURES.map(s => `
-            <div class="legend-item" data-region="${s.id}" data-color="${s.color}" data-type="subcortical">
-                <div class="legend-color" style="background:${s.color};"></div>
-                <span class="legend-name">${s.name}</span>
-                <span style="font-size:10px;color:var(--text-muted);">${s.region}</span>
-            </div>
-        `).join('');
+        // 皮层下结构：海马/杏仁核/丘脑/基底节/小脑/白质/脑室（来自 aparc+aseg 或 AAL）
+        subcorticalEl.innerHTML = data.subcortical.regions.map(r => `
+            <div class="legend-item" data-region="${r.id}" data-volindex="${viewer.subIndex}" data-aliases="${r.name_en}">
+                <div class="legend-color" style="background:${hex(r.color)};"></div>
+                <span class="legend-name">${r.name_zh}</span>
+                <span style="font-size:10px;color:var(--text-muted);">${(r.volume_mm3 / 1000).toFixed(2)} cm³</span>
+            </div>`).join('');
 
-        cerebellarEl.innerHTML = CEREBELLAR_REGIONS.map(c => `
-            <div class="legend-item" data-region="${c.id}" data-color="${c.color}" data-type="cerebellar">
-                <div class="legend-color" style="background:${c.color};"></div>
-                <span class="legend-name">${c.name}</span>
-                <span style="font-size:10px;color:var(--text-muted);">${c.region}</span>
-            </div>
-        `).join('');
+        // 新架构下小脑/白质已并入体素分割图谱，清空旧板块
+        document.getElementById('cerebellarLegend').innerHTML = '';
+        document.getElementById('whiteMatterLegend').innerHTML = '';
 
-        whiteMatterEl.innerHTML = WHITE_MATTER_STRUCTURES.map(w => `
-            <div class="legend-item" data-region="${w.id}" data-color="${w.color}" data-type="whitematter">
-                <div class="legend-color" style="background:${w.color};"></div>
-                <span class="legend-name">${w.name}</span>
-                <span style="font-size:10px;color:var(--text-muted);">${w.region}</span>
-            </div>
-        `).join('');
-
-        // 点击图例项 → 高亮 + 跳转视角
+        // 点击图例项 → LUT 高亮 + 信息卡
         document.querySelectorAll('#structuralLegend .legend-item').forEach(item => {
             item.addEventListener('click', () => {
-                const regionId = item.dataset.region;
-                const regionColor = item.dataset.color;
-                const regionType = item.dataset.type;
-                const viewer = this.viewers['viewer1'];
-                if (!viewer) {
-                    console.warn('[NeuroViz] Legend click: no viewer available');
-                    return;
-                }
-
-                console.log('[NeuroViz] Legend click:', regionId, regionColor, regionType);
-
-                // 先清除所有高亮
-                viewer.clearCorticalFocus();
-                viewer.clearSubcorticalFocus();
-                this._focusedRegion = null;
-
-                // 取消其他图例项的选中态
+                const regionId = Number(item.dataset.region);
+                const info = viewer.setHighlight(regionId);
                 document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
                 item.classList.add('selected');
-
-                if (regionType === 'cortical') {
-                    // 皮层区域：使用顶点颜色聚焦
-                    let h = 'both';
-                    if (regionId.startsWith('L_') || regionId.startsWith('lh_')) h = 'left';
-                    else if (regionId.startsWith('R_') || regionId.startsWith('rh_')) h = 'right';
-                    viewer.focusCorticalRegion(regionId, h);
-                    this._focusedRegion = { id: regionId, color: regionColor, type: 'cortical' };
-
-                    // 计算区域空间信息（中心 + 表面法线）
-                    const info = viewer.getRegionSpatialInfo(regionColor, 'both');
-                    console.log('[NeuroViz] Region info for', regionId, ':', info);
-                    const brainCenter = viewer.brainCenter || { x: 0, y: 0, z: 0 };
-                    if (info) {
-                        // 相机放在区域远离大脑中心的一侧，目标始终为大脑中心，保证旋转中心稳定
-                        const camDist = 160;
-                        const dx = info.x - brainCenter.x;
-                        const dy = info.y - brainCenter.y;
-                        const dz = info.z - brainCenter.z;
-                        const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
-                        const camPos = [
-                            info.x + (dx / len) * camDist,
-                            info.y + (dy / len) * camDist,
-                            info.z + (dz / len) * camDist
-                        ];
-                        viewer.animateCameraTo(camPos, [brainCenter.x, brainCenter.y, brainCenter.z]);
-                    } else {
-                        console.warn('[NeuroViz] No spatial info found for', regionId);
-                        viewer.animateCameraTo([brainCenter.x, brainCenter.y + 40, brainCenter.z + 240], [brainCenter.x, brainCenter.y, brainCenter.z]);
-                    }
-                } else {
-                    // 皮层下/小脑/白质：皮层透明化 + 高亮球体
-                    viewer.focusSubcorticalRegion(regionId);
-                    this._focusedRegion = { id: regionId, color: regionColor, type: 'subcortical' };
-
-                    // 飞向该结构，目标保持为大脑中心，避免旋转中心跑到结构边缘
-                    const pos = viewer.getSubcorticalPosition(regionId);
-                    const brainCenter = viewer.brainCenter || { x: 0, y: 0, z: 0 };
-                    const isCerebellar = pos.y < -35;
-                    const camDist = isCerebellar ? 180 : 140;
-                    const dx = pos.x - brainCenter.x;
-                    const dy = pos.y - brainCenter.y;
-                    const dz = pos.z - brainCenter.z;
-                    const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
-                    const camPos = [
-                        pos.x + (dx / len) * camDist,
-                        pos.y + (dy / len) * camDist,
-                        pos.z + (dz / len) * camDist
-                    ];
-                    viewer.animateCameraTo(camPos, [brainCenter.x, brainCenter.y, brainCenter.z]);
-                }
-
-                this.showRegionInfo(regionId, 'regionInfo1');
+                if (info) this.showRegionInfoFromMeta(info, 'regionInfo1');
             });
         });
     }
@@ -1123,8 +1047,10 @@ class NeuroVizApp {
     updateAtlasWatermark() {
         const watermark = document.getElementById('watermark1');
         if (!watermark) return;
-        const meta = (typeof ATLAS_METADATA !== 'undefined' ? ATLAS_METADATA[this.currentAtlas] : null) || { name: this.currentAtlas };
-        watermark.textContent = `数据来源：ICBM MNI152 / ${meta.name} (${meta.citation})`;
+        const viewer = this.viewers['viewer1'];
+        const meta = viewer && viewer.atlasMeta;
+        watermark.textContent = '数据来源：ICBM MNI152 模板 · '
+            + (meta ? meta.name + ' (' + meta.citation + ')' : '加载中…') + ' · NiiVue 渲染';
     }
 
     setupAtlasControls() {
@@ -1135,61 +1061,59 @@ class NeuroVizApp {
 
         atlasSelect.addEventListener('change', async () => {
             this.currentAtlas = atlasSelect.value;
-            this.atlasColorMap = this.buildAtlasColorMap();
-            this.setToast(`已切换到 ${atlasSelect.options[atlasSelect.selectedIndex].text}`, 'info');
             const viewer = this.viewers['viewer1'];
-            if (viewer) {
-                await viewer.createFullBrain(this.currentAtlas, this.currentHemi);
-                viewer.addSubcorticalStructures([
-                    ...SUBCORTICAL_STRUCTURES,
-                    ...CEREBELLAR_REGIONS,
-                    ...WHITE_MATTER_STRUCTURES,
-                ]);
-                viewer.clearCorticalFocus();
-                viewer.clearSubcorticalFocus();
+            if (!viewer) return;
+            this.setToast(`正在加载 ${atlasSelect.options[atlasSelect.selectedIndex].text} ...`, 'info');
+            try {
+                await viewer.loadAtlas(this.currentAtlas);
+                this.buildStructuralLegend();
+                this.setupLegendSearch();
+                this.updateAtlasWatermark();
+                viewer.setHemiFilter(hemiSelect.value);
+                this.setToast('图谱已切换', 'success');
+            } catch (e) {
+                console.error('[NeuroViz] 图谱加载失败:', e);
+                this.setToast('图谱加载失败，请确认 data/ 文件已生成', 'error');
             }
-            this.buildStructuralLegend();
-            this.setupLegendSearch();
-            this.updateAtlasWatermark();
             document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
             document.getElementById('regionInfo1').innerHTML = '<p class="placeholder">点击右侧分区名称查看详情并跳转3D视图</p>';
         });
 
-        hemiSelect.addEventListener('change', async () => {
+        hemiSelect.addEventListener('change', () => {
             this.currentHemi = hemiSelect.value;
             const viewer = this.viewers['viewer1'];
-            if (viewer) {
-                await viewer.createFullBrain(this.currentAtlas, this.currentHemi);
-                viewer.addSubcorticalStructures([
-                    ...SUBCORTICAL_STRUCTURES,
-                    ...CEREBELLAR_REGIONS,
-                    ...WHITE_MATTER_STRUCTURES,
-                ]);
-                viewer.clearCorticalFocus();
-                viewer.clearSubcorticalFocus();
-            }
-            document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
-            document.getElementById('regionInfo1').innerHTML = '<p class="placeholder">点击右侧分区名称查看详情并跳转3D视图</p>';
+            if (viewer) viewer.setHemiFilter(this.currentHemi);
         });
 
         btnReset.addEventListener('click', () => {
             const viewer = this.viewers['viewer1'];
-            if (viewer) {
-                viewer.resetView();
-                viewer.clearCorticalFocus();
-                viewer.clearSubcorticalFocus();
-            }
+            if (viewer) viewer.resetView();
             document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
             document.getElementById('regionInfo1').innerHTML = '<p class="placeholder">点击右侧分区名称查看详情并跳转3D视图</p>';
         });
 
         btnScreenshot.addEventListener('click', () => {
             const viewer = this.viewers['viewer1'];
-            if (viewer) {
-                const dataUrl = viewer.screenshot();
-                this.downloadImage(dataUrl, 'neuroviz-structural.png');
-            }
+            if (viewer) viewer.screenshot();
         });
+    }
+
+    /** NiiVue 版本的区域信息卡（体积来自体素统计，引用来自图谱 JSON） */
+    showRegionInfoFromMeta(info, panelId) {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        // 文献引用取自当前图谱元数据（区域对象里不带 citation）
+        const _v = this.viewers['viewer1'];
+        const _meta = info.volumeName && _v && _v.subMeta && _v.subMeta.name === info.volumeName ? _v.subMeta : (_v && _v.atlasMeta);
+        if (!info.citation && _meta) info.citation = _meta.citation;
+        const hex = '#' + info.color.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
+        panel.innerHTML = `
+            <div class="region-info-card">
+                <h4><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${hex};margin-right:6px;vertical-align:middle;"></span>${info.name_zh} <small style="color:var(--text-muted);font-weight:400;">${info.name_en}</small></h4>
+                <div class="info-row"><span>区域 ID</span><span>${info.id}</span></div>
+                <div class="info-row"><span>体积</span><span>${(info.volume_mm3 / 1000).toFixed(2)} cm³（${info.volume_mm3} mm³）</span></div>
+                <p class="ref">文献引用: ${info.citation || '—'}</p>
+            </div>`;
     }
 
     handleRegionClick(userData, infoPanelId) {
@@ -1613,53 +1537,24 @@ class NeuroVizApp {
     initModule4() {
         if (this.viewers['viewer4']) return;
 
-        const viewer = new BrainViewer('viewer3D4', {
-            cameraPosition: [0, 0, 260],
-        });
-        viewer.createFullBrain(this.currentAtlas, 'both');
-        viewer.addSubcorticalStructures([
-            ...SUBCORTICAL_STRUCTURES,
-            ...CEREBELLAR_REGIONS,
-            ...WHITE_MATTER_STRUCTURES,
-        ]);
-        viewer.options.onRegionClick = (userData) => this.handleRegionClick(userData, 'queryResult');
+        // ===== 交互分析：NiiVue 多平面四视图（轴位/矢状位/冠状位 + 3D 联动）=====
+        const grid = document.getElementById('multiViewGrid');
+        if (grid) {
+            grid.innerHTML = '<div id="niivueMP" style="width:100%;height:100%;position:relative;"></div>';
+            grid.style.display = 'block';
+            grid.style.gridTemplateColumns = '1fr';
+            grid.style.gridTemplateRows = '1fr';
+        }
+        // 旧的独立切片滑杆/视图模式按钮不再使用
+        const sliceControls = document.querySelector('.slice-controls');
+        if (sliceControls) sliceControls.style.display = 'none';
+        document.querySelectorAll('.view-mode-btn').forEach(b => { b.style.display = 'none'; });
+
+        const viewer = new NiiVueViewer('niivueMP', { viewMode: 'multiplanar' });
         this.viewers['viewer4'] = viewer;
-
-        this.sliceViewers = {
-            axial: new SliceViewer('canvasAxial'),
-            sagittal: new SliceViewer('canvasSagittal'),
-            coronal: new SliceViewer('canvasCoronal'),
-        };
-
-        ['Axial', 'Sagittal', 'Coronal'].forEach(orient => {
-            const slider = document.getElementById(`slider${orient}`);
-            if (slider) {
-                slider.addEventListener('input', () => {
-                    const key = orient.toLowerCase();
-                    if (this.sliceViewers[key]) {
-                        this.sliceViewers[key].setSlice(parseInt(slider.value));
-                    }
-                });
-            }
-        });
-
-        document.querySelectorAll('.view-mode-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const mode = btn.dataset.mode;
-                const grid = document.getElementById('multiViewGrid');
-                if (mode === 'single3d') {
-                    grid.classList.add('single-3d');
-                } else {
-                    grid.classList.remove('single-3d');
-                }
-                setTimeout(() => {
-                    const v = this.viewers['viewer4'];
-                    if (v) v.onResize();
-                    Object.values(this.sliceViewers).forEach(s => s.resize());
-                }, 100);
-            });
+        viewer.loadAtlas(this.currentAtlas).catch(e => {
+            console.error('[NeuroViz] 模块4数据加载失败:', e);
+            this.setToast('多视图数据加载失败', 'error');
         });
 
         const regionSearch = document.getElementById('regionSearch');

@@ -1,5 +1,24 @@
 /* ===== NeuroViz 图表可视化模块 ===== */
 
+/* ===== 演示数据：个体-模板 Z-score 偏差 =====
+   ⚠ 占位假数据：数值由固定公式生成，仅用于界面演示。
+   接入真实个体数据（皮层厚度/体积/表面积）时，替换本函数返回值即可。 */
+function generateZScores() {
+    const regions = [
+        '左额上回', '左额中回', '左中央前回', '左中央后回',
+        '左缘上回', '左角回', '左楔前叶', '左颞上回',
+        '右额上回', '右额中回', '右中央前回', '右中央后回',
+        '右缘上回', '右角回', '右楔前叶', '右颞上回',
+    ];
+    return regions.map((name, i) => ({
+        name,
+        thickness: Number((((i * 37) % 13) - 6 / 2).toFixed(2)),
+        volume: Number((((i * 53) % 11) - 5).toFixed(2)),
+        area: Number((((i * 29) % 15) - 7).toFixed(2)),
+    }));
+}
+window.generateZScores = generateZScores;
+
 class ChartManager {
     constructor() {
         this.charts = {};

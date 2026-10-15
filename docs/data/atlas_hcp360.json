@@ -1,0 +1,5736 @@
+{
+ "id": "hcp360",
+ "name": "HCP MMP 1.0 皮层分区（360区）",
+ "citation": "Glasser et al., 2016, Nature",
+ "regions": [
+  {
+   "id": 2,
+   "name_zh": "左初级视皮层 V1",
+   "name_en": "L_V1_ROI",
+   "color": [
+    159,
+    234,
+    58
+   ],
+   "volume_mm3": 303.0,
+   "centroid_mm": [
+    -41.8,
+    -67.1,
+    3.7
+   ]
+  },
+  {
+   "id": 3,
+   "name_zh": "左内侧上颞区 MST",
+   "name_en": "L_MST_ROI",
+   "color": [
+    234,
+    58,
+    210
+   ],
+   "volume_mm3": 738.0,
+   "centroid_mm": [
+    -14.0,
+    -78.4,
+    27.5
+   ]
+  },
+  {
+   "id": 4,
+   "name_zh": "左第六视皮层 V6",
+   "name_en": "L_V6_ROI",
+   "color": [
+    58,
+    234,
+    207
+   ],
+   "volume_mm3": 5530.0,
+   "centroid_mm": [
+    -11.7,
+    -80.4,
+    2.3
+   ]
+  },
+  {
+   "id": 5,
+   "name_zh": "左次级视皮层 V2",
+   "name_en": "L_V2_ROI",
+   "color": [
+    234,
+    155,
+    58
+   ],
+   "volume_mm3": 3297.0,
+   "centroid_mm": [
+    -18.0,
+    -84.9,
+    4.5
+   ]
+  },
+  {
+   "id": 6,
+   "name_zh": "左第三视皮层 V3",
+   "name_en": "L_V3_ROI",
+   "color": [
+    104,
+    58,
+    234
+   ],
+   "volume_mm3": 2465.0,
+   "centroid_mm": [
+    -29.5,
+    -83.1,
+    -3.2
+   ]
+  },
+  {
+   "id": 7,
+   "name_zh": "左第四视皮层 V4",
+   "name_en": "L_V4_ROI",
+   "color": [
+    64,
+    234,
+    58
+   ],
+   "volume_mm3": 669.0,
+   "centroid_mm": [
+    -32.7,
+    -71.6,
+    -15.3
+   ]
+  },
+  {
+   "id": 8,
+   "name_zh": "左第八视皮层 V8",
+   "name_en": "L_V8_ROI",
+   "color": [
+    234,
+    58,
+    115
+   ],
+   "volume_mm3": 6372.0,
+   "centroid_mm": [
+    -27.8,
+    -19.7,
+    53.7
+   ]
+  },
+  {
+   "id": 9,
+   "name_zh": "左中央前回 4",
+   "name_en": "L_4_ROI",
+   "color": [
+    58,
+    166,
+    234
+   ],
+   "volume_mm3": 3637.0,
+   "centroid_mm": [
+    -37.9,
+    -23.4,
+    50.6
+   ]
+  },
+  {
+   "id": 10,
+   "name_zh": "左中央后回 3b 区",
+   "name_en": "L_3b_ROI",
+   "color": [
+    218,
+    234,
+    58
+   ],
+   "volume_mm3": 1310.0,
+   "centroid_mm": [
+    -40.0,
+    -5.2,
+    48.0
+   ]
+  },
+  {
+   "id": 11,
+   "name_zh": "左额眼区",
+   "name_en": "L_FEF_ROI",
+   "color": [
+    199,
+    58,
+    234
+   ],
+   "volume_mm3": 505.0,
+   "centroid_mm": [
+    -47.4,
+    -0.6,
+    37.6
+   ]
+  },
+  {
+   "id": 12,
+   "name_zh": "左后眼区 PEF",
+   "name_en": "L_PEF_ROI",
+   "color": [
+    58,
+    234,
+    148
+   ],
+   "volume_mm3": 1109.0,
+   "centroid_mm": [
+    -48.1,
+    -1.1,
+    46.1
+   ]
+  },
+  {
+   "id": 13,
+   "name_zh": "左岛叶 55b 区",
+   "name_en": "L_55b_ROI",
+   "color": [
+    234,
+    97,
+    58
+   ],
+   "volume_mm3": 929.0,
+   "centroid_mm": [
+    -16.4,
+    -88.9,
+    23.8
+   ]
+  },
+  {
+   "id": 14,
+   "name_zh": "左第三视皮层 A V3A",
+   "name_en": "L_V3A_ROI",
+   "color": [
+    58,
+    71,
+    234
+   ],
+   "volume_mm3": 1048.0,
+   "centroid_mm": [
+    -6.4,
+    -39.3,
+    17.3
+   ]
+  },
+  {
+   "id": 15,
+   "name_zh": "左压后皮层 RSC",
+   "name_en": "L_RSC_ROI",
+   "color": [
+    122,
+    234,
+    58
+   ],
+   "volume_mm3": 1592.0,
+   "centroid_mm": [
+    -9.8,
+    -69.7,
+    34.4
+   ]
+  },
+  {
+   "id": 16,
+   "name_zh": "左顶枕沟 2",
+   "name_en": "L_POS2_ROI",
+   "color": [
+    234,
+    58,
+    174
+   ],
+   "volume_mm3": 527.0,
+   "centroid_mm": [
+    -23.8,
+    -81.9,
+    26.4
+   ]
+  },
+  {
+   "id": 17,
+   "name_zh": "左第七视皮层 V7",
+   "name_en": "L_V7_ROI",
+   "color": [
+    58,
+    225,
+    234
+   ],
+   "volume_mm3": 870.0,
+   "centroid_mm": [
+    -22.8,
+    -72.5,
+    33.0
+   ]
+  },
+  {
+   "id": 18,
+   "name_zh": "左顶内沟 IPS1",
+   "name_en": "L_IPS1_ROI",
+   "color": [
+    234,
+    192,
+    58
+   ],
+   "volume_mm3": 1501.0,
+   "centroid_mm": [
+    -41.5,
+    -56.4,
+    -19.4
+   ]
+  },
+  {
+   "id": 19,
+   "name_zh": "左梭状回面部区 FFC",
+   "name_en": "L_FFC_ROI",
+   "color": [
+    140,
+    58,
+    234
+   ],
+   "volume_mm3": 399.0,
+   "centroid_mm": [
+    -27.5,
+    -79.6,
+    15.5
+   ]
+  },
+  {
+   "id": 20,
+   "name_zh": "左第三视皮层 B V3B",
+   "name_en": "L_V3B_ROI",
+   "color": [
+    58,
+    234,
+    89
+   ],
+   "volume_mm3": 425.0,
+   "centroid_mm": [
+    -39.3,
+    -84.3,
+    2.5
+   ]
+  },
+  {
+   "id": 21,
+   "name_zh": "左外侧枕叶 1",
+   "name_en": "L_LO1_ROI",
+   "color": [
+    234,
+    58,
+    79
+   ],
+   "volume_mm3": 471.0,
+   "centroid_mm": [
+    -43.1,
+    -81.7,
+    -6.7
+   ]
+  },
+  {
+   "id": 22,
+   "name_zh": "左外侧枕叶 2",
+   "name_en": "L_LO2_ROI",
+   "color": [
+    58,
+    130,
+    234
+   ],
+   "volume_mm3": 512.0,
+   "centroid_mm": [
+    -41.4,
+    -80.1,
+    -14.2
+   ]
+  },
+  {
+   "id": 23,
+   "name_zh": "左颞下后部视觉区 PIT",
+   "name_en": "L_PIT_ROI",
+   "color": [
+    181,
+    234,
+    58
+   ],
+   "volume_mm3": 375.0,
+   "centroid_mm": [
+    -45.3,
+    -73.0,
+    6.0
+   ]
+  },
+  {
+   "id": 24,
+   "name_zh": "左中颞区 MT",
+   "name_en": "L_MT_ROI",
+   "color": [
+    234,
+    58,
+    233
+   ],
+   "volume_mm3": 674.0,
+   "centroid_mm": [
+    -44.3,
+    -24.4,
+    9.3
+   ]
+  },
+  {
+   "id": 25,
+   "name_zh": "左初级听皮层 A1",
+   "name_en": "L_A1_ROI",
+   "color": [
+    58,
+    234,
+    184
+   ],
+   "volume_mm3": 1283.0,
+   "centroid_mm": [
+    -57.0,
+    -45.5,
+    21.0
+   ]
+  },
+  {
+   "id": 26,
+   "name_zh": "左上顶小叶外侧 PSL",
+   "name_en": "L_PSL_ROI",
+   "color": [
+    234,
+    133,
+    58
+   ],
+   "volume_mm3": 2246.0,
+   "centroid_mm": [
+    -8.2,
+    17.0,
+    61.0
+   ]
+  },
+  {
+   "id": 27,
+   "name_zh": "左额岛盖沟 SFL",
+   "name_en": "L_SFL_ROI",
+   "color": [
+    82,
+    58,
+    234
+   ],
+   "volume_mm3": 811.0,
+   "centroid_mm": [
+    -7.3,
+    -50.6,
+    47.9
+   ]
+  },
+  {
+   "id": 28,
+   "name_zh": "左压后皮层 PCV",
+   "name_en": "L_PCV_ROI",
+   "color": [
+    86,
+    234,
+    58
+   ],
+   "volume_mm3": 1100.0,
+   "centroid_mm": [
+    -60.2,
+    -47.5,
+    14.0
+   ]
+  },
+  {
+   "id": 29,
+   "name_zh": "左颞上视觉区 STV",
+   "name_en": "L_STV_ROI",
+   "color": [
+    234,
+    58,
+    137
+   ],
+   "volume_mm3": 591.0,
+   "centroid_mm": [
+    -6.8,
+    -65.6,
+    48.3
+   ]
+  },
+  {
+   "id": 30,
+   "name_zh": "左顶上小叶后内侧 7Pm",
+   "name_en": "L_7Pm_ROI",
+   "color": [
+    58,
+    189,
+    234
+   ],
+   "volume_mm3": 903.0,
+   "centroid_mm": [
+    -5.3,
+    -61.4,
+    33.3
+   ]
+  },
+  {
+   "id": 31,
+   "name_zh": "左顶上小叶内侧 7m",
+   "name_en": "L_7m_ROI",
+   "color": [
+    234,
+    228,
+    58
+   ],
+   "volume_mm3": 1726.0,
+   "centroid_mm": [
+    -11.0,
+    -59.2,
+    12.8
+   ]
+  },
+  {
+   "id": 32,
+   "name_zh": "左顶枕沟 1",
+   "name_en": "L_POS1_ROI",
+   "color": [
+    177,
+    58,
+    234
+   ],
+   "volume_mm3": 826.0,
+   "centroid_mm": [
+    -2.8,
+    -19.6,
+    37.2
+   ]
+  },
+  {
+   "id": 33,
+   "name_zh": "左后扣带回 23d",
+   "name_en": "L_23d_ROI",
+   "color": [
+    58,
+    234,
+    125
+   ],
+   "volume_mm3": 660.0,
+   "centroid_mm": [
+    -4.8,
+    -55.9,
+    18.0
+   ]
+  },
+  {
+   "id": 34,
+   "name_zh": "左腹侧后扣带 v23ab",
+   "name_en": "L_v23ab_ROI",
+   "color": [
+    234,
+    74,
+    58
+   ],
+   "volume_mm3": 914.0,
+   "centroid_mm": [
+    -3.0,
+    -40.6,
+    30.5
+   ]
+  },
+  {
+   "id": 35,
+   "name_zh": "左背侧后扣带 d23ab",
+   "name_en": "L_d23ab_ROI",
+   "color": [
+    58,
+    94,
+    234
+   ],
+   "volume_mm3": 750.0,
+   "centroid_mm": [
+    -8.7,
+    -45.5,
+    32.1
+   ]
+  },
+  {
+   "id": 36,
+   "name_zh": "左后扣带回 31pv",
+   "name_en": "L_31pv_ROI",
+   "color": [
+    145,
+    234,
+    58
+   ],
+   "volume_mm3": 896.0,
+   "centroid_mm": [
+    -6.7,
+    -39.4,
+    60.1
+   ]
+  },
+  {
+   "id": 37,
+   "name_zh": "左旁中央小叶后部 5m",
+   "name_en": "L_5m_ROI",
+   "color": [
+    234,
+    58,
+    196
+   ],
+   "volume_mm3": 1076.0,
+   "centroid_mm": [
+    -14.8,
+    -36.5,
+    48.3
+   ]
+  },
+  {
+   "id": 38,
+   "name_zh": "左旁中央小叶后部 5mv",
+   "name_en": "L_5mv_ROI",
+   "color": [
+    58,
+    234,
+    221
+   ],
+   "volume_mm3": 1471.0,
+   "centroid_mm": [
+    -11.5,
+    -28.5,
+    41.7
+   ]
+  },
+  {
+   "id": 39,
+   "name_zh": "左后扣带回 23c",
+   "name_en": "L_23c_ROI",
+   "color": [
+    234,
+    169,
+    58
+   ],
+   "volume_mm3": 1237.0,
+   "centroid_mm": [
+    -13.6,
+    -45.8,
+    69.0
+   ]
+  },
+  {
+   "id": 40,
+   "name_zh": "左顶上小叶前外侧 5L",
+   "name_en": "L_5L_ROI",
+   "color": [
+    118,
+    58,
+    234
+   ],
+   "volume_mm3": 1596.0,
+   "centroid_mm": [
+    -7.7,
+    -17.8,
+    48.9
+   ]
+  },
+  {
+   "id": 41,
+   "name_zh": "左背侧前扣带回 24dd",
+   "name_en": "L_24dd_ROI",
+   "color": [
+    58,
+    234,
+    67
+   ],
+   "volume_mm3": 609.0,
+   "centroid_mm": [
+    -9.7,
+    -1.7,
+    43.2
+   ]
+  },
+  {
+   "id": 42,
+   "name_zh": "左腹侧前扣带回 24dv",
+   "name_en": "L_24dv_ROI",
+   "color": [
+    234,
+    58,
+    101
+   ],
+   "volume_mm3": 1110.0,
+   "centroid_mm": [
+    -19.1,
+    -52.5,
+    64.0
+   ]
+  },
+  {
+   "id": 43,
+   "name_zh": "左顶上小叶前外侧 7AL",
+   "name_en": "L_7AL_ROI",
+   "color": [
+    58,
+    152,
+    234
+   ],
+   "volume_mm3": 1800.0,
+   "centroid_mm": [
+    -6.9,
+    3.3,
+    55.6
+   ]
+  },
+  {
+   "id": 44,
+   "name_zh": "左辅助眼区",
+   "name_en": "L_SCEF_ROI",
+   "color": [
+    204,
+    234,
+    58
+   ],
+   "volume_mm3": 1949.0,
+   "centroid_mm": [
+    -17.0,
+    4.1,
+    65.4
+   ]
+  },
+  {
+   "id": 45,
+   "name_zh": "左辅助运动区 6ma",
+   "name_en": "L_6ma_ROI",
+   "color": [
+    213,
+    58,
+    234
+   ],
+   "volume_mm3": 1277.0,
+   "centroid_mm": [
+    -8.8,
+    -58.1,
+    59.2
+   ]
+  },
+  {
+   "id": 46,
+   "name_zh": "左顶上小叶前内侧 7Am",
+   "name_en": "L_7Am_ROI",
+   "color": [
+    58,
+    234,
+    162
+   ],
+   "volume_mm3": 662.0,
+   "centroid_mm": [
+    -12.4,
+    -71.8,
+    51.2
+   ]
+  },
+  {
+   "id": 47,
+   "name_zh": "左顶上小叶后外侧 7PL",
+   "name_en": "L_7PL_ROI",
+   "color": [
+    234,
+    110,
+    58
+   ],
+   "volume_mm3": 1263.0,
+   "centroid_mm": [
+    -34.3,
+    -49.6,
+    58.8
+   ]
+  },
+  {
+   "id": 48,
+   "name_zh": "左顶上小叶中央 7PC",
+   "name_en": "L_7PC_ROI",
+   "color": [
+    59,
+    58,
+    234
+   ],
+   "volume_mm3": 623.0,
+   "centroid_mm": [
+    -28.9,
+    -56.0,
+    52.8
+   ]
+  },
+  {
+   "id": 49,
+   "name_zh": "左腹侧顶内沟外侧",
+   "name_en": "L_LIPv_ROI",
+   "color": [
+    109,
+    234,
+    58
+   ],
+   "volume_mm3": 812.0,
+   "centroid_mm": [
+    -20.8,
+    -63.7,
+    59.8
+   ]
+  },
+  {
+   "id": 50,
+   "name_zh": "左腹顶内沟 VIP",
+   "name_en": "L_VIP_ROI",
+   "color": [
+    234,
+    58,
+    160
+   ],
+   "volume_mm3": 723.0,
+   "centroid_mm": [
+    -21.6,
+    -64.2,
+    42.5
+   ]
+  },
+  {
+   "id": 51,
+   "name_zh": "左内侧顶内沟 MIP",
+   "name_en": "L_MIP_ROI",
+   "color": [
+    58,
+    211,
+    234
+   ],
+   "volume_mm3": 3089.0,
+   "centroid_mm": [
+    -43.1,
+    -26.1,
+    55.4
+   ]
+  },
+  {
+   "id": 52,
+   "name_zh": "左中央后回 1 区",
+   "name_en": "L_1_ROI",
+   "color": [
+    234,
+    206,
+    58
+   ],
+   "volume_mm3": 2671.0,
+   "centroid_mm": [
+    -36.5,
+    -33.9,
+    50.9
+   ]
+  },
+  {
+   "id": 53,
+   "name_zh": "左中央后回 2 区",
+   "name_en": "L_2_ROI",
+   "color": [
+    154,
+    58,
+    234
+   ],
+   "volume_mm3": 1519.0,
+   "centroid_mm": [
+    -33.4,
+    -21.8,
+    42.1
+   ]
+  },
+  {
+   "id": 54,
+   "name_zh": "左中央后回 3a 区",
+   "name_en": "L_3a_ROI",
+   "color": [
+    58,
+    234,
+    103
+   ],
+   "volume_mm3": 1659.0,
+   "centroid_mm": [
+    -34.1,
+    -13.5,
+    63.7
+   ]
+  },
+  {
+   "id": 55,
+   "name_zh": "左背外侧前运动区 6d",
+   "name_en": "L_6d_ROI",
+   "color": [
+    234,
+    58,
+    65
+   ],
+   "volume_mm3": 1959.0,
+   "centroid_mm": [
+    -12.3,
+    -14.7,
+    67.1
+   ]
+  },
+  {
+   "id": 56,
+   "name_zh": "左辅助运动区内侧 6mp",
+   "name_en": "L_6mp_ROI",
+   "color": [
+    58,
+    116,
+    234
+   ],
+   "volume_mm3": 910.0,
+   "centroid_mm": [
+    -58.1,
+    2.6,
+    30.6
+   ]
+  },
+  {
+   "id": 57,
+   "name_zh": "左腹侧前运动区 6v",
+   "name_en": "L_6v_ROI",
+   "color": [
+    167,
+    234,
+    58
+   ],
+   "volume_mm3": 761.0,
+   "centroid_mm": [
+    -3.8,
+    -1.3,
+    38.3
+   ]
+  },
+  {
+   "id": 58,
+   "name_zh": "左后扣带回前部 p24pr",
+   "name_en": "L_p24pr_ROI",
+   "color": [
+    234,
+    58,
+    219
+   ],
+   "volume_mm3": 311.0,
+   "centroid_mm": [
+    -3.8,
+    12.9,
+    27.6
+   ]
+  },
+  {
+   "id": 59,
+   "name_zh": "左旁嗅皮层 33pr",
+   "name_en": "L_33pr_ROI",
+   "color": [
+    58,
+    234,
+    198
+   ],
+   "volume_mm3": 657.0,
+   "centroid_mm": [
+    -5.4,
+    18.4,
+    30.2
+   ]
+  },
+  {
+   "id": 60,
+   "name_zh": "左前扣带回前部 a24pr",
+   "name_en": "L_a24pr_ROI",
+   "color": [
+    234,
+    147,
+    58
+   ],
+   "volume_mm3": 682.0,
+   "centroid_mm": [
+    -10.3,
+    15.1,
+    36.8
+   ]
+  },
+  {
+   "id": 61,
+   "name_zh": "左后扣带回 32 前部",
+   "name_en": "L_p32pr_ROI",
+   "color": [
+    95,
+    58,
+    234
+   ],
+   "volume_mm3": 803.0,
+   "centroid_mm": [
+    -5.2,
+    39.2,
+    -0.5
+   ]
+  },
+  {
+   "id": 62,
+   "name_zh": "左前扣带回前部 a24",
+   "name_en": "L_a24_ROI",
+   "color": [
+    72,
+    234,
+    58
+   ],
+   "volume_mm3": 1028.0,
+   "centroid_mm": [
+    -9.1,
+    39.2,
+    22.9
+   ]
+  },
+  {
+   "id": 63,
+   "name_zh": "左背侧前扣带 32",
+   "name_en": "L_d32_ROI",
+   "color": [
+    234,
+    58,
+    123
+   ],
+   "volume_mm3": 1778.0,
+   "centroid_mm": [
+    -6.0,
+    31.1,
+    42.7
+   ]
+  },
+  {
+   "id": 64,
+   "name_zh": "左额叶 8BM 区",
+   "name_en": "L_8BM_ROI",
+   "color": [
+    58,
+    175,
+    234
+   ],
+   "volume_mm3": 604.0,
+   "centroid_mm": [
+    -11.1,
+    45.8,
+    -1.2
+   ]
+  },
+  {
+   "id": 65,
+   "name_zh": "左后扣带回 32",
+   "name_en": "L_p32_ROI",
+   "color": [
+    226,
+    234,
+    58
+   ],
+   "volume_mm3": 890.0,
+   "centroid_mm": [
+    -7.4,
+    49.2,
+    -8.3
+   ]
+  },
+  {
+   "id": 66,
+   "name_zh": "左额极前部 10r",
+   "name_en": "L_10r_ROI",
+   "color": [
+    191,
+    58,
+    234
+   ],
+   "volume_mm3": 437.0,
+   "centroid_mm": [
+    -35.1,
+    31.1,
+    -14.2
+   ]
+  },
+  {
+   "id": 67,
+   "name_zh": "左额下回眶部内侧 47m",
+   "name_en": "L_47m_ROI",
+   "color": [
+    58,
+    234,
+    139
+   ],
+   "volume_mm3": 2026.0,
+   "centroid_mm": [
+    -37.6,
+    16.7,
+    49.0
+   ]
+  },
+  {
+   "id": 68,
+   "name_zh": "左额眼区腹侧 8Av",
+   "name_en": "L_8Av_ROI",
+   "color": [
+    234,
+    88,
+    58
+   ],
+   "volume_mm3": 1745.0,
+   "centroid_mm": [
+    -23.3,
+    25.5,
+    41.7
+   ]
+  },
+  {
+   "id": 69,
+   "name_zh": "左额眼区背侧 8Ad",
+   "name_en": "L_8Ad_ROI",
+   "color": [
+    58,
+    80,
+    234
+   ],
+   "volume_mm3": 2712.0,
+   "centroid_mm": [
+    -6.9,
+    51.7,
+    23.9
+   ]
+  },
+  {
+   "id": 70,
+   "name_zh": "左内侧前额叶 9m",
+   "name_en": "L_9m_ROI",
+   "color": [
+    131,
+    234,
+    58
+   ],
+   "volume_mm3": 1585.0,
+   "centroid_mm": [
+    -11.7,
+    35.9,
+    50.6
+   ]
+  },
+  {
+   "id": 71,
+   "name_zh": "左额叶 8BL 区",
+   "name_en": "L_8BL_ROI",
+   "color": [
+    234,
+    58,
+    182
+   ],
+   "volume_mm3": 1295.0,
+   "centroid_mm": [
+    -17.3,
+    44.8,
+    37.5
+   ]
+  },
+  {
+   "id": 72,
+   "name_zh": "左前额叶 9p",
+   "name_en": "L_9p_ROI",
+   "color": [
+    58,
+    234,
+    234
+   ],
+   "volume_mm3": 2246.0,
+   "centroid_mm": [
+    -10.9,
+    62.9,
+    9.1
+   ]
+  },
+  {
+   "id": 73,
+   "name_zh": "左背外侧前额叶 10d",
+   "name_en": "L_10d_ROI",
+   "color": [
+    234,
+    183,
+    58
+   ],
+   "volume_mm3": 1460.0,
+   "centroid_mm": [
+    -40.8,
+    16.8,
+    35.9
+   ]
+  },
+  {
+   "id": 74,
+   "name_zh": "左额叶 8C 区",
+   "name_en": "L_8C_ROI",
+   "color": [
+    132,
+    58,
+    234
+   ],
+   "volume_mm3": 1344.0,
+   "centroid_mm": [
+    -51.1,
+    15.1,
+    12.2
+   ]
+  },
+  {
+   "id": 75,
+   "name_zh": "左布洛卡区 44",
+   "name_en": "L_44_ROI",
+   "color": [
+    58,
+    234,
+    81
+   ],
+   "volume_mm3": 1334.0,
+   "centroid_mm": [
+    -48.3,
+    26.7,
+    3.6
+   ]
+  },
+  {
+   "id": 76,
+   "name_zh": "左布洛卡区 45",
+   "name_en": "L_45_ROI",
+   "color": [
+    234,
+    58,
+    87
+   ],
+   "volume_mm3": 1015.0,
+   "centroid_mm": [
+    -44.0,
+    30.6,
+    -10.6
+   ]
+  },
+  {
+   "id": 77,
+   "name_zh": "左额下回眶部外侧 47l",
+   "name_en": "L_47l_ROI",
+   "color": [
+    58,
+    138,
+    234
+   ],
+   "volume_mm3": 2275.0,
+   "centroid_mm": [
+    -39.2,
+    46.6,
+    -10.0
+   ]
+  },
+  {
+   "id": 78,
+   "name_zh": "左额下回前部 a47r",
+   "name_en": "L_a47r_ROI",
+   "color": [
+    190,
+    234,
+    58
+   ],
+   "volume_mm3": 1713.0,
+   "centroid_mm": [
+    -51.9,
+    5.7,
+    16.8
+   ]
+  },
+  {
+   "id": 79,
+   "name_zh": "左外侧前运动区 6r",
+   "name_en": "L_6r_ROI",
+   "color": [
+    227,
+    58,
+    234
+   ],
+   "volume_mm3": 749.0,
+   "centroid_mm": [
+    -40.5,
+    11.9,
+    24.4
+   ]
+  },
+  {
+   "id": 80,
+   "name_zh": "左额下连接前部 IFJa",
+   "name_en": "L_IFJa_ROI",
+   "color": [
+    58,
+    234,
+    176
+   ],
+   "volume_mm3": 539.0,
+   "centroid_mm": [
+    -39.2,
+    2.8,
+    27.7
+   ]
+  },
+  {
+   "id": 81,
+   "name_zh": "左额下连接后部 IFJp",
+   "name_en": "L_IFJp_ROI",
+   "color": [
+    234,
+    124,
+    58
+   ],
+   "volume_mm3": 780.0,
+   "centroid_mm": [
+    -46.3,
+    21.3,
+    20.3
+   ]
+  },
+  {
+   "id": 82,
+   "name_zh": "左额下沟后部 IFSp",
+   "name_en": "L_IFSp_ROI",
+   "color": [
+    73,
+    58,
+    234
+   ],
+   "volume_mm3": 1160.0,
+   "centroid_mm": [
+    -44.4,
+    30.8,
+    11.4
+   ]
+  },
+  {
+   "id": 83,
+   "name_zh": "左额下沟前部 IFSa",
+   "name_en": "L_IFSa_ROI",
+   "color": [
+    95,
+    234,
+    58
+   ],
+   "volume_mm3": 957.0,
+   "centroid_mm": [
+    -43.1,
+    29.0,
+    28.0
+   ]
+  },
+  {
+   "id": 84,
+   "name_zh": "左背外侧前额叶后部 p9-46v",
+   "name_en": "L_p9-46v_ROI",
+   "color": [
+    234,
+    58,
+    146
+   ],
+   "volume_mm3": 1766.0,
+   "centroid_mm": [
+    -36.8,
+    36.3,
+    28.3
+   ]
+  },
+  {
+   "id": 85,
+   "name_zh": "左背外侧前额叶 46",
+   "name_en": "L_46_ROI",
+   "color": [
+    58,
+    197,
+    234
+   ],
+   "volume_mm3": 1171.0,
+   "centroid_mm": [
+    -37.3,
+    48.3,
+    8.4
+   ]
+  },
+  {
+   "id": 86,
+   "name_zh": "左背外侧前额叶前部 a9-46v",
+   "name_en": "L_a9-46v_ROI",
+   "color": [
+    234,
+    220,
+    58
+   ],
+   "volume_mm3": 1986.0,
+   "centroid_mm": [
+    -28.8,
+    42.6,
+    21.2
+   ]
+  },
+  {
+   "id": 87,
+   "name_zh": "左背外侧前额叶 9-46d",
+   "name_en": "L_9-46d_ROI",
+   "color": [
+    168,
+    58,
+    234
+   ],
+   "volume_mm3": 1881.0,
+   "centroid_mm": [
+    -19.5,
+    53.5,
+    24.5
+   ]
+  },
+  {
+   "id": 88,
+   "name_zh": "左前额叶 9a",
+   "name_en": "L_9a_ROI",
+   "color": [
+    58,
+    234,
+    117
+   ],
+   "volume_mm3": 1866.0,
+   "centroid_mm": [
+    -4.1,
+    49.5,
+    -18.0
+   ]
+  },
+  {
+   "id": 89,
+   "name_zh": "左腹内侧前额叶 10v",
+   "name_en": "L_10v_ROI",
+   "color": [
+    234,
+    66,
+    58
+   ],
+   "volume_mm3": 991.0,
+   "centroid_mm": [
+    -24.7,
+    55.5,
+    -5.8
+   ]
+  },
+  {
+   "id": 90,
+   "name_zh": "左额极前部 a10p",
+   "name_en": "L_a10p_ROI",
+   "color": [
+    58,
+    102,
+    234
+   ],
+   "volume_mm3": 1361.0,
+   "centroid_mm": [
+    -12.9,
+    57.6,
+    -15.5
+   ]
+  },
+  {
+   "id": 91,
+   "name_zh": "左额极后部 10pp",
+   "name_en": "L_10pp_ROI",
+   "color": [
+    153,
+    234,
+    58
+   ],
+   "volume_mm3": 1754.0,
+   "centroid_mm": [
+    -24.2,
+    45.4,
+    -13.9
+   ]
+  },
+  {
+   "id": 92,
+   "name_zh": "左眶额外侧 11l",
+   "name_en": "L_11l_ROI",
+   "color": [
+    234,
+    58,
+    205
+   ],
+   "volume_mm3": 1653.0,
+   "centroid_mm": [
+    -22.8,
+    26.7,
+    -19.0
+   ]
+  },
+  {
+   "id": 93,
+   "name_zh": "左岛叶 13l",
+   "name_en": "L_13l_ROI",
+   "color": [
+    58,
+    234,
+    212
+   ],
+   "volume_mm3": 2250.0,
+   "centroid_mm": [
+    -10.9,
+    30.2,
+    -22.7
+   ]
+  },
+  {
+   "id": 94,
+   "name_zh": "左眶额皮层 OFC",
+   "name_en": "L_OFC_ROI",
+   "color": [
+    234,
+    161,
+    58
+   ],
+   "volume_mm3": 1175.0,
+   "centroid_mm": [
+    -32.1,
+    20.8,
+    -18.2
+   ]
+  },
+  {
+   "id": 95,
+   "name_zh": "左额下回眶部 47s",
+   "name_en": "L_47s_ROI",
+   "color": [
+    109,
+    58,
+    234
+   ],
+   "volume_mm3": 400.0,
+   "centroid_mm": [
+    -28.6,
+    -54.6,
+    40.6
+   ]
+  },
+  {
+   "id": 96,
+   "name_zh": "左背侧顶内沟外侧",
+   "name_en": "L_LIPd_ROI",
+   "color": [
+    58,
+    234,
+    58
+   ],
+   "volume_mm3": 2118.0,
+   "centroid_mm": [
+    -24.5,
+    -3.6,
+    52.9
+   ]
+  },
+  {
+   "id": 97,
+   "name_zh": "左背侧前运动区 6a",
+   "name_en": "L_6a_ROI",
+   "color": [
+    234,
+    58,
+    110
+   ],
+   "volume_mm3": 853.0,
+   "centroid_mm": [
+    -31.2,
+    6.8,
+    53.2
+   ]
+  },
+  {
+   "id": 98,
+   "name_zh": "左额中回后部 i6-8",
+   "name_en": "L_i6-8_ROI",
+   "color": [
+    58,
+    161,
+    234
+   ],
+   "volume_mm3": 714.0,
+   "centroid_mm": [
+    -22.6,
+    22.2,
+    54.7
+   ]
+  },
+  {
+   "id": 99,
+   "name_zh": "左额上回后部 s6-8",
+   "name_en": "L_s6-8_ROI",
+   "color": [
+    212,
+    234,
+    58
+   ],
+   "volume_mm3": 818.0,
+   "centroid_mm": [
+    -56.2,
+    -1.2,
+    8.6
+   ]
+  },
+  {
+   "id": 100,
+   "name_zh": "左中央后下回 43",
+   "name_en": "L_43_ROI",
+   "color": [
+    205,
+    58,
+    234
+   ],
+   "volume_mm3": 1448.0,
+   "centroid_mm": [
+    -58.4,
+    -13.4,
+    14.1
+   ]
+  },
+  {
+   "id": 101,
+   "name_zh": "左顶叶岛盖 4",
+   "name_en": "L_OP4_ROI",
+   "color": [
+    58,
+    234,
+    153
+   ],
+   "volume_mm3": 1116.0,
+   "centroid_mm": [
+    -46.8,
+    -21.7,
+    17.3
+   ]
+  },
+  {
+   "id": 102,
+   "name_zh": "左顶叶岛盖 1",
+   "name_en": "L_OP1_ROI",
+   "color": [
+    234,
+    102,
+    58
+   ],
+   "volume_mm3": 778.0,
+   "centroid_mm": [
+    -40.1,
+    -16.0,
+    16.9
+   ]
+  },
+  {
+   "id": 103,
+   "name_zh": "左顶叶岛盖 2-3",
+   "name_en": "L_OP2-3_ROI",
+   "color": [
+    58,
+    66,
+    234
+   ],
+   "volume_mm3": 546.0,
+   "centroid_mm": [
+    -39.3,
+    -22.3,
+    -2.3
+   ]
+  },
+  {
+   "id": 104,
+   "name_zh": "左岛叶 52 区",
+   "name_en": "L_52_ROI",
+   "color": [
+    117,
+    234,
+    58
+   ],
+   "volume_mm3": 941.0,
+   "centroid_mm": [
+    -39.8,
+    -34.7,
+    16.8
+   ]
+  },
+  {
+   "id": 105,
+   "name_zh": "左岛盖后部 RI",
+   "name_en": "L_RI_ROI",
+   "color": [
+    234,
+    58,
+    168
+   ],
+   "volume_mm3": 1109.0,
+   "centroid_mm": [
+    -50.6,
+    -31.9,
+    19.2
+   ]
+  },
+  {
+   "id": 106,
+   "name_zh": "左顶下小叶 PFcm",
+   "name_en": "L_PFcm_ROI",
+   "color": [
+    58,
+    220,
+    234
+   ],
+   "volume_mm3": 1452.0,
+   "centroid_mm": [
+    -38.8,
+    -4.7,
+    -2.3
+   ]
+  },
+  {
+   "id": 107,
+   "name_zh": "左中央后岛盖 2",
+   "name_en": "L_PoI2_ROI",
+   "color": [
+    234,
+    197,
+    58
+   ],
+   "volume_mm3": 909.0,
+   "centroid_mm": [
+    -51.0,
+    -0.9,
+    -8.4
+   ]
+  },
+  {
+   "id": 108,
+   "name_zh": "左颞叶听觉联合区 TA2",
+   "name_en": "L_TA2_ROI",
+   "color": [
+    146,
+    58,
+    234
+   ],
+   "volume_mm3": 1422.0,
+   "centroid_mm": [
+    -39.9,
+    11.9,
+    6.2
+   ]
+  },
+  {
+   "id": 109,
+   "name_zh": "左额叶岛盖 4",
+   "name_en": "L_FOP4_ROI",
+   "color": [
+    58,
+    234,
+    94
+   ],
+   "volume_mm3": 1213.0,
+   "centroid_mm": [
+    -35.5,
+    9.0,
+    2.4
+   ]
+  },
+  {
+   "id": 110,
+   "name_zh": "左岛叶运动区 MI",
+   "name_en": "L_MI_ROI",
+   "color": [
+    234,
+    58,
+    73
+   ],
+   "volume_mm3": 748.0,
+   "centroid_mm": [
+    -30.7,
+    4.0,
+    -18.0
+   ]
+  },
+  {
+   "id": 111,
+   "name_zh": "左梨状皮层 Pir",
+   "name_en": "L_Pir_ROI",
+   "color": [
+    58,
+    125,
+    234
+   ],
+   "volume_mm3": 946.0,
+   "centroid_mm": [
+    -30.2,
+    23.9,
+    -3.3
+   ]
+  },
+  {
+   "id": 112,
+   "name_zh": "左前腹岛叶 AVI",
+   "name_en": "L_AVI_ROI",
+   "color": [
+    176,
+    234,
+    58
+   ],
+   "volume_mm3": 708.0,
+   "centroid_mm": [
+    -32.6,
+    13.3,
+    -12.3
+   ]
+  },
+  {
+   "id": 113,
+   "name_zh": "左前岛叶前部 AAIC",
+   "name_en": "L_AAIC_ROI",
+   "color": [
+    234,
+    58,
+    227
+   ],
+   "volume_mm3": 503.0,
+   "centroid_mm": [
+    -50.1,
+    2.5,
+    3.6
+   ]
+  },
+  {
+   "id": 114,
+   "name_zh": "左额叶岛盖 1",
+   "name_en": "L_FOP1_ROI",
+   "color": [
+    58,
+    234,
+    190
+   ],
+   "volume_mm3": 506.0,
+   "centroid_mm": [
+    -35.4,
+    2.8,
+    12.0
+   ]
+  },
+  {
+   "id": 115,
+   "name_zh": "左额叶岛盖 3",
+   "name_en": "L_FOP3_ROI",
+   "color": [
+    234,
+    138,
+    58
+   ],
+   "volume_mm3": 480.0,
+   "centroid_mm": [
+    -42.0,
+    -3.9,
+    13.2
+   ]
+  },
+  {
+   "id": 116,
+   "name_zh": "左额叶岛盖 2",
+   "name_en": "L_FOP2_ROI",
+   "color": [
+    87,
+    58,
+    234
+   ],
+   "volume_mm3": 1163.0,
+   "centroid_mm": [
+    -49.9,
+    -29.9,
+    36.2
+   ]
+  },
+  {
+   "id": 117,
+   "name_zh": "左顶下小叶 PFt",
+   "name_en": "L_PFt_ROI",
+   "color": [
+    81,
+    234,
+    58
+   ],
+   "volume_mm3": 1158.0,
+   "centroid_mm": [
+    -35.5,
+    -41.7,
+    40.5
+   ]
+  },
+  {
+   "id": 118,
+   "name_zh": "左前顶内沟 AIP",
+   "name_en": "L_AIP_ROI",
+   "color": [
+    234,
+    58,
+    132
+   ],
+   "volume_mm3": 1264.0,
+   "centroid_mm": [
+    -20.8,
+    -13.0,
+    -29.3
+   ]
+  },
+  {
+   "id": 119,
+   "name_zh": "左嗅周皮层 EC",
+   "name_en": "L_EC_ROI",
+   "color": [
+    58,
+    183,
+    234
+   ],
+   "volume_mm3": 1248.0,
+   "centroid_mm": [
+    -20.2,
+    -32.0,
+    -12.1
+   ]
+  },
+  {
+   "id": 120,
+   "name_zh": "左旁海马回前部 PreS",
+   "name_en": "L_PreS_ROI",
+   "color": [
+    234,
+    233,
+    58
+   ],
+   "volume_mm3": 1811.0,
+   "centroid_mm": [
+    -30.1,
+    -26.7,
+    -16.4
+   ]
+  },
+  {
+   "id": 121,
+   "name_zh": "左海马 H",
+   "name_en": "L_H_ROI",
+   "color": [
+    182,
+    58,
+    234
+   ],
+   "volume_mm3": 705.0,
+   "centroid_mm": [
+    -20.9,
+    -55.5,
+    2.1
+   ]
+  },
+  {
+   "id": 122,
+   "name_zh": "左海马旁回后部 ProS",
+   "name_en": "L_ProS_ROI",
+   "color": [
+    58,
+    234,
+    131
+   ],
+   "volume_mm3": 2059.0,
+   "centroid_mm": [
+    -29.5,
+    -10.9,
+    -33.3
+   ]
+  },
+  {
+   "id": 123,
+   "name_zh": "左嗅周皮层后部 PeEc",
+   "name_en": "L_PeEc_ROI",
+   "color": [
+    234,
+    79,
+    58
+   ],
+   "volume_mm3": 952.0,
+   "centroid_mm": [
+    -51.1,
+    8.9,
+    -18.0
+   ]
+  },
+  {
+   "id": 124,
+   "name_zh": "左颞上回前部 STGa",
+   "name_en": "L_STGa_ROI",
+   "color": [
+    58,
+    88,
+    234
+   ],
+   "volume_mm3": 1103.0,
+   "centroid_mm": [
+    -53.9,
+    -25.4,
+    5.1
+   ]
+  },
+  {
+   "id": 125,
+   "name_zh": "左后听觉带 PBelt",
+   "name_en": "L_PBelt_ROI",
+   "color": [
+    140,
+    234,
+    58
+   ],
+   "volume_mm3": 1353.0,
+   "centroid_mm": [
+    -61.5,
+    -16.5,
+    -3.6
+   ]
+  },
+  {
+   "id": 126,
+   "name_zh": "左听觉联合区 A5",
+   "name_en": "L_A5_ROI",
+   "color": [
+    234,
+    58,
+    191
+   ],
+   "volume_mm3": 1202.0,
+   "centroid_mm": [
+    -21.9,
+    -35.5,
+    -17.1
+   ]
+  },
+  {
+   "id": 127,
+   "name_zh": "左海马旁回 1",
+   "name_en": "L_PHA1_ROI",
+   "color": [
+    58,
+    234,
+    226
+   ],
+   "volume_mm3": 1134.0,
+   "centroid_mm": [
+    -32.5,
+    -38.6,
+    -17.7
+   ]
+  },
+  {
+   "id": 128,
+   "name_zh": "左海马旁回 3",
+   "name_en": "L_PHA3_ROI",
+   "color": [
+    234,
+    175,
+    58
+   ],
+   "volume_mm3": 1121.0,
+   "centroid_mm": [
+    -54.0,
+    -8.7,
+    -12.7
+   ]
+  },
+  {
+   "id": 129,
+   "name_zh": "左颞上沟背前 STSda",
+   "name_en": "L_STSda_ROI",
+   "color": [
+    123,
+    58,
+    234
+   ],
+   "volume_mm3": 982.0,
+   "centroid_mm": [
+    -52.5,
+    -33.1,
+    -1.6
+   ]
+  },
+  {
+   "id": 130,
+   "name_zh": "左颞上沟背后 STSdp",
+   "name_en": "L_STSdp_ROI",
+   "color": [
+    58,
+    234,
+    72
+   ],
+   "volume_mm3": 1305.0,
+   "centroid_mm": [
+    -54.9,
+    -36.1,
+    -6.5
+   ]
+  },
+  {
+   "id": 131,
+   "name_zh": "左颞上沟腹后 STSvp",
+   "name_en": "L_STSvp_ROI",
+   "color": [
+    234,
+    58,
+    96
+   ],
+   "volume_mm3": 4381.0,
+   "centroid_mm": [
+    -40.7,
+    8.3,
+    -32.4
+   ]
+  },
+  {
+   "id": 132,
+   "name_zh": "左颞极背侧 TGd",
+   "name_en": "L_TGd_ROI",
+   "color": [
+    58,
+    147,
+    234
+   ],
+   "volume_mm3": 2001.0,
+   "centroid_mm": [
+    -59.3,
+    -11.3,
+    -22.7
+   ]
+  },
+  {
+   "id": 133,
+   "name_zh": "左颞下回前部 TE1a",
+   "name_en": "L_TE1a_ROI",
+   "color": [
+    198,
+    234,
+    58
+   ],
+   "volume_mm3": 2298.0,
+   "centroid_mm": [
+    -59.7,
+    -45.7,
+    -12.2
+   ]
+  },
+  {
+   "id": 134,
+   "name_zh": "左颞下回后部 TE1p",
+   "name_en": "L_TE1p_ROI",
+   "color": [
+    218,
+    58,
+    234
+   ],
+   "volume_mm3": 2561.0,
+   "centroid_mm": [
+    -53.0,
+    -23.2,
+    -30.6
+   ]
+  },
+  {
+   "id": 135,
+   "name_zh": "左颞下回前部 TE2a",
+   "name_en": "L_TE2a_ROI",
+   "color": [
+    58,
+    234,
+    167
+   ],
+   "volume_mm3": 1939.0,
+   "centroid_mm": [
+    -40.7,
+    -21.7,
+    -28.7
+   ]
+  },
+  {
+   "id": 136,
+   "name_zh": "左颞下回后部 TF",
+   "name_en": "L_TF_ROI",
+   "color": [
+    234,
+    116,
+    58
+   ],
+   "volume_mm3": 1288.0,
+   "centroid_mm": [
+    -47.6,
+    -40.5,
+    -22.7
+   ]
+  },
+  {
+   "id": 137,
+   "name_zh": "左颞下回后部 TE2p",
+   "name_en": "L_TE2p_ROI",
+   "color": [
+    64,
+    58,
+    234
+   ],
+   "volume_mm3": 1701.0,
+   "centroid_mm": [
+    -58.0,
+    -57.1,
+    -0.6
+   ]
+  },
+  {
+   "id": 138,
+   "name_zh": "左颞叶海马旁回 PHT",
+   "name_en": "L_PHT_ROI",
+   "color": [
+    103,
+    234,
+    58
+   ],
+   "volume_mm3": 1364.0,
+   "centroid_mm": [
+    -46.2,
+    -60.0,
+    -10.5
+   ]
+  },
+  {
+   "id": 139,
+   "name_zh": "左海马旁回 PH",
+   "name_en": "L_PH_ROI",
+   "color": [
+    234,
+    58,
+    155
+   ],
+   "volume_mm3": 989.0,
+   "centroid_mm": [
+    -54.0,
+    -45.1,
+    7.3
+   ]
+  },
+  {
+   "id": 140,
+   "name_zh": "左颞顶枕交界 1",
+   "name_en": "L_TPOJ1_ROI",
+   "color": [
+    58,
+    206,
+    234
+   ],
+   "volume_mm3": 798.0,
+   "centroid_mm": [
+    -49.3,
+    -60.8,
+    9.7
+   ]
+  },
+  {
+   "id": 141,
+   "name_zh": "左颞顶枕交界 2",
+   "name_en": "L_TPOJ2_ROI",
+   "color": [
+    234,
+    211,
+    58
+   ],
+   "volume_mm3": 324.0,
+   "centroid_mm": [
+    -43.4,
+    -70.7,
+    14.7
+   ]
+  },
+  {
+   "id": 142,
+   "name_zh": "左颞顶枕交界 3",
+   "name_en": "L_TPOJ3_ROI",
+   "color": [
+    160,
+    58,
+    234
+   ],
+   "volume_mm3": 721.0,
+   "centroid_mm": [
+    -18.5,
+    -70.8,
+    27.7
+   ]
+  },
+  {
+   "id": 143,
+   "name_zh": "左背侧视觉通路颞顶区",
+   "name_en": "L_DVT_ROI",
+   "color": [
+    58,
+    234,
+    108
+   ],
+   "volume_mm3": 1156.0,
+   "centroid_mm": [
+    -40.2,
+    -81.2,
+    21.4
+   ]
+  },
+  {
+   "id": 144,
+   "name_zh": "左角回 PGp",
+   "name_en": "L_PGp_ROI",
+   "color": [
+    234,
+    58,
+    59
+   ],
+   "volume_mm3": 750.0,
+   "centroid_mm": [
+    -39.4,
+    -51.7,
+    38.0
+   ]
+  },
+  {
+   "id": 145,
+   "name_zh": "左顶内沟 2",
+   "name_en": "L_IP2_ROI",
+   "color": [
+    58,
+    111,
+    234
+   ],
+   "volume_mm3": 959.0,
+   "centroid_mm": [
+    -30.4,
+    -68.4,
+    38.9
+   ]
+  },
+  {
+   "id": 146,
+   "name_zh": "左顶内沟 1",
+   "name_en": "L_IP1_ROI",
+   "color": [
+    162,
+    234,
+    58
+   ],
+   "volume_mm3": 759.0,
+   "centroid_mm": [
+    -31.5,
+    -76.2,
+    24.1
+   ]
+  },
+  {
+   "id": 147,
+   "name_zh": "左顶内沟 0",
+   "name_en": "L_IP0_ROI",
+   "color": [
+    234,
+    58,
+    213
+   ],
+   "volume_mm3": 1024.0,
+   "centroid_mm": [
+    -60.7,
+    -24.0,
+    25.4
+   ]
+  },
+  {
+   "id": 148,
+   "name_zh": "左顶盖区 PFop",
+   "name_en": "L_PFop_ROI",
+   "color": [
+    58,
+    234,
+    203
+   ],
+   "volume_mm3": 3059.0,
+   "centroid_mm": [
+    -56.8,
+    -38.9,
+    35.6
+   ]
+  },
+  {
+   "id": 149,
+   "name_zh": "左顶下小叶 PF",
+   "name_en": "L_PF_ROI",
+   "color": [
+    234,
+    152,
+    58
+   ],
+   "volume_mm3": 2824.0,
+   "centroid_mm": [
+    -48.0,
+    -57.5,
+    39.4
+   ]
+  },
+  {
+   "id": 150,
+   "name_zh": "左顶下小叶 PFm",
+   "name_en": "L_PFm_ROI",
+   "color": [
+    101,
+    58,
+    234
+   ],
+   "volume_mm3": 1788.0,
+   "centroid_mm": [
+    -43.9,
+    -59.2,
+    21.7
+   ]
+  },
+  {
+   "id": 151,
+   "name_zh": "左顶下小叶 PGi",
+   "name_en": "L_PGi_ROI",
+   "color": [
+    67,
+    234,
+    58
+   ],
+   "volume_mm3": 2133.0,
+   "centroid_mm": [
+    -40.2,
+    -73.0,
+    35.0
+   ]
+  },
+  {
+   "id": 152,
+   "name_zh": "左缘上回 PGs",
+   "name_en": "L_PGs_ROI",
+   "color": [
+    234,
+    58,
+    118
+   ],
+   "volume_mm3": 396.0,
+   "centroid_mm": [
+    -19.1,
+    -84.4,
+    37.5
+   ]
+  },
+  {
+   "id": 153,
+   "name_zh": "左第六视皮层 A V6A",
+   "name_en": "L_V6A_ROI",
+   "color": [
+    58,
+    170,
+    234
+   ],
+   "volume_mm3": 759.0,
+   "centroid_mm": [
+    -19.0,
+    -53.1,
+    -7.6
+   ]
+  },
+  {
+   "id": 154,
+   "name_zh": "左腹内侧视觉区 VMV1",
+   "name_en": "L_VMV1_ROI",
+   "color": [
+    221,
+    234,
+    58
+   ],
+   "volume_mm3": 411.0,
+   "centroid_mm": [
+    -29.2,
+    -59.9,
+    -11.2
+   ]
+  },
+  {
+   "id": 155,
+   "name_zh": "左腹内侧视觉区 VMV3",
+   "name_en": "L_VMV3_ROI",
+   "color": [
+    196,
+    58,
+    234
+   ],
+   "volume_mm3": 478.0,
+   "centroid_mm": [
+    -30.9,
+    -36.4,
+    -14.9
+   ]
+  },
+  {
+   "id": 156,
+   "name_zh": "左海马旁回 2",
+   "name_en": "L_PHA2_ROI",
+   "color": [
+    58,
+    234,
+    145
+   ],
+   "volume_mm3": 251.0,
+   "centroid_mm": [
+    -43.5,
+    -76.7,
+    -1.7
+   ]
+  },
+  {
+   "id": 157,
+   "name_zh": "左颞区 V4t",
+   "name_en": "L_V4t_ROI",
+   "color": [
+    234,
+    93,
+    58
+   ],
+   "volume_mm3": 519.0,
+   "centroid_mm": [
+    -47.1,
+    -64.5,
+    -1.4
+   ]
+  },
+  {
+   "id": 158,
+   "name_zh": "左颞上沟底部 FST",
+   "name_en": "L_FST_ROI",
+   "color": [
+    58,
+    74,
+    234
+   ],
+   "volume_mm3": 537.0,
+   "centroid_mm": [
+    -34.8,
+    -85.6,
+    11.0
+   ]
+  },
+  {
+   "id": 159,
+   "name_zh": "左第三视皮层 CD V3CD",
+   "name_en": "L_V3CD_ROI",
+   "color": [
+    126,
+    234,
+    58
+   ],
+   "volume_mm3": 521.0,
+   "centroid_mm": [
+    -45.4,
+    -79.0,
+    9.1
+   ]
+  },
+  {
+   "id": 160,
+   "name_zh": "左外侧枕叶 3",
+   "name_en": "L_LO3_ROI",
+   "color": [
+    234,
+    58,
+    177
+   ],
+   "volume_mm3": 297.0,
+   "centroid_mm": [
+    -28.1,
+    -53.2,
+    -7.1
+   ]
+  },
+  {
+   "id": 161,
+   "name_zh": "左腹内侧视觉区 VMV2",
+   "name_en": "L_VMV2_ROI",
+   "color": [
+    58,
+    228,
+    234
+   ],
+   "volume_mm3": 592.0,
+   "centroid_mm": [
+    -11.4,
+    -51.6,
+    34.3
+   ]
+  },
+  {
+   "id": 162,
+   "name_zh": "左后扣带回 31pd",
+   "name_en": "L_31pd_ROI",
+   "color": [
+    234,
+    188,
+    58
+   ],
+   "volume_mm3": 576.0,
+   "centroid_mm": [
+    -5.9,
+    -37.3,
+    42.3
+   ]
+  },
+  {
+   "id": 163,
+   "name_zh": "左后扣带回 31a",
+   "name_en": "L_31a_ROI",
+   "color": [
+    137,
+    58,
+    234
+   ],
+   "volume_mm3": 1580.0,
+   "centroid_mm": [
+    -31.1,
+    -51.7,
+    -19.3
+   ]
+  },
+  {
+   "id": 164,
+   "name_zh": "左腹侧视觉皮层 VVC",
+   "name_en": "L_VVC_ROI",
+   "color": [
+    58,
+    234,
+    86
+   ],
+   "volume_mm3": 701.0,
+   "centroid_mm": [
+    -4.9,
+    23.2,
+    -13.1
+   ]
+  },
+  {
+   "id": 165,
+   "name_zh": "左膝下前扣带 25",
+   "name_en": "L_25_ROI",
+   "color": [
+    234,
+    58,
+    82
+   ],
+   "volume_mm3": 473.0,
+   "centroid_mm": [
+    -7.1,
+    34.1,
+    -13.8
+   ]
+  },
+  {
+   "id": 166,
+   "name_zh": "左辅助运动区前部",
+   "name_en": "L_s32_ROI",
+   "color": [
+    58,
+    133,
+    234
+   ],
+   "volume_mm3": 880.0,
+   "centroid_mm": [
+    -12.9,
+    13.2,
+    -18.3
+   ]
+  },
+  {
+   "id": 167,
+   "name_zh": "左眶额后部 pOFC",
+   "name_en": "L_pOFC_ROI",
+   "color": [
+    185,
+    234,
+    58
+   ],
+   "volume_mm3": 1161.0,
+   "centroid_mm": [
+    -37.7,
+    -13.4,
+    -5.1
+   ]
+  },
+  {
+   "id": 168,
+   "name_zh": "左中央后岛盖 1",
+   "name_en": "L_PoI1_ROI",
+   "color": [
+    232,
+    58,
+    234
+   ],
+   "volume_mm3": 744.0,
+   "centroid_mm": [
+    -35.5,
+    -16.0,
+    13.0
+   ]
+  },
+  {
+   "id": 169,
+   "name_zh": "左颗粒岛叶 Ig",
+   "name_en": "L_Ig_ROI",
+   "color": [
+    58,
+    234,
+    181
+   ],
+   "volume_mm3": 776.0,
+   "centroid_mm": [
+    -34.7,
+    26.3,
+    4.7
+   ]
+  },
+  {
+   "id": 170,
+   "name_zh": "左额叶岛盖 5",
+   "name_en": "L_FOP5_ROI",
+   "color": [
+    234,
+    130,
+    58
+   ],
+   "volume_mm3": 1170.0,
+   "centroid_mm": [
+    -21.9,
+    58.7,
+    4.0
+   ]
+  },
+  {
+   "id": 171,
+   "name_zh": "左额极后部 p10p",
+   "name_en": "L_p10p_ROI",
+   "color": [
+    78,
+    58,
+    234
+   ],
+   "volume_mm3": 966.0,
+   "centroid_mm": [
+    -42.2,
+    39.9,
+    0.7
+   ]
+  },
+  {
+   "id": 172,
+   "name_zh": "左额下回后部 p47r",
+   "name_en": "L_p47r_ROI",
+   "color": [
+    89,
+    234,
+    58
+   ],
+   "volume_mm3": 1434.0,
+   "centroid_mm": [
+    -40.2,
+    -3.8,
+    -42.3
+   ]
+  },
+  {
+   "id": 173,
+   "name_zh": "左颞极腹侧 TGv",
+   "name_en": "L_TGv_ROI",
+   "color": [
+    234,
+    58,
+    141
+   ],
+   "volume_mm3": 1016.0,
+   "centroid_mm": [
+    -45.0,
+    -18.0,
+    1.7
+   ]
+  },
+  {
+   "id": 174,
+   "name_zh": "左内侧听觉带 MBelt",
+   "name_en": "L_MBelt_ROI",
+   "color": [
+    58,
+    192,
+    234
+   ],
+   "volume_mm3": 626.0,
+   "centroid_mm": [
+    -45.8,
+    -27.5,
+    6.2
+   ]
+  },
+  {
+   "id": 175,
+   "name_zh": "左外侧听觉带 LBelt",
+   "name_en": "L_LBelt_ROI",
+   "color": [
+    234,
+    225,
+    58
+   ],
+   "volume_mm3": 1451.0,
+   "centroid_mm": [
+    -62.8,
+    -22.8,
+    5.2
+   ]
+  },
+  {
+   "id": 176,
+   "name_zh": "左听觉联合区 A4",
+   "name_en": "L_A4_ROI",
+   "color": [
+    174,
+    58,
+    234
+   ],
+   "volume_mm3": 801.0,
+   "centroid_mm": [
+    -52.1,
+    -13.2,
+    -17.7
+   ]
+  },
+  {
+   "id": 177,
+   "name_zh": "左颞上沟腹前 STSva",
+   "name_en": "L_STSva_ROI",
+   "color": [
+    58,
+    234,
+    122
+   ],
+   "volume_mm3": 1446.0,
+   "centroid_mm": [
+    -61.7,
+    -28.7,
+    -17.0
+   ]
+  },
+  {
+   "id": 178,
+   "name_zh": "左颞下回中部 TE1m",
+   "name_en": "L_TE1m_ROI",
+   "color": [
+    234,
+    71,
+    58
+   ],
+   "volume_mm3": 755.0,
+   "centroid_mm": [
+    -44.2,
+    -5.5,
+    -15.9
+   ]
+  },
+  {
+   "id": 179,
+   "name_zh": "左顶叶岛盖后部 PI",
+   "name_en": "L_PI_ROI",
+   "color": [
+    58,
+    97,
+    234
+   ],
+   "volume_mm3": 801.0,
+   "centroid_mm": [
+    -10.4,
+    29.3,
+    26.8
+   ]
+  },
+  {
+   "id": 180,
+   "name_zh": "左前扣带 32 前部",
+   "name_en": "L_a32pr_ROI",
+   "color": [
+    148,
+    234,
+    58
+   ],
+   "volume_mm3": 719.0,
+   "centroid_mm": [
+    -4.6,
+    35.0,
+    15.6
+   ]
+  },
+  {
+   "id": 1002,
+   "name_zh": "右初级视皮层 V1",
+   "name_en": "R_V1_ROI",
+   "color": [
+    159,
+    234,
+    58
+   ],
+   "volume_mm3": 335.0,
+   "centroid_mm": [
+    42.9,
+    -65.9,
+    3.2
+   ]
+  },
+  {
+   "id": 1003,
+   "name_zh": "右内侧上颞区 MST",
+   "name_en": "R_MST_ROI",
+   "color": [
+    234,
+    58,
+    210
+   ],
+   "volume_mm3": 953.0,
+   "centroid_mm": [
+    16.9,
+    -76.6,
+    28.7
+   ]
+  },
+  {
+   "id": 1004,
+   "name_zh": "右第六视皮层 V6",
+   "name_en": "R_V6_ROI",
+   "color": [
+    58,
+    234,
+    207
+   ],
+   "volume_mm3": 5758.0,
+   "centroid_mm": [
+    13.2,
+    -79.6,
+    2.8
+   ]
+  },
+  {
+   "id": 1005,
+   "name_zh": "右次级视皮层 V2",
+   "name_en": "R_V2_ROI",
+   "color": [
+    234,
+    155,
+    58
+   ],
+   "volume_mm3": 3301.0,
+   "centroid_mm": [
+    19.1,
+    -85.0,
+    6.7
+   ]
+  },
+  {
+   "id": 1006,
+   "name_zh": "右第三视皮层 V3",
+   "name_en": "R_V3_ROI",
+   "color": [
+    104,
+    58,
+    234
+   ],
+   "volume_mm3": 1899.0,
+   "centroid_mm": [
+    31.0,
+    -83.7,
+    -2.3
+   ]
+  },
+  {
+   "id": 1007,
+   "name_zh": "右第四视皮层 V4",
+   "name_en": "R_V4_ROI",
+   "color": [
+    64,
+    234,
+    58
+   ],
+   "volume_mm3": 522.0,
+   "centroid_mm": [
+    30.8,
+    -71.6,
+    -13.3
+   ]
+  },
+  {
+   "id": 1008,
+   "name_zh": "右第八视皮层 V8",
+   "name_en": "R_V8_ROI",
+   "color": [
+    234,
+    58,
+    115
+   ],
+   "volume_mm3": 6216.0,
+   "centroid_mm": [
+    28.7,
+    -17.8,
+    54.1
+   ]
+  },
+  {
+   "id": 1009,
+   "name_zh": "右中央前回 4",
+   "name_en": "R_4_ROI",
+   "color": [
+    58,
+    166,
+    234
+   ],
+   "volume_mm3": 3235.0,
+   "centroid_mm": [
+    36.9,
+    -22.4,
+    50.9
+   ]
+  },
+  {
+   "id": 1010,
+   "name_zh": "右中央后回 3b 区",
+   "name_en": "R_3b_ROI",
+   "color": [
+    218,
+    234,
+    58
+   ],
+   "volume_mm3": 1444.0,
+   "centroid_mm": [
+    41.8,
+    -2.8,
+    49.2
+   ]
+  },
+  {
+   "id": 1011,
+   "name_zh": "右额眼区",
+   "name_en": "R_FEF_ROI",
+   "color": [
+    199,
+    58,
+    234
+   ],
+   "volume_mm3": 602.0,
+   "centroid_mm": [
+    44.7,
+    1.6,
+    35.5
+   ]
+  },
+  {
+   "id": 1012,
+   "name_zh": "右后眼区 PEF",
+   "name_en": "R_PEF_ROI",
+   "color": [
+    58,
+    234,
+    148
+   ],
+   "volume_mm3": 777.0,
+   "centroid_mm": [
+    48.4,
+    0.5,
+    44.8
+   ]
+  },
+  {
+   "id": 1013,
+   "name_zh": "右岛叶 55b 区",
+   "name_en": "R_55b_ROI",
+   "color": [
+    234,
+    97,
+    58
+   ],
+   "volume_mm3": 1221.0,
+   "centroid_mm": [
+    16.4,
+    -87.2,
+    28.3
+   ]
+  },
+  {
+   "id": 1014,
+   "name_zh": "右第三视皮层 A V3A",
+   "name_en": "R_V3A_ROI",
+   "color": [
+    58,
+    71,
+    234
+   ],
+   "volume_mm3": 1135.0,
+   "centroid_mm": [
+    6.2,
+    -36.5,
+    20.5
+   ]
+  },
+  {
+   "id": 1015,
+   "name_zh": "右压后皮层 RSC",
+   "name_en": "R_RSC_ROI",
+   "color": [
+    122,
+    234,
+    58
+   ],
+   "volume_mm3": 1579.0,
+   "centroid_mm": [
+    11.1,
+    -68.9,
+    35.8
+   ]
+  },
+  {
+   "id": 1016,
+   "name_zh": "右顶枕沟 2",
+   "name_en": "R_POS2_ROI",
+   "color": [
+    234,
+    58,
+    174
+   ],
+   "volume_mm3": 625.0,
+   "centroid_mm": [
+    25.2,
+    -81.2,
+    30.1
+   ]
+  },
+  {
+   "id": 1017,
+   "name_zh": "右第七视皮层 V7",
+   "name_en": "R_V7_ROI",
+   "color": [
+    58,
+    225,
+    234
+   ],
+   "volume_mm3": 863.0,
+   "centroid_mm": [
+    25.2,
+    -68.7,
+    35.3
+   ]
+  },
+  {
+   "id": 1018,
+   "name_zh": "右顶内沟 IPS1",
+   "name_en": "R_IPS1_ROI",
+   "color": [
+    234,
+    192,
+    58
+   ],
+   "volume_mm3": 1675.0,
+   "centroid_mm": [
+    39.5,
+    -55.2,
+    -18.9
+   ]
+  },
+  {
+   "id": 1019,
+   "name_zh": "右梭状回面部区 FFC",
+   "name_en": "R_FFC_ROI",
+   "color": [
+    140,
+    58,
+    234
+   ],
+   "volume_mm3": 439.0,
+   "centroid_mm": [
+    28.6,
+    -75.3,
+    19.8
+   ]
+  },
+  {
+   "id": 1020,
+   "name_zh": "右第三视皮层 B V3B",
+   "name_en": "R_V3B_ROI",
+   "color": [
+    58,
+    234,
+    89
+   ],
+   "volume_mm3": 418.0,
+   "centroid_mm": [
+    38.5,
+    -82.8,
+    3.2
+   ]
+  },
+  {
+   "id": 1021,
+   "name_zh": "右外侧枕叶 1",
+   "name_en": "R_LO1_ROI",
+   "color": [
+    234,
+    58,
+    79
+   ],
+   "volume_mm3": 366.0,
+   "centroid_mm": [
+    43.7,
+    -82.1,
+    -4.8
+   ]
+  },
+  {
+   "id": 1022,
+   "name_zh": "右外侧枕叶 2",
+   "name_en": "R_LO2_ROI",
+   "color": [
+    58,
+    130,
+    234
+   ],
+   "volume_mm3": 792.0,
+   "centroid_mm": [
+    42.9,
+    -79.4,
+    -13.6
+   ]
+  },
+  {
+   "id": 1023,
+   "name_zh": "右颞下后部视觉区 PIT",
+   "name_en": "R_PIT_ROI",
+   "color": [
+    181,
+    234,
+    58
+   ],
+   "volume_mm3": 438.0,
+   "centroid_mm": [
+    46.8,
+    -71.6,
+    6.0
+   ]
+  },
+  {
+   "id": 1024,
+   "name_zh": "右中颞区 MT",
+   "name_en": "R_MT_ROI",
+   "color": [
+    234,
+    58,
+    233
+   ],
+   "volume_mm3": 415.0,
+   "centroid_mm": [
+    44.0,
+    -23.0,
+    9.7
+   ]
+  },
+  {
+   "id": 1025,
+   "name_zh": "右初级听皮层 A1",
+   "name_en": "R_A1_ROI",
+   "color": [
+    58,
+    234,
+    184
+   ],
+   "volume_mm3": 1176.0,
+   "centroid_mm": [
+    61.0,
+    -38.6,
+    21.3
+   ]
+  },
+  {
+   "id": 1026,
+   "name_zh": "右上顶小叶外侧 PSL",
+   "name_en": "R_PSL_ROI",
+   "color": [
+    234,
+    133,
+    58
+   ],
+   "volume_mm3": 1273.0,
+   "centroid_mm": [
+    8.7,
+    15.8,
+    62.9
+   ]
+  },
+  {
+   "id": 1027,
+   "name_zh": "右额岛盖沟 SFL",
+   "name_en": "R_SFL_ROI",
+   "color": [
+    82,
+    58,
+    234
+   ],
+   "volume_mm3": 799.0,
+   "centroid_mm": [
+    6.8,
+    -51.9,
+    49.1
+   ]
+  },
+  {
+   "id": 1028,
+   "name_zh": "右压后皮层 PCV",
+   "name_en": "R_PCV_ROI",
+   "color": [
+    86,
+    234,
+    58
+   ],
+   "volume_mm3": 850.0,
+   "centroid_mm": [
+    56.8,
+    -42.2,
+    14.6
+   ]
+  },
+  {
+   "id": 1029,
+   "name_zh": "右颞上视觉区 STV",
+   "name_en": "R_STV_ROI",
+   "color": [
+    234,
+    58,
+    137
+   ],
+   "volume_mm3": 557.0,
+   "centroid_mm": [
+    6.5,
+    -65.8,
+    48.9
+   ]
+  },
+  {
+   "id": 1030,
+   "name_zh": "右顶上小叶后内侧 7Pm",
+   "name_en": "R_7Pm_ROI",
+   "color": [
+    58,
+    189,
+    234
+   ],
+   "volume_mm3": 1014.0,
+   "centroid_mm": [
+    5.4,
+    -60.1,
+    33.7
+   ]
+  },
+  {
+   "id": 1031,
+   "name_zh": "右顶上小叶内侧 7m",
+   "name_en": "R_7m_ROI",
+   "color": [
+    234,
+    228,
+    58
+   ],
+   "volume_mm3": 1733.0,
+   "centroid_mm": [
+    11.2,
+    -57.9,
+    15.3
+   ]
+  },
+  {
+   "id": 1032,
+   "name_zh": "右顶枕沟 1",
+   "name_en": "R_POS1_ROI",
+   "color": [
+    177,
+    58,
+    234
+   ],
+   "volume_mm3": 1100.0,
+   "centroid_mm": [
+    3.3,
+    -22.3,
+    38.4
+   ]
+  },
+  {
+   "id": 1033,
+   "name_zh": "右后扣带回 23d",
+   "name_en": "R_23d_ROI",
+   "color": [
+    58,
+    234,
+    125
+   ],
+   "volume_mm3": 706.0,
+   "centroid_mm": [
+    4.6,
+    -53.1,
+    19.3
+   ]
+  },
+  {
+   "id": 1034,
+   "name_zh": "右腹侧后扣带 v23ab",
+   "name_en": "R_v23ab_ROI",
+   "color": [
+    234,
+    74,
+    58
+   ],
+   "volume_mm3": 607.0,
+   "centroid_mm": [
+    3.4,
+    -40.9,
+    31.4
+   ]
+  },
+  {
+   "id": 1035,
+   "name_zh": "右背侧后扣带 d23ab",
+   "name_en": "R_d23ab_ROI",
+   "color": [
+    58,
+    94,
+    234
+   ],
+   "volume_mm3": 668.0,
+   "centroid_mm": [
+    9.0,
+    -44.8,
+    33.2
+   ]
+  },
+  {
+   "id": 1036,
+   "name_zh": "右后扣带回 31pv",
+   "name_en": "R_31pv_ROI",
+   "color": [
+    145,
+    234,
+    58
+   ],
+   "volume_mm3": 1174.0,
+   "centroid_mm": [
+    5.4,
+    -37.7,
+    62.8
+   ]
+  },
+  {
+   "id": 1037,
+   "name_zh": "右旁中央小叶后部 5m",
+   "name_en": "R_5m_ROI",
+   "color": [
+    234,
+    58,
+    196
+   ],
+   "volume_mm3": 1246.0,
+   "centroid_mm": [
+    13.6,
+    -38.5,
+    50.9
+   ]
+  },
+  {
+   "id": 1038,
+   "name_zh": "右旁中央小叶后部 5mv",
+   "name_en": "R_5mv_ROI",
+   "color": [
+    58,
+    234,
+    221
+   ],
+   "volume_mm3": 1469.0,
+   "centroid_mm": [
+    11.6,
+    -32.6,
+    41.9
+   ]
+  },
+  {
+   "id": 1039,
+   "name_zh": "右后扣带回 23c",
+   "name_en": "R_23c_ROI",
+   "color": [
+    234,
+    169,
+    58
+   ],
+   "volume_mm3": 1339.0,
+   "centroid_mm": [
+    12.7,
+    -44.1,
+    70.8
+   ]
+  },
+  {
+   "id": 1040,
+   "name_zh": "右顶上小叶前外侧 5L",
+   "name_en": "R_5L_ROI",
+   "color": [
+    118,
+    58,
+    234
+   ],
+   "volume_mm3": 1495.0,
+   "centroid_mm": [
+    7.5,
+    -18.0,
+    50.3
+   ]
+  },
+  {
+   "id": 1041,
+   "name_zh": "右背侧前扣带回 24dd",
+   "name_en": "R_24dd_ROI",
+   "color": [
+    58,
+    234,
+    67
+   ],
+   "volume_mm3": 657.0,
+   "centroid_mm": [
+    10.7,
+    -4.7,
+    45.7
+   ]
+  },
+  {
+   "id": 1042,
+   "name_zh": "右腹侧前扣带回 24dv",
+   "name_en": "R_24dv_ROI",
+   "color": [
+    234,
+    58,
+    101
+   ],
+   "volume_mm3": 976.0,
+   "centroid_mm": [
+    19.4,
+    -51.2,
+    63.8
+   ]
+  },
+  {
+   "id": 1043,
+   "name_zh": "右顶上小叶前外侧 7AL",
+   "name_en": "R_7AL_ROI",
+   "color": [
+    58,
+    152,
+    234
+   ],
+   "volume_mm3": 1368.0,
+   "centroid_mm": [
+    6.8,
+    4.1,
+    57.5
+   ]
+  },
+  {
+   "id": 1044,
+   "name_zh": "右辅助眼区",
+   "name_en": "R_SCEF_ROI",
+   "color": [
+    204,
+    234,
+    58
+   ],
+   "volume_mm3": 2004.0,
+   "centroid_mm": [
+    18.6,
+    4.4,
+    63.7
+   ]
+  },
+  {
+   "id": 1045,
+   "name_zh": "右辅助运动区 6ma",
+   "name_en": "R_6ma_ROI",
+   "color": [
+    213,
+    58,
+    234
+   ],
+   "volume_mm3": 1147.0,
+   "centroid_mm": [
+    8.6,
+    -59.4,
+    60.5
+   ]
+  },
+  {
+   "id": 1046,
+   "name_zh": "右顶上小叶前内侧 7Am",
+   "name_en": "R_7Am_ROI",
+   "color": [
+    58,
+    234,
+    162
+   ],
+   "volume_mm3": 546.0,
+   "centroid_mm": [
+    13.4,
+    -70.4,
+    53.6
+   ]
+  },
+  {
+   "id": 1047,
+   "name_zh": "右顶上小叶后外侧 7PL",
+   "name_en": "R_7PL_ROI",
+   "color": [
+    234,
+    110,
+    58
+   ],
+   "volume_mm3": 1322.0,
+   "centroid_mm": [
+    32.9,
+    -48.4,
+    60.5
+   ]
+  },
+  {
+   "id": 1048,
+   "name_zh": "右顶上小叶中央 7PC",
+   "name_en": "R_7PC_ROI",
+   "color": [
+    59,
+    58,
+    234
+   ],
+   "volume_mm3": 446.0,
+   "centroid_mm": [
+    28.0,
+    -54.7,
+    52.1
+   ]
+  },
+  {
+   "id": 1049,
+   "name_zh": "右腹侧顶内沟外侧",
+   "name_en": "R_LIPv_ROI",
+   "color": [
+    109,
+    234,
+    58
+   ],
+   "volume_mm3": 628.0,
+   "centroid_mm": [
+    19.4,
+    -60.9,
+    60.6
+   ]
+  },
+  {
+   "id": 1050,
+   "name_zh": "右腹顶内沟 VIP",
+   "name_en": "R_VIP_ROI",
+   "color": [
+    234,
+    58,
+    160
+   ],
+   "volume_mm3": 735.0,
+   "centroid_mm": [
+    23.5,
+    -63.6,
+    45.2
+   ]
+  },
+  {
+   "id": 1051,
+   "name_zh": "右内侧顶内沟 MIP",
+   "name_en": "R_MIP_ROI",
+   "color": [
+    58,
+    211,
+    234
+   ],
+   "volume_mm3": 3173.0,
+   "centroid_mm": [
+    43.9,
+    -24.6,
+    55.5
+   ]
+  },
+  {
+   "id": 1052,
+   "name_zh": "右中央后回 1 区",
+   "name_en": "R_1_ROI",
+   "color": [
+    234,
+    206,
+    58
+   ],
+   "volume_mm3": 2635.0,
+   "centroid_mm": [
+    35.8,
+    -32.5,
+    50.9
+   ]
+  },
+  {
+   "id": 1053,
+   "name_zh": "右中央后回 2 区",
+   "name_en": "R_2_ROI",
+   "color": [
+    154,
+    58,
+    234
+   ],
+   "volume_mm3": 1610.0,
+   "centroid_mm": [
+    31.6,
+    -21.2,
+    44.7
+   ]
+  },
+  {
+   "id": 1054,
+   "name_zh": "右中央后回 3a 区",
+   "name_en": "R_3a_ROI",
+   "color": [
+    58,
+    234,
+    103
+   ],
+   "volume_mm3": 1370.0,
+   "centroid_mm": [
+    36.4,
+    -12.1,
+    61.9
+   ]
+  },
+  {
+   "id": 1055,
+   "name_zh": "右背外侧前运动区 6d",
+   "name_en": "R_6d_ROI",
+   "color": [
+    234,
+    58,
+    65
+   ],
+   "volume_mm3": 1884.0,
+   "centroid_mm": [
+    15.3,
+    -12.1,
+    65.6
+   ]
+  },
+  {
+   "id": 1056,
+   "name_zh": "右辅助运动区内侧 6mp",
+   "name_en": "R_6mp_ROI",
+   "color": [
+    58,
+    116,
+    234
+   ],
+   "volume_mm3": 1499.0,
+   "centroid_mm": [
+    57.5,
+    4.2,
+    29.6
+   ]
+  },
+  {
+   "id": 1057,
+   "name_zh": "右腹侧前运动区 6v",
+   "name_en": "R_6v_ROI",
+   "color": [
+    167,
+    234,
+    58
+   ],
+   "volume_mm3": 1008.0,
+   "centroid_mm": [
+    4.9,
+    -2.1,
+    40.1
+   ]
+  },
+  {
+   "id": 1058,
+   "name_zh": "右后扣带回前部 p24pr",
+   "name_en": "R_p24pr_ROI",
+   "color": [
+    234,
+    58,
+    219
+   ],
+   "volume_mm3": 491.0,
+   "centroid_mm": [
+    4.2,
+    10.5,
+    29.6
+   ]
+  },
+  {
+   "id": 1059,
+   "name_zh": "右旁嗅皮层 33pr",
+   "name_en": "R_33pr_ROI",
+   "color": [
+    58,
+    234,
+    198
+   ],
+   "volume_mm3": 687.0,
+   "centroid_mm": [
+    5.4,
+    17.6,
+    32.2
+   ]
+  },
+  {
+   "id": 1060,
+   "name_zh": "右前扣带回前部 a24pr",
+   "name_en": "R_a24pr_ROI",
+   "color": [
+    234,
+    147,
+    58
+   ],
+   "volume_mm3": 861.0,
+   "centroid_mm": [
+    10.8,
+    13.7,
+    38.9
+   ]
+  },
+  {
+   "id": 1061,
+   "name_zh": "右后扣带回 32 前部",
+   "name_en": "R_p32pr_ROI",
+   "color": [
+    95,
+    58,
+    234
+   ],
+   "volume_mm3": 980.0,
+   "centroid_mm": [
+    6.3,
+    37.5,
+    -0.2
+   ]
+  },
+  {
+   "id": 1062,
+   "name_zh": "右前扣带回前部 a24",
+   "name_en": "R_a24_ROI",
+   "color": [
+    72,
+    234,
+    58
+   ],
+   "volume_mm3": 1057.0,
+   "centroid_mm": [
+    10.2,
+    37.0,
+    24.4
+   ]
+  },
+  {
+   "id": 1063,
+   "name_zh": "右背侧前扣带 32",
+   "name_en": "R_d32_ROI",
+   "color": [
+    234,
+    58,
+    123
+   ],
+   "volume_mm3": 1955.0,
+   "centroid_mm": [
+    6.3,
+    28.3,
+    45.7
+   ]
+  },
+  {
+   "id": 1064,
+   "name_zh": "右额叶 8BM 区",
+   "name_en": "R_8BM_ROI",
+   "color": [
+    58,
+    175,
+    234
+   ],
+   "volume_mm3": 648.0,
+   "centroid_mm": [
+    11.4,
+    43.8,
+    -1.7
+   ]
+  },
+  {
+   "id": 1065,
+   "name_zh": "右后扣带回 32",
+   "name_en": "R_p32_ROI",
+   "color": [
+    226,
+    234,
+    58
+   ],
+   "volume_mm3": 785.0,
+   "centroid_mm": [
+    8.2,
+    47.5,
+    -7.8
+   ]
+  },
+  {
+   "id": 1066,
+   "name_zh": "右额极前部 10r",
+   "name_en": "R_10r_ROI",
+   "color": [
+    191,
+    58,
+    234
+   ],
+   "volume_mm3": 678.0,
+   "centroid_mm": [
+    34.3,
+    30.1,
+    -15.8
+   ]
+  },
+  {
+   "id": 1067,
+   "name_zh": "右额下回眶部内侧 47m",
+   "name_en": "R_47m_ROI",
+   "color": [
+    58,
+    234,
+    139
+   ],
+   "volume_mm3": 1732.0,
+   "centroid_mm": [
+    38.1,
+    20.0,
+    46.6
+   ]
+  },
+  {
+   "id": 1068,
+   "name_zh": "右额眼区腹侧 8Av",
+   "name_en": "R_8Av_ROI",
+   "color": [
+    234,
+    88,
+    58
+   ],
+   "volume_mm3": 1209.0,
+   "centroid_mm": [
+    22.9,
+    27.1,
+    43.7
+   ]
+  },
+  {
+   "id": 1069,
+   "name_zh": "右额眼区背侧 8Ad",
+   "name_en": "R_8Ad_ROI",
+   "color": [
+    58,
+    80,
+    234
+   ],
+   "volume_mm3": 3011.0,
+   "centroid_mm": [
+    8.0,
+    51.6,
+    22.0
+   ]
+  },
+  {
+   "id": 1070,
+   "name_zh": "右内侧前额叶 9m",
+   "name_en": "R_9m_ROI",
+   "color": [
+    131,
+    234,
+    58
+   ],
+   "volume_mm3": 2445.0,
+   "centroid_mm": [
+    11.5,
+    38.4,
+    49.0
+   ]
+  },
+  {
+   "id": 1071,
+   "name_zh": "右额叶 8BL 区",
+   "name_en": "R_8BL_ROI",
+   "color": [
+    234,
+    58,
+    182
+   ],
+   "volume_mm3": 1202.0,
+   "centroid_mm": [
+    18.5,
+    46.6,
+    34.2
+   ]
+  },
+  {
+   "id": 1072,
+   "name_zh": "右前额叶 9p",
+   "name_en": "R_9p_ROI",
+   "color": [
+    58,
+    234,
+    234
+   ],
+   "volume_mm3": 1479.0,
+   "centroid_mm": [
+    11.0,
+    63.6,
+    6.2
+   ]
+  },
+  {
+   "id": 1073,
+   "name_zh": "右背外侧前额叶 10d",
+   "name_en": "R_10d_ROI",
+   "color": [
+    234,
+    183,
+    58
+   ],
+   "volume_mm3": 1127.0,
+   "centroid_mm": [
+    38.6,
+    18.1,
+    34.7
+   ]
+  },
+  {
+   "id": 1074,
+   "name_zh": "右额叶 8C 区",
+   "name_en": "R_8C_ROI",
+   "color": [
+    132,
+    58,
+    234
+   ],
+   "volume_mm3": 1560.0,
+   "centroid_mm": [
+    52.2,
+    17.5,
+    12.4
+   ]
+  },
+  {
+   "id": 1075,
+   "name_zh": "右布洛卡区 44",
+   "name_en": "R_44_ROI",
+   "color": [
+    58,
+    234,
+    81
+   ],
+   "volume_mm3": 823.0,
+   "centroid_mm": [
+    50.1,
+    27.0,
+    3.2
+   ]
+  },
+  {
+   "id": 1076,
+   "name_zh": "右布洛卡区 45",
+   "name_en": "R_45_ROI",
+   "color": [
+    234,
+    58,
+    87
+   ],
+   "volume_mm3": 976.0,
+   "centroid_mm": [
+    45.6,
+    32.0,
+    -12.1
+   ]
+  },
+  {
+   "id": 1077,
+   "name_zh": "右额下回眶部外侧 47l",
+   "name_en": "R_47l_ROI",
+   "color": [
+    58,
+    138,
+    234
+   ],
+   "volume_mm3": 2149.0,
+   "centroid_mm": [
+    38.5,
+    48.0,
+    -7.1
+   ]
+  },
+  {
+   "id": 1078,
+   "name_zh": "右额下回前部 a47r",
+   "name_en": "R_a47r_ROI",
+   "color": [
+    190,
+    234,
+    58
+   ],
+   "volume_mm3": 1982.0,
+   "centroid_mm": [
+    50.3,
+    7.5,
+    15.8
+   ]
+  },
+  {
+   "id": 1079,
+   "name_zh": "右外侧前运动区 6r",
+   "name_en": "R_6r_ROI",
+   "color": [
+    227,
+    58,
+    234
+   ],
+   "volume_mm3": 451.0,
+   "centroid_mm": [
+    41.0,
+    17.6,
+    22.2
+   ]
+  },
+  {
+   "id": 1080,
+   "name_zh": "右额下连接前部 IFJa",
+   "name_en": "R_IFJa_ROI",
+   "color": [
+    58,
+    234,
+    176
+   ],
+   "volume_mm3": 395.0,
+   "centroid_mm": [
+    36.5,
+    7.6,
+    26.7
+   ]
+  },
+  {
+   "id": 1081,
+   "name_zh": "右额下连接后部 IFJp",
+   "name_en": "R_IFJp_ROI",
+   "color": [
+    234,
+    124,
+    58
+   ],
+   "volume_mm3": 896.0,
+   "centroid_mm": [
+    46.9,
+    26.6,
+    17.6
+   ]
+  },
+  {
+   "id": 1082,
+   "name_zh": "右额下沟后部 IFSp",
+   "name_en": "R_IFSp_ROI",
+   "color": [
+    73,
+    58,
+    234
+   ],
+   "volume_mm3": 985.0,
+   "centroid_mm": [
+    46.5,
+    34.3,
+    5.8
+   ]
+  },
+  {
+   "id": 1083,
+   "name_zh": "右额下沟前部 IFSa",
+   "name_en": "R_IFSa_ROI",
+   "color": [
+    95,
+    234,
+    58
+   ],
+   "volume_mm3": 1645.0,
+   "centroid_mm": [
+    44.4,
+    31.3,
+    27.4
+   ]
+  },
+  {
+   "id": 1084,
+   "name_zh": "右背外侧前额叶后部 p9-46v",
+   "name_en": "R_p9-46v_ROI",
+   "color": [
+    234,
+    58,
+    146
+   ],
+   "volume_mm3": 1484.0,
+   "centroid_mm": [
+    35.2,
+    36.5,
+    27.5
+   ]
+  },
+  {
+   "id": 1085,
+   "name_zh": "右背外侧前额叶 46",
+   "name_en": "R_46_ROI",
+   "color": [
+    58,
+    197,
+    234
+   ],
+   "volume_mm3": 986.0,
+   "centroid_mm": [
+    39.3,
+    48.4,
+    11.2
+   ]
+  },
+  {
+   "id": 1086,
+   "name_zh": "右背外侧前额叶前部 a9-46v",
+   "name_en": "R_a9-46v_ROI",
+   "color": [
+    234,
+    220,
+    58
+   ],
+   "volume_mm3": 2015.0,
+   "centroid_mm": [
+    28.3,
+    44.2,
+    22.8
+   ]
+  },
+  {
+   "id": 1087,
+   "name_zh": "右背外侧前额叶 9-46d",
+   "name_en": "R_9-46d_ROI",
+   "color": [
+    168,
+    58,
+    234
+   ],
+   "volume_mm3": 1511.0,
+   "centroid_mm": [
+    18.2,
+    57.9,
+    21.1
+   ]
+  },
+  {
+   "id": 1088,
+   "name_zh": "右前额叶 9a",
+   "name_en": "R_9a_ROI",
+   "color": [
+    58,
+    234,
+    117
+   ],
+   "volume_mm3": 1568.0,
+   "centroid_mm": [
+    5.2,
+    48.5,
+    -15.3
+   ]
+  },
+  {
+   "id": 1089,
+   "name_zh": "右腹内侧前额叶 10v",
+   "name_en": "R_10v_ROI",
+   "color": [
+    234,
+    66,
+    58
+   ],
+   "volume_mm3": 1060.0,
+   "centroid_mm": [
+    24.9,
+    57.7,
+    -7.0
+   ]
+  },
+  {
+   "id": 1090,
+   "name_zh": "右额极前部 a10p",
+   "name_en": "R_a10p_ROI",
+   "color": [
+    58,
+    102,
+    234
+   ],
+   "volume_mm3": 1999.0,
+   "centroid_mm": [
+    13.9,
+    57.8,
+    -15.3
+   ]
+  },
+  {
+   "id": 1091,
+   "name_zh": "右额极后部 10pp",
+   "name_en": "R_10pp_ROI",
+   "color": [
+    153,
+    234,
+    58
+   ],
+   "volume_mm3": 2170.0,
+   "centroid_mm": [
+    24.8,
+    43.3,
+    -14.9
+   ]
+  },
+  {
+   "id": 1092,
+   "name_zh": "右眶额外侧 11l",
+   "name_en": "R_11l_ROI",
+   "color": [
+    234,
+    58,
+    205
+   ],
+   "volume_mm3": 1192.0,
+   "centroid_mm": [
+    21.6,
+    24.7,
+    -19.8
+   ]
+  },
+  {
+   "id": 1093,
+   "name_zh": "右岛叶 13l",
+   "name_en": "R_13l_ROI",
+   "color": [
+    58,
+    234,
+    212
+   ],
+   "volume_mm3": 2780.0,
+   "centroid_mm": [
+    10.0,
+    31.4,
+    -23.4
+   ]
+  },
+  {
+   "id": 1094,
+   "name_zh": "右眶额皮层 OFC",
+   "name_en": "R_OFC_ROI",
+   "color": [
+    234,
+    161,
+    58
+   ],
+   "volume_mm3": 1135.0,
+   "centroid_mm": [
+    31.9,
+    21.4,
+    -17.8
+   ]
+  },
+  {
+   "id": 1095,
+   "name_zh": "右额下回眶部 47s",
+   "name_en": "R_47s_ROI",
+   "color": [
+    109,
+    58,
+    234
+   ],
+   "volume_mm3": 261.0,
+   "centroid_mm": [
+    30.4,
+    -53.7,
+    42.9
+   ]
+  },
+  {
+   "id": 1096,
+   "name_zh": "右背侧顶内沟外侧",
+   "name_en": "R_LIPd_ROI",
+   "color": [
+    58,
+    234,
+    58
+   ],
+   "volume_mm3": 1960.0,
+   "centroid_mm": [
+    27.1,
+    -1.8,
+    50.8
+   ]
+  },
+  {
+   "id": 1097,
+   "name_zh": "右背侧前运动区 6a",
+   "name_en": "R_6a_ROI",
+   "color": [
+    234,
+    58,
+    110
+   ],
+   "volume_mm3": 976.0,
+   "centroid_mm": [
+    34.6,
+    10.7,
+    53.6
+   ]
+  },
+  {
+   "id": 1098,
+   "name_zh": "右额中回后部 i6-8",
+   "name_en": "R_i6-8_ROI",
+   "color": [
+    58,
+    161,
+    234
+   ],
+   "volume_mm3": 780.0,
+   "centroid_mm": [
+    20.5,
+    19.0,
+    55.8
+   ]
+  },
+  {
+   "id": 1099,
+   "name_zh": "右额上回后部 s6-8",
+   "name_en": "R_s6-8_ROI",
+   "color": [
+    212,
+    234,
+    58
+   ],
+   "volume_mm3": 1275.0,
+   "centroid_mm": [
+    56.3,
+    -1.8,
+    9.5
+   ]
+  },
+  {
+   "id": 1100,
+   "name_zh": "右中央后下回 43",
+   "name_en": "R_43_ROI",
+   "color": [
+    205,
+    58,
+    234
+   ],
+   "volume_mm3": 1716.0,
+   "centroid_mm": [
+    58.4,
+    -13.7,
+    15.6
+   ]
+  },
+  {
+   "id": 1101,
+   "name_zh": "右顶叶岛盖 4",
+   "name_en": "R_OP4_ROI",
+   "color": [
+    58,
+    234,
+    153
+   ],
+   "volume_mm3": 611.0,
+   "centroid_mm": [
+    44.2,
+    -21.7,
+    17.9
+   ]
+  },
+  {
+   "id": 1102,
+   "name_zh": "右顶叶岛盖 1",
+   "name_en": "R_OP1_ROI",
+   "color": [
+    234,
+    102,
+    58
+   ],
+   "volume_mm3": 521.0,
+   "centroid_mm": [
+    39.3,
+    -15.3,
+    18.0
+   ]
+  },
+  {
+   "id": 1103,
+   "name_zh": "右顶叶岛盖 2-3",
+   "name_en": "R_OP2-3_ROI",
+   "color": [
+    58,
+    66,
+    234
+   ],
+   "volume_mm3": 337.0,
+   "centroid_mm": [
+    39.0,
+    -23.1,
+    1.8
+   ]
+  },
+  {
+   "id": 1104,
+   "name_zh": "右岛叶 52 区",
+   "name_en": "R_52_ROI",
+   "color": [
+    117,
+    234,
+    58
+   ],
+   "volume_mm3": 896.0,
+   "centroid_mm": [
+    41.6,
+    -32.7,
+    17.1
+   ]
+  },
+  {
+   "id": 1105,
+   "name_zh": "右岛盖后部 RI",
+   "name_en": "R_RI_ROI",
+   "color": [
+    234,
+    58,
+    168
+   ],
+   "volume_mm3": 794.0,
+   "centroid_mm": [
+    47.6,
+    -29.7,
+    22.0
+   ]
+  },
+  {
+   "id": 1106,
+   "name_zh": "右顶下小叶 PFcm",
+   "name_en": "R_PFcm_ROI",
+   "color": [
+    58,
+    220,
+    234
+   ],
+   "volume_mm3": 1327.0,
+   "centroid_mm": [
+    39.5,
+    -5.0,
+    -0.2
+   ]
+  },
+  {
+   "id": 1107,
+   "name_zh": "右中央后岛盖 2",
+   "name_en": "R_PoI2_ROI",
+   "color": [
+    234,
+    197,
+    58
+   ],
+   "volume_mm3": 1079.0,
+   "centroid_mm": [
+    52.2,
+    -1.5,
+    -7.1
+   ]
+  },
+  {
+   "id": 1108,
+   "name_zh": "右颞叶听觉联合区 TA2",
+   "name_en": "R_TA2_ROI",
+   "color": [
+    146,
+    58,
+    234
+   ],
+   "volume_mm3": 1024.0,
+   "centroid_mm": [
+    39.2,
+    12.8,
+    7.4
+   ]
+  },
+  {
+   "id": 1109,
+   "name_zh": "右额叶岛盖 4",
+   "name_en": "R_FOP4_ROI",
+   "color": [
+    58,
+    234,
+    94
+   ],
+   "volume_mm3": 1066.0,
+   "centroid_mm": [
+    37.3,
+    7.7,
+    2.4
+   ]
+  },
+  {
+   "id": 1110,
+   "name_zh": "右岛叶运动区 MI",
+   "name_en": "R_MI_ROI",
+   "color": [
+    234,
+    58,
+    73
+   ],
+   "volume_mm3": 1104.0,
+   "centroid_mm": [
+    33.9,
+    4.1,
+    -18.3
+   ]
+  },
+  {
+   "id": 1111,
+   "name_zh": "右梨状皮层 Pir",
+   "name_en": "R_Pir_ROI",
+   "color": [
+    58,
+    125,
+    234
+   ],
+   "volume_mm3": 1135.0,
+   "centroid_mm": [
+    33.3,
+    23.9,
+    -3.2
+   ]
+  },
+  {
+   "id": 1112,
+   "name_zh": "右前腹岛叶 AVI",
+   "name_en": "R_AVI_ROI",
+   "color": [
+    176,
+    234,
+    58
+   ],
+   "volume_mm3": 717.0,
+   "centroid_mm": [
+    33.7,
+    14.3,
+    -12.1
+   ]
+  },
+  {
+   "id": 1113,
+   "name_zh": "右前岛叶前部 AAIC",
+   "name_en": "R_AAIC_ROI",
+   "color": [
+    234,
+    58,
+    227
+   ],
+   "volume_mm3": 664.0,
+   "centroid_mm": [
+    48.3,
+    2.8,
+    5.2
+   ]
+  },
+  {
+   "id": 1114,
+   "name_zh": "右额叶岛盖 1",
+   "name_en": "R_FOP1_ROI",
+   "color": [
+    58,
+    234,
+    190
+   ],
+   "volume_mm3": 378.0,
+   "centroid_mm": [
+    35.2,
+    6.1,
+    11.6
+   ]
+  },
+  {
+   "id": 1115,
+   "name_zh": "右额叶岛盖 3",
+   "name_en": "R_FOP3_ROI",
+   "color": [
+    234,
+    138,
+    58
+   ],
+   "volume_mm3": 482.0,
+   "centroid_mm": [
+    41.1,
+    -3.9,
+    14.7
+   ]
+  },
+  {
+   "id": 1116,
+   "name_zh": "右额叶岛盖 2",
+   "name_en": "R_FOP2_ROI",
+   "color": [
+    87,
+    58,
+    234
+   ],
+   "volume_mm3": 1006.0,
+   "centroid_mm": [
+    52.2,
+    -27.0,
+    39.8
+   ]
+  },
+  {
+   "id": 1117,
+   "name_zh": "右顶下小叶 PFt",
+   "name_en": "R_PFt_ROI",
+   "color": [
+    81,
+    234,
+    58
+   ],
+   "volume_mm3": 1152.0,
+   "centroid_mm": [
+    36.2,
+    -40.9,
+    41.9
+   ]
+  },
+  {
+   "id": 1118,
+   "name_zh": "右前顶内沟 AIP",
+   "name_en": "R_AIP_ROI",
+   "color": [
+    234,
+    58,
+    132
+   ],
+   "volume_mm3": 903.0,
+   "centroid_mm": [
+    21.3,
+    -14.2,
+    -26.7
+   ]
+  },
+  {
+   "id": 1119,
+   "name_zh": "右嗅周皮层 EC",
+   "name_en": "R_EC_ROI",
+   "color": [
+    58,
+    183,
+    234
+   ],
+   "volume_mm3": 995.0,
+   "centroid_mm": [
+    21.6,
+    -32.7,
+    -9.5
+   ]
+  },
+  {
+   "id": 1120,
+   "name_zh": "右旁海马回前部 PreS",
+   "name_en": "R_PreS_ROI",
+   "color": [
+    234,
+    233,
+    58
+   ],
+   "volume_mm3": 1415.0,
+   "centroid_mm": [
+    30.9,
+    -25.8,
+    -16.4
+   ]
+  },
+  {
+   "id": 1121,
+   "name_zh": "右海马 H",
+   "name_en": "R_H_ROI",
+   "color": [
+    182,
+    58,
+    234
+   ],
+   "volume_mm3": 682.0,
+   "centroid_mm": [
+    20.4,
+    -50.7,
+    1.2
+   ]
+  },
+  {
+   "id": 1122,
+   "name_zh": "右海马旁回后部 ProS",
+   "name_en": "R_ProS_ROI",
+   "color": [
+    58,
+    234,
+    131
+   ],
+   "volume_mm3": 2143.0,
+   "centroid_mm": [
+    28.9,
+    -12.3,
+    -32.5
+   ]
+  },
+  {
+   "id": 1123,
+   "name_zh": "右嗅周皮层后部 PeEc",
+   "name_en": "R_PeEc_ROI",
+   "color": [
+    234,
+    79,
+    58
+   ],
+   "volume_mm3": 839.0,
+   "centroid_mm": [
+    51.4,
+    9.6,
+    -18.6
+   ]
+  },
+  {
+   "id": 1124,
+   "name_zh": "右颞上回前部 STGa",
+   "name_en": "R_STGa_ROI",
+   "color": [
+    58,
+    88,
+    234
+   ],
+   "volume_mm3": 892.0,
+   "centroid_mm": [
+    57.2,
+    -19.0,
+    5.6
+   ]
+  },
+  {
+   "id": 1125,
+   "name_zh": "右后听觉带 PBelt",
+   "name_en": "R_PBelt_ROI",
+   "color": [
+    140,
+    234,
+    58
+   ],
+   "volume_mm3": 1933.0,
+   "centroid_mm": [
+    61.7,
+    -17.3,
+    -3.2
+   ]
+  },
+  {
+   "id": 1126,
+   "name_zh": "右听觉联合区 A5",
+   "name_en": "R_A5_ROI",
+   "color": [
+    234,
+    58,
+    191
+   ],
+   "volume_mm3": 1140.0,
+   "centroid_mm": [
+    22.8,
+    -34.1,
+    -17.0
+   ]
+  },
+  {
+   "id": 1127,
+   "name_zh": "右海马旁回 1",
+   "name_en": "R_PHA1_ROI",
+   "color": [
+    58,
+    234,
+    226
+   ],
+   "volume_mm3": 665.0,
+   "centroid_mm": [
+    34.7,
+    -38.1,
+    -16.6
+   ]
+  },
+  {
+   "id": 1128,
+   "name_zh": "右海马旁回 3",
+   "name_en": "R_PHA3_ROI",
+   "color": [
+    234,
+    175,
+    58
+   ],
+   "volume_mm3": 1438.0,
+   "centroid_mm": [
+    53.1,
+    -7.0,
+    -14.3
+   ]
+  },
+  {
+   "id": 1129,
+   "name_zh": "右颞上沟背前 STSda",
+   "name_en": "R_STSda_ROI",
+   "color": [
+    123,
+    58,
+    234
+   ],
+   "volume_mm3": 1393.0,
+   "centroid_mm": [
+    48.8,
+    -29.7,
+    -3.4
+   ]
+  },
+  {
+   "id": 1130,
+   "name_zh": "右颞上沟背后 STSdp",
+   "name_en": "R_STSdp_ROI",
+   "color": [
+    58,
+    234,
+    72
+   ],
+   "volume_mm3": 1433.0,
+   "centroid_mm": [
+    58.6,
+    -33.1,
+    -7.0
+   ]
+  },
+  {
+   "id": 1131,
+   "name_zh": "右颞上沟腹后 STSvp",
+   "name_en": "R_STSvp_ROI",
+   "color": [
+    234,
+    58,
+    96
+   ],
+   "volume_mm3": 4677.0,
+   "centroid_mm": [
+    41.2,
+    9.8,
+    -32.7
+   ]
+  },
+  {
+   "id": 1132,
+   "name_zh": "右颞极背侧 TGd",
+   "name_en": "R_TGd_ROI",
+   "color": [
+    58,
+    147,
+    234
+   ],
+   "volume_mm3": 1815.0,
+   "centroid_mm": [
+    60.3,
+    -7.4,
+    -24.9
+   ]
+  },
+  {
+   "id": 1133,
+   "name_zh": "右颞下回前部 TE1a",
+   "name_en": "R_TE1a_ROI",
+   "color": [
+    198,
+    234,
+    58
+   ],
+   "volume_mm3": 2338.0,
+   "centroid_mm": [
+    60.7,
+    -44.2,
+    -13.0
+   ]
+  },
+  {
+   "id": 1134,
+   "name_zh": "右颞下回后部 TE1p",
+   "name_en": "R_TE1p_ROI",
+   "color": [
+    218,
+    58,
+    234
+   ],
+   "volume_mm3": 2951.0,
+   "centroid_mm": [
+    54.3,
+    -19.8,
+    -30.7
+   ]
+  },
+  {
+   "id": 1135,
+   "name_zh": "右颞下回前部 TE2a",
+   "name_en": "R_TE2a_ROI",
+   "color": [
+    58,
+    234,
+    167
+   ],
+   "volume_mm3": 2153.0,
+   "centroid_mm": [
+    41.5,
+    -22.4,
+    -27.8
+   ]
+  },
+  {
+   "id": 1136,
+   "name_zh": "右颞下回后部 TF",
+   "name_en": "R_TF_ROI",
+   "color": [
+    234,
+    116,
+    58
+   ],
+   "volume_mm3": 1297.0,
+   "centroid_mm": [
+    47.8,
+    -40.1,
+    -21.0
+   ]
+  },
+  {
+   "id": 1137,
+   "name_zh": "右颞下回后部 TE2p",
+   "name_en": "R_TE2p_ROI",
+   "color": [
+    64,
+    58,
+    234
+   ],
+   "volume_mm3": 1323.0,
+   "centroid_mm": [
+    58.7,
+    -53.4,
+    -3.6
+   ]
+  },
+  {
+   "id": 1138,
+   "name_zh": "右颞叶海马旁回 PHT",
+   "name_en": "R_PHT_ROI",
+   "color": [
+    103,
+    234,
+    58
+   ],
+   "volume_mm3": 1040.0,
+   "centroid_mm": [
+    48.3,
+    -62.0,
+    -11.2
+   ]
+  },
+  {
+   "id": 1139,
+   "name_zh": "右海马旁回 PH",
+   "name_en": "R_PH_ROI",
+   "color": [
+    234,
+    58,
+    155
+   ],
+   "volume_mm3": 1839.0,
+   "centroid_mm": [
+    52.9,
+    -42.7,
+    6.6
+   ]
+  },
+  {
+   "id": 1140,
+   "name_zh": "右颞顶枕交界 1",
+   "name_en": "R_TPOJ1_ROI",
+   "color": [
+    58,
+    206,
+    234
+   ],
+   "volume_mm3": 1037.0,
+   "centroid_mm": [
+    53.8,
+    -58.7,
+    6.8
+   ]
+  },
+  {
+   "id": 1141,
+   "name_zh": "右颞顶枕交界 2",
+   "name_en": "R_TPOJ2_ROI",
+   "color": [
+    234,
+    211,
+    58
+   ],
+   "volume_mm3": 536.0,
+   "centroid_mm": [
+    41.0,
+    -63.7,
+    14.0
+   ]
+  },
+  {
+   "id": 1142,
+   "name_zh": "右颞顶枕交界 3",
+   "name_en": "R_TPOJ3_ROI",
+   "color": [
+    160,
+    58,
+    234
+   ],
+   "volume_mm3": 821.0,
+   "centroid_mm": [
+    20.1,
+    -67.2,
+    28.7
+   ]
+  },
+  {
+   "id": 1143,
+   "name_zh": "右背侧视觉通路颞顶区",
+   "name_en": "R_DVT_ROI",
+   "color": [
+    58,
+    234,
+    108
+   ],
+   "volume_mm3": 1599.0,
+   "centroid_mm": [
+    41.2,
+    -78.6,
+    22.6
+   ]
+  },
+  {
+   "id": 1144,
+   "name_zh": "右角回 PGp",
+   "name_en": "R_PGp_ROI",
+   "color": [
+    234,
+    58,
+    59
+   ],
+   "volume_mm3": 677.0,
+   "centroid_mm": [
+    42.7,
+    -45.9,
+    40.2
+   ]
+  },
+  {
+   "id": 1145,
+   "name_zh": "右顶内沟 2",
+   "name_en": "R_IP2_ROI",
+   "color": [
+    58,
+    111,
+    234
+   ],
+   "volume_mm3": 1030.0,
+   "centroid_mm": [
+    34.6,
+    -65.2,
+    42.3
+   ]
+  },
+  {
+   "id": 1146,
+   "name_zh": "右顶内沟 1",
+   "name_en": "R_IP1_ROI",
+   "color": [
+    162,
+    234,
+    58
+   ],
+   "volume_mm3": 760.0,
+   "centroid_mm": [
+    33.2,
+    -73.0,
+    27.3
+   ]
+  },
+  {
+   "id": 1147,
+   "name_zh": "右顶内沟 0",
+   "name_en": "R_IP0_ROI",
+   "color": [
+    234,
+    58,
+    213
+   ],
+   "volume_mm3": 866.0,
+   "centroid_mm": [
+    59.9,
+    -21.1,
+    27.2
+   ]
+  },
+  {
+   "id": 1148,
+   "name_zh": "右顶盖区 PFop",
+   "name_en": "R_PFop_ROI",
+   "color": [
+    58,
+    234,
+    203
+   ],
+   "volume_mm3": 2418.0,
+   "centroid_mm": [
+    57.8,
+    -34.0,
+    35.0
+   ]
+  },
+  {
+   "id": 1149,
+   "name_zh": "右顶下小叶 PF",
+   "name_en": "R_PF_ROI",
+   "color": [
+    234,
+    152,
+    58
+   ],
+   "volume_mm3": 2542.0,
+   "centroid_mm": [
+    52.1,
+    -49.8,
+    38.8
+   ]
+  },
+  {
+   "id": 1150,
+   "name_zh": "右顶下小叶 PFm",
+   "name_en": "R_PFm_ROI",
+   "color": [
+    101,
+    58,
+    234
+   ],
+   "volume_mm3": 2042.0,
+   "centroid_mm": [
+    47.0,
+    -58.3,
+    23.0
+   ]
+  },
+  {
+   "id": 1151,
+   "name_zh": "右顶下小叶 PGi",
+   "name_en": "R_PGi_ROI",
+   "color": [
+    67,
+    234,
+    58
+   ],
+   "volume_mm3": 1920.0,
+   "centroid_mm": [
+    43.0,
+    -67.1,
+    37.9
+   ]
+  },
+  {
+   "id": 1152,
+   "name_zh": "右缘上回 PGs",
+   "name_en": "R_PGs_ROI",
+   "color": [
+    234,
+    58,
+    118
+   ],
+   "volume_mm3": 457.0,
+   "centroid_mm": [
+    21.8,
+    -81.5,
+    41.5
+   ]
+  },
+  {
+   "id": 1153,
+   "name_zh": "右第六视皮层 A V6A",
+   "name_en": "R_V6A_ROI",
+   "color": [
+    58,
+    170,
+    234
+   ],
+   "volume_mm3": 973.0,
+   "centroid_mm": [
+    18.8,
+    -53.1,
+    -8.0
+   ]
+  },
+  {
+   "id": 1154,
+   "name_zh": "右腹内侧视觉区 VMV1",
+   "name_en": "R_VMV1_ROI",
+   "color": [
+    221,
+    234,
+    58
+   ],
+   "volume_mm3": 487.0,
+   "centroid_mm": [
+    29.1,
+    -59.2,
+    -10.1
+   ]
+  },
+  {
+   "id": 1155,
+   "name_zh": "右腹内侧视觉区 VMV3",
+   "name_en": "R_VMV3_ROI",
+   "color": [
+    196,
+    58,
+    234
+   ],
+   "volume_mm3": 540.0,
+   "centroid_mm": [
+    31.8,
+    -35.4,
+    -14.9
+   ]
+  },
+  {
+   "id": 1156,
+   "name_zh": "右海马旁回 2",
+   "name_en": "R_PHA2_ROI",
+   "color": [
+    58,
+    234,
+    145
+   ],
+   "volume_mm3": 294.0,
+   "centroid_mm": [
+    45.3,
+    -77.3,
+    -2.0
+   ]
+  },
+  {
+   "id": 1157,
+   "name_zh": "右颞区 V4t",
+   "name_en": "R_V4t_ROI",
+   "color": [
+    234,
+    93,
+    58
+   ],
+   "volume_mm3": 434.0,
+   "centroid_mm": [
+    45.8,
+    -64.0,
+    -3.3
+   ]
+  },
+  {
+   "id": 1158,
+   "name_zh": "右颞上沟底部 FST",
+   "name_en": "R_FST_ROI",
+   "color": [
+    58,
+    74,
+    234
+   ],
+   "volume_mm3": 574.0,
+   "centroid_mm": [
+    33.5,
+    -82.6,
+    13.6
+   ]
+  },
+  {
+   "id": 1159,
+   "name_zh": "右第三视皮层 CD V3CD",
+   "name_en": "R_V3CD_ROI",
+   "color": [
+    126,
+    234,
+    58
+   ],
+   "volume_mm3": 566.0,
+   "centroid_mm": [
+    45.3,
+    -77.3,
+    8.8
+   ]
+  },
+  {
+   "id": 1160,
+   "name_zh": "右外侧枕叶 3",
+   "name_en": "R_LO3_ROI",
+   "color": [
+    234,
+    58,
+    177
+   ],
+   "volume_mm3": 431.0,
+   "centroid_mm": [
+    29.1,
+    -53.6,
+    -6.9
+   ]
+  },
+  {
+   "id": 1161,
+   "name_zh": "右腹内侧视觉区 VMV2",
+   "name_en": "R_VMV2_ROI",
+   "color": [
+    58,
+    228,
+    234
+   ],
+   "volume_mm3": 379.0,
+   "centroid_mm": [
+    12.0,
+    -51.6,
+    35.6
+   ]
+  },
+  {
+   "id": 1162,
+   "name_zh": "右后扣带回 31pd",
+   "name_en": "R_31pd_ROI",
+   "color": [
+    234,
+    188,
+    58
+   ],
+   "volume_mm3": 490.0,
+   "centroid_mm": [
+    6.6,
+    -42.4,
+    41.0
+   ]
+  },
+  {
+   "id": 1163,
+   "name_zh": "右后扣带回 31a",
+   "name_en": "R_31a_ROI",
+   "color": [
+    137,
+    58,
+    234
+   ],
+   "volume_mm3": 1473.0,
+   "centroid_mm": [
+    30.1,
+    -47.5,
+    -18.5
+   ]
+  },
+  {
+   "id": 1164,
+   "name_zh": "右腹侧视觉皮层 VVC",
+   "name_en": "R_VVC_ROI",
+   "color": [
+    58,
+    234,
+    86
+   ],
+   "volume_mm3": 579.0,
+   "centroid_mm": [
+    4.9,
+    19.9,
+    -13.5
+   ]
+  },
+  {
+   "id": 1165,
+   "name_zh": "右膝下前扣带 25",
+   "name_en": "R_25_ROI",
+   "color": [
+    234,
+    58,
+    82
+   ],
+   "volume_mm3": 543.0,
+   "centroid_mm": [
+    6.6,
+    32.8,
+    -12.6
+   ]
+  },
+  {
+   "id": 1166,
+   "name_zh": "右辅助运动区前部",
+   "name_en": "R_s32_ROI",
+   "color": [
+    58,
+    133,
+    234
+   ],
+   "volume_mm3": 1336.0,
+   "centroid_mm": [
+    14.3,
+    13.2,
+    -18.6
+   ]
+  },
+  {
+   "id": 1167,
+   "name_zh": "右眶额后部 pOFC",
+   "name_en": "R_pOFC_ROI",
+   "color": [
+    185,
+    234,
+    58
+   ],
+   "volume_mm3": 1058.0,
+   "centroid_mm": [
+    38.6,
+    -13.5,
+    -4.3
+   ]
+  },
+  {
+   "id": 1168,
+   "name_zh": "右中央后岛盖 1",
+   "name_en": "R_PoI1_ROI",
+   "color": [
+    232,
+    58,
+    234
+   ],
+   "volume_mm3": 579.0,
+   "centroid_mm": [
+    36.2,
+    -14.9,
+    13.8
+   ]
+  },
+  {
+   "id": 1169,
+   "name_zh": "右颗粒岛叶 Ig",
+   "name_en": "R_Ig_ROI",
+   "color": [
+    58,
+    234,
+    181
+   ],
+   "volume_mm3": 795.0,
+   "centroid_mm": [
+    37.3,
+    26.0,
+    5.1
+   ]
+  },
+  {
+   "id": 1170,
+   "name_zh": "右额叶岛盖 5",
+   "name_en": "R_FOP5_ROI",
+   "color": [
+    234,
+    130,
+    58
+   ],
+   "volume_mm3": 1305.0,
+   "centroid_mm": [
+    24.8,
+    56.8,
+    5.3
+   ]
+  },
+  {
+   "id": 1171,
+   "name_zh": "右额极后部 p10p",
+   "name_en": "R_p10p_ROI",
+   "color": [
+    78,
+    58,
+    234
+   ],
+   "volume_mm3": 928.0,
+   "centroid_mm": [
+    44.6,
+    40.8,
+    -3.2
+   ]
+  },
+  {
+   "id": 1172,
+   "name_zh": "右额下回后部 p47r",
+   "name_en": "R_p47r_ROI",
+   "color": [
+    89,
+    234,
+    58
+   ],
+   "volume_mm3": 1627.0,
+   "centroid_mm": [
+    38.4,
+    -3.8,
+    -41.9
+   ]
+  },
+  {
+   "id": 1173,
+   "name_zh": "右颞极腹侧 TGv",
+   "name_en": "R_TGv_ROI",
+   "color": [
+    234,
+    58,
+    141
+   ],
+   "volume_mm3": 653.0,
+   "centroid_mm": [
+    45.1,
+    -18.8,
+    4.0
+   ]
+  },
+  {
+   "id": 1174,
+   "name_zh": "右内侧听觉带 MBelt",
+   "name_en": "R_MBelt_ROI",
+   "color": [
+    58,
+    192,
+    234
+   ],
+   "volume_mm3": 595.0,
+   "centroid_mm": [
+    48.3,
+    -26.1,
+    8.0
+   ]
+  },
+  {
+   "id": 1175,
+   "name_zh": "右外侧听觉带 LBelt",
+   "name_en": "R_LBelt_ROI",
+   "color": [
+    234,
+    225,
+    58
+   ],
+   "volume_mm3": 1396.0,
+   "centroid_mm": [
+    64.0,
+    -17.6,
+    4.5
+   ]
+  },
+  {
+   "id": 1176,
+   "name_zh": "右听觉联合区 A4",
+   "name_en": "R_A4_ROI",
+   "color": [
+    174,
+    58,
+    234
+   ],
+   "volume_mm3": 1166.0,
+   "centroid_mm": [
+    55.1,
+    -14.4,
+    -17.0
+   ]
+  },
+  {
+   "id": 1177,
+   "name_zh": "右颞上沟腹前 STSva",
+   "name_en": "R_STSva_ROI",
+   "color": [
+    58,
+    234,
+    122
+   ],
+   "volume_mm3": 1220.0,
+   "centroid_mm": [
+    62.5,
+    -27.4,
+    -17.0
+   ]
+  },
+  {
+   "id": 1178,
+   "name_zh": "右颞下回中部 TE1m",
+   "name_en": "R_TE1m_ROI",
+   "color": [
+    234,
+    71,
+    58
+   ],
+   "volume_mm3": 805.0,
+   "centroid_mm": [
+    45.1,
+    -8.1,
+    -12.7
+   ]
+  },
+  {
+   "id": 1179,
+   "name_zh": "右顶叶岛盖后部 PI",
+   "name_en": "R_PI_ROI",
+   "color": [
+    58,
+    97,
+    234
+   ],
+   "volume_mm3": 822.0,
+   "centroid_mm": [
+    10.7,
+    27.8,
+    28.6
+   ]
+  },
+  {
+   "id": 1180,
+   "name_zh": "右前扣带 32 前部",
+   "name_en": "R_a32pr_ROI",
+   "color": [
+    148,
+    234,
+    58
+   ],
+   "volume_mm3": 774.0,
+   "centroid_mm": [
+    5.6,
+    34.3,
+    15.8
+   ]
+  }
+ ],
+ "total_regions": 358
+}

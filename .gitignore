@@ -3,3 +3,6 @@ __MACOSX/
 *.backup
 server.log
 .atlas_cache/
+pipeline/.download_cache/
+__pycache__/
+*.pyc

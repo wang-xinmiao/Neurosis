@@ -5,15 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroViz - 多模态脑影像集成分析平台</title>
     <link rel="stylesheet" href="./vendor/font-awesome/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=50">
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "./vendor/three/three.module.js",
-            "three/addons/": "./vendor/three/addons/"
-        }
-    }
-    </script>
+    <link rel="stylesheet" href="css/style.css?v=67">
+    <!-- 3D 引擎已迁移至 NiiVue（本地 vendor/niivue） -->
     <script src="./vendor/echarts/echarts.min.js"></script>
 </head>
 <body>
@@ -352,10 +345,10 @@
                         <h3><i class="fa-solid fa-cube"></i> 3D 脑区结构视图</h3>
                         <div class="panel-controls">
                             <select id="atlasSelect" class="select-sm">
-                                <option value="hcp_mmp">HCP MMP 1.0 (360区)</option>
-                                <option value="destrieux">Destrieux (148区)</option>
-                                <option value="desikan">Desikan-Killiany (68区)</option>
-                                <option value="yeo7">Yeo 7Networks (7网络)</option>
+                                <option value="hcp360">HCP MMP 1.0 (360区)</option>
+                                <option value="destrieux148">Destrieux (148区)</option>
+                                <option value="aal116">AAL (116区)</option>
+                                <option value="dk68">Desikan-Killiany (68区)</option>
                             </select>
                             <select id="hemiSelect" class="select-sm">
                                 <option value="both">双侧半球</option>
@@ -659,10 +652,12 @@
         </span>
     </footer>
 
-    <script src="js/atlas_data.js?v=50"></script>
-    <script src="js/data.js?v=50"></script>
-    <script type="module" src="js/three-brain.js?v=50"></script>
-    <script src="js/charts.js?v=50"></script>
-    <script src="js/app.js?v=50"></script>
+    <script src="js/atlas_data.js?v=67"></script>
+    <script src="js/data.js?v=67"></script>
+    <script src="./vendor/niivue/niivue.umd.js?v=67"></script>
+    <script src="js/niivue-viewer.js?v=67"></script>
+    <script src="js/stub-3d.js?v=67"></script>
+    <script src="js/charts.js?v=67"></script>
+    <script src="js/app.js?v=67"></script>
 </body>
 </html>
