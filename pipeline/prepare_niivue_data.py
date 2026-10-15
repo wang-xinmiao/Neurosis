@@ -445,42 +445,9 @@ def robust_download(urls, dest, attempts=3):
         print(f"  ✗ 该源失败，换下一个镜像")
     return False
 
-# ---------------- Yeo 7/17（HTTPS 官方源） ----------------
-log("步骤 8/8：下载 Yeo 7/17 功能网络体素图")
-yeo_zip = CACHE / "Yeo_JNeurophysiol11_MNI152.zip"
-yeo_urls = [
-    "https://surfer.nmr.mgh.harvard.edu/pub/data/Yeo_JNeurophysiol11_MNI152.zip",
-    "https://ghfast.top/https://surfer.nmr.mgh.harvard.edu/pub/data/Yeo_JNeurophysiol11_MNI152.zip",
-]
-if robust_download(yeo_urls, yeo_zip):
-    import zipfile
-    with zipfile.ZipFile(yeo_zip) as zf:
-        zf.extractall(CACHE / "yeo")
-    yeo_dir = CACHE / "yeo"
-    yeo_files = {}
-    for f in yeo_dir.rglob("*.nii.gz"):
-        n = f.name
-        if "7Networks" in n and "1mm" in n: yeo_files["yeo7"] = f
-        if "17Networks" in n and "1mm" in n: yeo_files["yeo17"] = f
-        # 部分发行版只有 2mm；退而求其次
-        if "7Networks" in n and "7Networks" not in yeo_files and "2mm" in n: yeo_files.setdefault("yeo7", f)
-        if "17Networks" in n and "17Networks" not in yeo_files and "2mm" in n: yeo_files.setdefault("yeo17", f)
-    for key, zh_map, disp in [("yeo7", YEO7_ZH, "Yeo 7 网络（静息态功能网络）"),
-                               ("yeo17", YEO17_ZH, "Yeo 17 网络（静息态功能网络）")]:
-        fp = yeo_files.get(key)
-        if not fp:
-            print(f"  ⚠ 压缩包内未找到 {key} 文件")
-            continue
-        res = resample_from_to(nib.load(str(fp)), (shape, affine), order=0)
-        vol = res.get_fdata().astype(np.int16)
-        lut = {}
-        ids = sorted(int(v) for v in np.unique(vol) if v > 0)
-        colors = generate_colors(len(ids))
-        for k2, vid in enumerate(ids):
-            lut[vid] = {"zh": zh_map.get(vid, f"网络{vid}"), "en": f"Network {vid}", "color": list(colors[k2])}
-        save_atlas(vol, lut, key, "yeo7", disp)
-else:
-    print("  ⚠ Yeo 7/17 全部镜像失败，可稍后重跑补齐")
+# ---------------- Yeo 7/17：项目不需要，已停用（不下载、不占内存） ----------------
+log("步骤 8/8：Yeo 7/17 功能网络图谱（项目未要求，已停用，不下载)")
+print("  · 结构分区仅需 DK68 / AAL116 / Destrieux148 / HCP360；Yeo 属功能网络模板，未纳入本管线")
 
 # ---------------- AAL116 ----------------
 log("补充：下载 AAL116 官方图谱（SPM12/AAL 116区）")

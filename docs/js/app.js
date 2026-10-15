@@ -1006,7 +1006,9 @@ class NeuroVizApp {
 
     buildStructuralLegend() {
         const viewer = this.viewers['viewer1'];
-        if (!viewer || !viewer.atlasMeta) return;
+        // 网格模式下 atlasMeta 为空，元数据在 regionMeta；体积模式才用 atlasMeta
+        if (!viewer) return;
+        if (viewer.renderMode === 'mesh' ? !viewer.regionMeta : !viewer.atlasMeta) return;
         const data = viewer.getAllLegendData();
         const corticalEl = document.getElementById('corticalLegend');
         const subcorticalEl = document.getElementById('subcorticalLegend');
@@ -1014,7 +1016,7 @@ class NeuroVizApp {
 
         // 皮层/网络分区（当前图谱）
         corticalEl.innerHTML = data.cortical.regions.map(r => `
-            <div class="legend-item" data-region="${r.id}" data-volindex="${viewer.atlasIndex}" data-aliases="${r.name_en}">
+            <div class="legend-item" data-region="${r.id}" data-sub="0" data-volindex="${viewer.atlasIndex}" data-aliases="${r.name_en}">
                 <div class="legend-color" style="background:${hex(r.color)};"></div>
                 <span class="legend-name">${r.name_zh}</span>
                 <span style="font-size:10px;color:var(--text-muted);">${(r.volume_mm3 / 1000).toFixed(1)} cm³</span>
@@ -1022,7 +1024,7 @@ class NeuroVizApp {
 
         // 皮层下结构：海马/杏仁核/丘脑/基底节/小脑/白质/脑室（来自 aparc+aseg 或 AAL）
         subcorticalEl.innerHTML = data.subcortical.regions.map(r => `
-            <div class="legend-item" data-region="${r.id}" data-volindex="${viewer.subIndex}" data-aliases="${r.name_en}">
+            <div class="legend-item" data-region="${r.id}" data-sub="1" data-volindex="${viewer.subIndex}" data-aliases="${r.name_en}">
                 <div class="legend-color" style="background:${hex(r.color)};"></div>
                 <span class="legend-name">${r.name_zh}</span>
                 <span style="font-size:10px;color:var(--text-muted);">${(r.volume_mm3 / 1000).toFixed(2)} cm³</span>
@@ -1036,7 +1038,8 @@ class NeuroVizApp {
         document.querySelectorAll('#structuralLegend .legend-item').forEach(item => {
             item.addEventListener('click', () => {
                 const regionId = Number(item.dataset.region);
-                const info = viewer.setHighlight(regionId);
+                const isSub = item.dataset.sub === '1';   // 皮层下与皮层可能 ID 撞车，必须带上来源
+                const info = viewer.setHighlight(regionId, { isSub });
                 document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
                 item.classList.add('selected');
                 if (info) this.showRegionInfoFromMeta(info, 'regionInfo1');
@@ -1550,7 +1553,7 @@ class NeuroVizApp {
         if (sliceControls) sliceControls.style.display = 'none';
         document.querySelectorAll('.view-mode-btn').forEach(b => { b.style.display = 'none'; });
 
-        const viewer = new NiiVueViewer('niivueMP', { viewMode: 'multiplanar' });
+        const viewer = new NiiVueViewer('niivueMP', { viewMode: 'multiplanar', renderMode: 'volume' });
         this.viewers['viewer4'] = viewer;
         viewer.loadAtlas(this.currentAtlas).catch(e => {
             console.error('[NeuroViz] 模块4数据加载失败:', e);

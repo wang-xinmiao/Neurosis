@@ -1,29 +1,27 @@
 /* =====================================================================
- * NeuroViz NiiVue 三维/多平面 脑影像查看器
- * ---------------------------------------------------------------------
- * 以 NIfTI 标准图谱为数据源，取代旧的 OBJ 模型方案：
- *   - MNI152 T1 模板做底图
- *   - 分区图谱（.nii.gz）作为 labelmap，颜色由 JSON LUT 控制
- *   - 点击高亮 = 直接改 LUT（查找表）→ 从根上解决旧方案的"颜色匹配"问题
- *   - NiiVue 原生提供 轴位/矢状位/冠状位 + 3D 联动视图
+ * NeuroViz 查看器（双模式）
+ *   renderMode='mesh'   每脑区独立 mz3 网格（结构分区模块，默认）
+ *                       自维护 mesh 注册表 → 单独显隐/高亮；点击/图例/搜索均可选区
+ *   renderMode='volume' NIfTI 体素 + LUT（交互分析模块四视图用）
  * ===================================================================== */
-
 class NiiVueViewer {
     constructor(containerId, options = {}) {
         this.containerId = containerId;
-        this.onRegionPick = options.onRegionPick || null; // (info) => void
+        this.onRegionPick = options.onRegionPick || null;
         this.dataBase = options.dataBase || './data/';
-        // viewMode: 'render' = 纯3D脑模型大图（结构分区模块用）
-        //           'multiplanar' = 3D+轴位+矢状位+冠状位 四视图（交互分析模块用）
-        this.viewMode = options.viewMode || 'render';
-        this.atlasMeta = null;        // 当前图谱 JSON（regions/citation...）
-        this.subMeta = null;          // 皮层下图谱 JSON
-        this.highlight = null;        // {volIndex, id}
+        this.meshBase = options.meshBase || './static/';
+        this.viewMode = options.viewMode || 'render';      // render | multiplanar
+        this.renderMode = options.renderMode || 'mesh';    // mesh | volume
+        this.meshRegistry = [];   // ★ 自维护 Mesh 注册表（不依赖 NiiVue 内部状态）
+        this.subMeshes = [];      // 皮层下网格（跨图谱复用）
+        this.regionMeta = null;   // 当前图谱 meta 行数组
+        this.subMeta = null;
+        this.atlasMeta = null;    // 兼容体积模式
+        this.highlight = null;
         this.hemiFilter = 'both';
-        this._pendingClick = false;
+        this._pickPending = false;
 
         const container = document.getElementById(containerId);
-        // 清空容器但保留可能存在的水印
         container.querySelectorAll('canvas').forEach(c => c.remove());
         this.canvas = document.createElement('canvas');
         this.canvas.id = containerId + '-glcanvas';
@@ -34,60 +32,196 @@ class NiiVueViewer {
 
         const isMP = this.viewMode === 'multiplanar';
         this.nv = new niivue.Niivue({
-            // 4 = RENDER（整屏3D）；3 = MULTIPLANAR（3D+三切片四视图）
             sliceType: isMP ? 3 : 4,
             backColor: [0.02, 0.02, 0.06, 1.0],
-            // 结构分区纯3D模式：不显示坐标轴/十字线
             show3Dcrosshair: isMP,
             crosshairColor: [0, 188, 212, 255],
             isAxialCrosshairVisible: isMP,
-            // 多平面四视图：每个切片窗口角上显示方向/视图名标注
-            isCornerOrientationText: isMP,
-            isOrientationTextVisible: isMP,
+            isCornerOrientationText: false,
+            isOrientationTextVisible: false,
+            multiplanarLayout: isMP ? 2 : 0,   // 2=GRID 2x2，四视口位置固定（枚举 AUTO0/COLUMN1/GRID2/ROW3）
             blendOpacity: 0.9,
-            // 分区轮廓描边
-            atlasOutline: 2,
+            atlasOutline: this.renderMode === 'volume' ? 2 : 0,
             showLegend: false,
         });
         this.nv.attachToCanvas(this.canvas);
 
-        // 多平面模式：在四个窗口角落叠加中文视图名称（覆盖层，不改变布局）
-        if (this.viewMode === 'multiplanar') {
+        // ===== 自定义"白色幽灵"网格着色器（用于非选中脑区）=====
+        // 内部很透明，法线接近侧面（轮廓/边缘）处更不透明 -> 形成白色描边效果
+        this.ghostShaderIndex = null;
+        if (this.renderMode === 'mesh') {
+            const ghostFrag = `#version 300 es
+precision highp int; precision highp float;
+uniform float opacity;
+in vec4 vClr;
+in vec3 vN;
+out vec4 color;
+void main() {
+    vec3 n = normalize(vN);
+    // 正交投影下视线近似 +Z；|n.z| 小 => 该处为轮廓/边缘
+    float fres = 1.0 - abs(n.z);
+    fres = pow(fres, 4.5);              // 指数越大，描边越细
+    float a = mix(0.045, 0.42, fres);   // 内部 0.045（极透明）→ 边缘 0.42（较细白线）
+    color = vec4(1.0, 1.0, 1.0, a * opacity);
+}`;
+            try { this.ghostShaderIndex = this.nv.setCustomMeshShader(ghostFrag, 'WhiteGhost'); }
+            catch (e) { console.warn('[NiiVueViewer] 创建白色幽灵着色器失败:', e); }
+        }
+
+        if (isMP) {
+            // GRID 2x2：左上轴位 / 右上矢状 / 左下冠状 / 右下3D
+            // 每个标签居中于自己象限顶部，避开 NiiVue 内置的角标文字
             const badges = [
-                ['轴位 Axial', 'top:6px;left:8px;'],
-                ['矢状位 Sagittal', 'top:6px;right:8px;'],
-                ['冠状位 Coronal', 'bottom:6px;left:8px;'],
-                ['3D 渲染', 'bottom:6px;right:8px;'],
+                ['轴位 Axial',    'top:6px;left:25%;transform:translateX(-50%);'],
+                ['矢状位 Sagittal','top:6px;left:75%;transform:translateX(-50%);'],
+                ['冠状位 Coronal', 'top:calc(50% + 6px);left:25%;transform:translateX(-50%);'],
+                ['3D 渲染',        'top:calc(50% + 6px);left:75%;transform:translateX(-50%);'],
             ];
             for (const [text, pos] of badges) {
                 const b = document.createElement('div');
                 b.textContent = text;
                 b.style.cssText = 'position:absolute;' + pos +
                     'z-index:4;pointer-events:none;font-size:11px;padding:2px 8px;' +
-                    'border-radius:4px;background:rgba(10,10,24,0.65);color:#9be8ff;' +
-                    'border:1px solid rgba(0,188,212,0.35);letter-spacing:0.5px;';
-                this.canvas.parentElement && this.canvas.parentElement.appendChild(b);
+                    'border-radius:4px;background:rgba(10,10,24,0.7);color:#9be8ff;' +
+                    'border:1px solid rgba(0,188,212,0.35);';
+                container.appendChild(b);
             }
+            container.style.position = 'relative';
         }
 
-        // 点击 → 通过位置变化事件捕获体素值
-        this.canvas.addEventListener('click', () => { this._pendingClick = true; });
+        this.canvas.addEventListener('dblclick', () => { this._pickPending = true; });
         this.nv.onLocationChange = (loc) => this._handleLocation(loc);
     }
 
-    /* ---------------- 数据加载 ---------------- */
-
-    /**
-     * 加载一个图谱：底图 + 皮层图谱(+可选皮层下图谱)
-     * @param {string} atlasId  如 'hcp360' 'dk68' 'destrieux148' 'aal116' 'yeo7' 'yeo17'
-     * @param {boolean} withSub 是否同时叠加皮层下结构图谱
-     */
+    /* ---------------- 统一入口 ---------------- */
     async loadAtlas(atlasId, withSub = true) {
         this.atlasId = atlasId;
         this.highlight = null;
-        this.atlasMeta = await (await fetch(`${this.dataBase}atlas_${atlasId}.json?v=65`)).json();
+        if (this.renderMode === 'mesh') return this._loadAtlasMesh(atlasId, withSub);
+        return this._loadAtlasVolume(atlasId, withSub);
+    }
 
-        // 由 JSON LUT 构建 NiiVue colormapLabel（RGBA 按标签值索引）→ 分区彩色渲染
+    /* ================= 网格模式 ================= */
+    async _loadAtlasMesh(atlasId, withSub) {
+        // ★ 清空注册表：先移除全部 mesh，防止叠加
+        for (const m of this.meshRegistry) { try { this.nv.removeMesh(m); } catch (e) { /* ignore */ } }
+        this.meshRegistry = [];
+
+        const csv = await (await fetch(`${this.meshBase}atlas_${atlasId}/meta.csv?v=76`)).text();
+        // meta.csv 为 CRLF 行尾：必须去掉 \r，否则表头最后一列会带 \r 导致 volume_mm3 取到 undefined
+        const lines = csv.replace(/\r/g, '').trim().split('\n');
+        const header = lines[0].split(',');
+        const parse = (l) => {
+            const c = l.split(','); const o = {};
+            header.forEach((h, i) => o[h] = c[i]);
+            o.id = Number(o.id); o.r = +o.r; o.g = +o.g; o.b = +o.b;
+            o.color = [o.r, o.g, o.b];   // 图例色块需要 RGB 数组格式
+            o.centroid_mm = [Number(o.centroid_x), Number(o.centroid_y), Number(o.centroid_z)];
+            o.volume_mm3 = Number(o.volume_mm3) || 0;
+            return o;
+        };
+        this.regionMeta = lines.slice(1).filter(Boolean).map(parse);
+
+        // 皮层下网格：首次加载，之后复用
+        if (withSub && this.subMeshes.length === 0) {
+            const subCsv = await (await fetch(`${this.meshBase}atlas_subcortical/meta.csv?v=76`)).text();
+            const sl = subCsv.replace(/\r/g, '').trim().split('\n'); const sh = sl[0].split(',');
+            this.subMeta = sl.slice(1).filter(Boolean).map(l => {
+                const c = l.split(','); const o = {};
+                sh.forEach((h, i) => o[h] = c[i]);
+                o.id = Number(o.id); o.r = +o.r; o.g = +o.g; o.b = +o.b;
+                o.color = [o.r, o.g, o.b];
+                o.centroid_mm = [Number(o.centroid_x), Number(o.centroid_y), Number(o.centroid_z)];
+                o.volume_mm3 = Number(o.volume_mm3) || 0;
+                return o;
+            });
+            for (const reg of this.subMeta) {
+                try {
+                    const m = await this.nv.addMeshFromUrl({
+                        url: `${this.meshBase}atlas_subcortical/${reg.filename}?v=76`,
+                        name: reg.filename,
+                    });
+                    if (m) { m.regionId = reg.id; m.isSub = true; this.subMeshes.push(m); this.meshRegistry.push(m); }
+                } catch (e) { console.warn('sub mesh 失败', reg.filename); }
+            }
+        } else if (withSub) {
+            for (const m of this.subMeshes) this.meshRegistry.push(m);
+        }
+
+        // loading 遮罩 + 分批加载皮层网格
+        const container = document.getElementById(this.containerId);
+        const ov = document.createElement('div');
+        ov.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+            'background:rgba(5,5,14,0.75);color:#9be8ff;font-size:13px;z-index:6;gap:8px;';
+        ov.innerHTML = '<div>正在加载脑区模型，请稍候…</div><div id="nvLoadPct_' + this.containerId + '" style="font-size:12px;color:#7a8aa0;">0 / ' + this.regionMeta.length + '</div>';
+        container.style.position = 'relative';
+        container.appendChild(ov);
+
+        const BATCH = 12; let done = 0;
+        for (let i = 0; i < this.regionMeta.length; i += BATCH) {
+            const batch = this.regionMeta.slice(i, i + BATCH);
+            await Promise.all(batch.map(async (reg) => {
+                try {
+                    const mesh = await this.nv.addMeshFromUrl({
+                        url: `${this.meshBase}atlas_${atlasId}/${reg.filename}?v=76`,
+                        name: reg.filename,
+                    });
+                    if (mesh) { mesh.regionId = reg.id; this.meshRegistry.push(mesh); }
+                } catch (e) { console.warn('[NiiVueViewer] 网格加载失败:', reg.filename, e); }
+                done++;
+            }));
+            const pct = document.getElementById('nvLoadPct_' + this.containerId);
+            if (pct) pct.textContent = `${done} / ${this.regionMeta.length}`;
+        }
+        ov.remove();
+        this._applyMeshHighlight();
+        this.ready = true;
+        return { name: atlasId, regions: this.regionMeta };
+    }
+
+    /**
+     * 网格高亮：
+     *  - 选中区域：原始彩色、完全不透明（默认 Phong 着色器 index 0）
+     *  - 其余区域：切换到"白色幽灵"着色器——整体很透明，轮廓/边缘描出较亮白线
+     */
+    _applyMeshHighlight() {
+        const sel = this.highlight;                    // {id, isSub}
+        const selId = sel ? sel.id : null;
+        const selSub = sel ? !!sel.isSub : false;
+        const DEFAULT_SHADER = 0;                     // NiiVue 默认 Phong（用顶点原色）
+        const ghost = (this.ghostShaderIndex != null) ? this.ghostShaderIndex : DEFAULT_SHADER;
+        for (const m of this.meshRegistry) {
+            if (selId === null) {
+                // 无选中：全部原色显示
+                m.meshShaderIndex = DEFAULT_SHADER;
+                m.opacity = 1.0; m.visible = true;
+            } else if (m.regionId === selId && !!m.isSub === selSub) {
+                // 选中：原色 + 不透明（同时匹配 id 与是否皮层下，防止 ID 撞车）
+                m.meshShaderIndex = DEFAULT_SHADER;
+                m.opacity = 1.0; m.visible = true;
+            } else {
+                // 其余：白色幽灵 + 边缘描边。opacity<1 才会开启混合
+                m.meshShaderIndex = ghost;
+                m.opacity = 0.9; m.visible = true;
+            }
+        }
+        try { this.nv.drawScene(); } catch (e) { /* ignore */ }
+    }
+
+    /** 让某个脑区旋转到朝向镜头（并把十字准星移到该质心） */
+    focusRegion(region) {
+        if (!region || !region.centroid_mm) return;
+        const [x, y, z] = region.centroid_mm;
+        // 质心相对脑中心的方向 -> 目标方位角/仰角，使该区域转向镜头
+        const az = Math.atan2(x, z) * 180 / Math.PI;
+        const el = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
+        try { this.nv.setRenderAzimuthElevation(az, el); } catch (e) { /* ignore */ }
+        try { this.nv.setCrosshairLocation(region.centroid_mm, null); } catch (e) { /* ignore */ }
+    }
+
+    /* ================= 体积模式（四视图） ================= */
+    async _loadAtlasVolume(atlasId, withSub = true) {
+        this.atlasMeta = await (await fetch(`${this.dataBase}atlas_${atlasId}.json?v=76`)).json();
         const maxId = (this.atlasMeta.regions || []).reduce((m, r) => Math.max(m, r.id), 0);
         const lutLen = maxId + 1;
         const cR = new Float32Array(lutLen), cG = new Float32Array(lutLen),
@@ -97,186 +231,168 @@ class NiiVueViewer {
             cB[r.id] = r.color[2]; cA[r.id] = 255;
         }
         const volumes = [
-            { url: `${this.dataBase}MNI152_T1w_1mm.nii.gz?v=65`, name: 't1.nii.gz', colormap: 'gray', opacity: 1.0 },
-            { url: `${this.dataBase}atlas_${atlasId}.nii.gz?v=65`, name: `atlas_${atlasId}.nii.gz`,
+            { url: `${this.dataBase}MNI152_T1w_1mm.nii.gz?v=76`, name: 't1.nii.gz', colormap: 'gray', opacity: 1.0 },
+            { url: `${this.dataBase}atlas_${atlasId}.nii.gz?v=76`, name: `atlas_${atlasId}.nii.gz`,
               colormap: 'gray', opacity: 0.85, colormapLabel: { R: cR, G: cG, B: cB, A: cA } },
         ];
-        // AAL 自带皮层下/小脑；其余图谱叠加独立的皮层下图谱
-        const hasSubInside = (atlasId === 'aal116');
-        this.subIndex = -1;
-        if (withSub && !hasSubInside) {
-            volumes.push({ url: `${this.dataBase}atlas_subcortical.nii.gz?v=65`, name: 'subcortical.nii.gz', colormap: 'gray', colorMap: 'label', opacity: 0.9 });
-            this.subIndex = 2;
-        }
-
         try {
             await this.nv.loadVolumes(volumes);
         } catch (err) {
             console.error('[NiiVueViewer] loadVolumes 失败:', err);
-            const box = document.createElement('div');
-            box.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;' +
-                'background:rgba(120,0,0,0.85);color:#fff;font-size:13px;padding:24px;text-align:center;z-index:5;';
-            box.textContent = '数据加载失败: ' + (err && err.message ? err.message : err) +
-                ' —— 请截图此信息发给开发者';
-            const container = document.getElementById(this.containerId);
-            if (container) { container.style.position = 'relative'; container.appendChild(box); }
             throw err;
         }
         this.atlasIndex = 1;
-
-        if (this.subIndex > 0 && !this.subMeta) {
-            this.subMeta = await (await fetch(`${this.dataBase}atlas_subcortical.json?v=65`)).json();
-        }
-
         this._applyLUT();
         this.ready = true;
         return this.atlasMeta;
     }
 
-    /* ---------------- LUT（查找表）控制：所有高亮交互的核心 ---------------- */
+    /* ---------------- LUT（体积模式高亮） ---------------- */
+    _isLeft(zh, en) { return /^[左L]/.test(zh || '') || /^[lL]_/.test(en || ''); }
+    _isRight(zh, en) { return /^[右R]/.test(zh || '') || /^[rR]_/.test(en || ''); }
 
-    _regionList(volIndex) {
-        if (volIndex === this.subIndex) return this.subMeta ? this.subMeta.regions : [];
-        return this.atlasMeta ? this.atlasMeta.regions : [];
-    }
-
-    _isLeft(nameZh, nameEn) { return /^[左L]/.test(nameZh || '') || /^[lL]_/.test(nameEn || ''); }
-    _isRight(nameZh, nameEn) { return /^[右R]/.test(nameZh || '') || /^[rR]_/.test(nameEn || ''); }
-
-    /** 根据当前状态重建 LUT 并推送给 NiiVue —— 高亮/半球过滤的唯一入口 */
     _applyLUT() {
-        for (const volIndex of [this.atlasIndex, this.subIndex]) {
-            if (volIndex < 0 || !this.nv.volumes[volIndex]) continue;
-            const regions = this._regionList(volIndex);
-            if (!regions.length) continue;
-            const maxId = regions.reduce((m, r) => Math.max(m, r.id), 0);
-            const lut = new Uint8Array((maxId + 1) * 4);
-            for (const r of regions) {
-                const [R, G, B] = r.color;
-                // 默认：整脑显示分区鲜艳颜色（半透明叠加在 T1 底图上）
-                let rr = R, gg = G, bb = B, alpha = 200;
-                const left = this._isLeft(r.name_zh, r.name_en);
-                const right = this._isRight(r.name_zh, r.name_en);
-                // 半球过滤：非目标半球完全隐藏
-                if ((this.hemiFilter === 'left' && right) || (this.hemiFilter === 'right' && left)) {
-                    alpha = 0;
-                }
-                if (this.highlight) {
-                    if (this.highlight.volIndex === volIndex && r.id === this.highlight.id) {
-                        // ===== 选中区域：原始鲜艳颜色 + 完全不透明 =====
-                        rr = R; gg = G; bb = B; alpha = 255;
-                    } else {
-                        // ===== 其余所有脑区：变白 + 高度透明 =====
-                        rr = 255; gg = 255; bb = 255; alpha = 45;
-                    }
-                }
-                const i4 = r.id * 4;
-                lut[i4 + 0] = rr;
-                lut[i4 + 1] = gg;
-                lut[i4 + 2] = bb;
-                lut[i4 + 3] = alpha;
+        const vol = this.nv.volumes[this.atlasIndex];
+        if (!vol || !this.atlasMeta) return;
+        const regions = this.atlasMeta.regions || [];
+        const maxId = regions.reduce((m, r) => Math.max(m, r.id), 0);
+        const lut = new Uint8Array((maxId + 1) * 4);
+        for (const r of regions) {
+            let rr = r.color[0], gg = r.color[1], bb = r.color[2], alpha = 200;
+            const left = this._isLeft(r.name_zh, r.name_en);
+            const right = this._isRight(r.name_zh, r.name_en);
+            if ((this.hemiFilter === 'left' && right) || (this.hemiFilter === 'right' && left)) alpha = 0;
+            if (this.highlight) {
+                if (r.id === this.highlight.id) { rr = r.color[0]; gg = r.color[1]; bb = r.color[2]; alpha = 255; }
+                else { rr = 255; gg = 255; bb = 255; alpha = 45; }
             }
-            const vol = this.nv.volumes[volIndex];
-            vol.lut = lut;
-            if ('lutSegments' in vol) vol.lutSegments = (maxId + 1);
-            try { vol.opacity = volIndex === this.subIndex ? 0.95 : (this.highlight ? 0.85 : 0.6); } catch (e) {}
+            const i4 = r.id * 4;
+            lut[i4] = rr; lut[i4 + 1] = gg; lut[i4 + 2] = bb; lut[i4 + 3] = alpha;
         }
-        try { this.nv.updateGLVolume(); } catch (e) { console.warn('updateGLVolume', e); }
+        vol.lut = lut;
+        if ('lutSegments' in vol) vol.lutSegments = maxId + 1;
+        try { vol.opacity = this.highlight ? 0.95 : 0.85; } catch (e) { }
+        try { this.nv.updateGLVolume(); } catch (e) { }
     }
 
-    /** 图例/脚本调用：高亮某个区域（自动判断它属于哪张图谱） */
-    setHighlight(regionId) {
-        let volIndex = this.atlasIndex, found = null;
-        found = (this.atlasMeta?.regions || []).find(r => r.id === regionId);
-        if (!found && this.subIndex > 0) {
-            const f2 = (this.subMeta?.regions || []).find(r => r.id === regionId);
-            if (f2) { found = f2; volIndex = this.subIndex; }
+    /* ---------------- 统一交互接口 ---------------- */
+    setHighlight(regionId, opts = {}) {
+        const focus = opts.focus !== false;   // 默认旋转居中（图例/搜索场景）；3D点击可传 false
+        const wantSub = (opts.isSub === true); // 调用方明确指定来源，避免皮层/皮层下 ID 撞车
+        const meta = this.renderMode === 'mesh' ? this.regionMeta : (this.atlasMeta ? this.atlasMeta.regions : []);
+        const subList = this.renderMode === 'mesh' ? (this.subMeta || []) : [];
+        let found = null, foundIsSub = false;
+        if (wantSub) {
+            found = (subList || []).find(r => r.id === regionId); foundIsSub = true;
+        } else if (opts.isSub === false) {
+            found = (meta || []).find(r => r.id === regionId); foundIsSub = false;
+        } else {
+            // 未指定来源：皮层优先，其次皮层下
+            found = (meta || []).find(r => r.id === regionId); foundIsSub = false;
+            if (!found && subList.length) { found = subList.find(r => r.id === regionId); foundIsSub = true; }
         }
         if (!found) { this.clearHighlight(); return null; }
-        this.highlight = { volIndex, id: found.id };
-        this._applyLUT();
-        // 把十字线移到该区域质心，3D 视角随之聚焦
-        try {
-            if (found.centroid_mm) {
-                this.nv.setCrosshairLocation(found.centroid_mm, null);
-            }
-        } catch (e) { /* 忽略 */ }
+        this.highlight = { id: found.id, isSub: foundIsSub, volumeName: '', citation: '' };
+        if (this.renderMode === 'mesh') { this._applyMeshHighlight(); if (focus) this.focusRegion(found); }
+        else {
+            this.highlight.volIndex = this.atlasIndex;
+            this._applyLUT();
+            try { if (found.centroid_mm) this.nv.setCrosshairLocation(found.centroid_mm, null); } catch (e) { }
+        }
         return found;
     }
 
     clearHighlight() {
         this.highlight = null;
-        this._applyLUT();
+        if (this.renderMode === 'mesh') this._applyMeshHighlight();
+        else this._applyLUT();
     }
 
-    setHemiFilter(mode) { // 'both' | 'left' | 'right'
+    setHemiFilter(mode) {
         this.hemiFilter = mode;
-        this._applyLUT();
+        if (this.renderMode === 'mesh') {
+            for (const m of this.meshRegistry) {
+                const reg = this._findReg(m.regionId);
+                if (!reg) continue;
+                const isL = this._isLeft(reg.name_zh, reg.name_en);
+                const isR = this._isRight(reg.name_zh, reg.name_en);
+                m.visible = !((mode === 'left' && isR) || (mode === 'right' && isL));
+            }
+            try { this.nv.drawScene(); } catch (e) { }
+        } else this._applyLUT();
+    }
+
+    _findReg(id) {
+        return (this.regionMeta || []).find(r => r.id === id) || (this.subMeta || []).find(r => r.id === id) || null;
     }
 
     /* ---------------- 点击拾取 ---------------- */
-
     _handleLocation(loc) {
-        if (!this._pendingClick) return;
-        this._pendingClick = false;
-        if (!loc || !loc.values || loc.values.length < 2) return;
-        // 依次检查 皮层图谱 → 皮层下图谱
-        const checks = [
-            { volIndex: this.atlasIndex, meta: this.atlasMeta, value: loc.values[this.atlasIndex] },
-        ];
-        if (this.subIndex > 0) {
-            checks.push({ volIndex: this.subIndex, meta: this.subMeta, value: loc.values[this.subIndex] });
-        }
-        for (const c of checks) {
-            const vid = Math.round(c.value || 0);
-            if (vid > 0 && c.meta) {
-                const reg = c.meta.regions.find(r => r.id === vid);
+        if (!this._pickPending) return;
+        this._pickPending = false;
+        if (this.renderMode === 'mesh') {
+            // 双击3D → NiiVue 深度拾取得到 RAS 坐标 → 最近质心确定脑区
+            if (!loc || !loc.mm || !this.regionMeta) return;
+            const p = loc.mm;
+            let best = null, bd = Infinity;
+            for (const r of this.regionMeta) {
+                const c = r.centroid_mm;
+                const d = (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2 + (p[2] - c[2]) ** 2;
+                if (d < bd) { bd = d; best = r; }
+            }
+            if (best) {
+                // 3D 直接点击：仅隔离该区域（不旋转，因为用户已经在看这里）
+                this.setHighlight(best.id, { focus: false });
+                if (this.onRegionPick) this.onRegionPick({ ...best });
+            }
+        } else {
+            // 体积模式：单击拾取体素值
+            if (!loc || !loc.values || loc.values.length < 2) return;
+            const vid = Math.round(loc.values[this.atlasIndex] ? loc.values[this.atlasIndex].value : 0);
+            if (vid > 0 && this.atlasMeta) {
+                const reg = this.atlasMeta.regions.find(r => r.id === vid);
                 if (reg) {
-                    this.highlight = { volIndex: c.volIndex, id: vid };
+                    this.highlight = { id: reg.id };
                     this._applyLUT();
-                    if (this.onRegionPick) this.onRegionPick({ ...reg, volumeName: c.meta.name, citation: c.meta.citation });
-                    return;
+                    if (this.onRegionPick) this.onRegionPick({ ...reg });
                 }
             }
         }
     }
 
-    /* ---------------- 工具方法 ---------------- */
-
-    getRegionInfo(regionId) {
-        return (this.atlasMeta?.regions || []).find(r => r.id === regionId)
-            || (this.subMeta?.regions || []).find(r => r.id === regionId) || null;
-    }
-
     getAllLegendData() {
-        // 供 app.js 构建右侧图例
+        if (this.renderMode === 'mesh') {
+            return {
+                cortical: { name: `图谱 ${this.atlasId}`, citation: '—', regions: this.regionMeta || [] },
+                subcortical: { regions: this.subMeta || [] },
+            };
+        }
         return {
             cortical: { name: this.atlasMeta?.name || '', citation: this.atlasMeta?.citation || '', regions: this.atlasMeta?.regions || [] },
             subcortical: { regions: this.subIndex > 0 && this.subMeta ? this.subMeta.regions : [] },
         };
     }
 
+    getRegionInfo(regionId) {
+        return this._findReg(regionId)
+            || (this.atlasMeta?.regions || []).find(r => r.id === regionId) || null;
+    }
+
     resetView() {
-        try { this.nv.resetDisplayToBaseImage(); } catch (e) {
-            try { this.nv.resetView(); } catch (e2) { /* 忽略 */ }
-        }
+        if (this.renderMode === 'mesh') { this.clearHighlight(); return; }
+        try { this.nv.resetDisplayToBaseImage(); } catch (e) { try { this.nv.resetView(); } catch (e2) { } }
         this.clearHighlight();
     }
 
     screenshot() {
-        try {
-            this.nv.saveImage({ filename: 'NeuroViz_' + (this.atlasId || 'screenshot') + '.png', crop: true });
-        } catch (e) {
-            // 兼容旧 API 签名
+        try { this.nv.saveImage({ filename: 'NeuroViz_' + (this.atlasId || 'view') + '.png', crop: true }); }
+        catch (e) {
             try { this.nv.saveImage('NeuroViz.png', true); } catch (e2) {
                 const a = document.createElement('a');
-                a.href = this.canvas.toDataURL('image/png');
-                a.download = 'NeuroViz.png';
-                a.click();
+                a.href = this.canvas.toDataURL('image/png'); a.download = 'NeuroViz.png'; a.click();
             }
         }
     }
 }
 
-// 暴露给普通 script 使用
 window.NiiVueViewer = NiiVueViewer;

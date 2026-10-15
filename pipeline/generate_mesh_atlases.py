@@ -25,15 +25,15 @@ DATA = ROOT / "docs" / "data"
 STATIC = ROOT / "docs" / "static"
 
 # 各图谱的目标三角面保留率（越大保留越少）
-RETENTION = {"dk68": 0.40, "destrieux148": 0.35, "hcp360": 0.20, "aal116": 0.30}
-ATLASES = ["dk68", "destrieux148", "hcp360", "aal116"]
+RETENTION = {"dk68": 0.40, "destrieux148": 0.35, "hcp360": 0.20, "aal116": 0.30, "subcortical": 0.35}
+ATLASES = ["dk68", "destrieux148", "hcp360", "subcortical"]
 
 def write_mz3(path, verts, faces, rgba):
     """写 FreeSurfer/NiiVue 兼容 mz3（float32 顶点 + int32 面 + RGBA 颜色）"""
     nv = len(verts) // 3
     nf = len(faces) // 3
     flags = 1 | 2 | 4  # indices + vertices + RGBA colors
-    header = struct.pack("<HHIII", 23117, flags, nf * 3, nv, 0)
+    header = struct.pack("<HHIII", 23117, flags, nf, nv, 0)  # nface 必须是三角形数，不是索引数
     with open(path, "wb") as f:
         f.write(header)
         f.write(np.asarray(faces, dtype=np.uint32).tobytes())
