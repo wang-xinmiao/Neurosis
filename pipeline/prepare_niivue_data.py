@@ -450,66 +450,45 @@ log("步骤 8/8：Yeo 7/17 功能网络图谱（项目未要求，已停用，�
 print("  · 结构分区仅需 DK68 / AAL116 / Destrieux148 / HCP360；Yeo 属功能网络模板，未纳入本管线")
 
 # ---------------- AAL116 ----------------
-log("补充：下载 AAL116 官方图谱（SPM12/AAL 116区）")
+# 说明：AAL 官方包（SPM12 Release2018）的标签编号是 2001..9170，不是 1..116，
+#      因此必须用官方 ROI_MNI_V4.txt 做「编号 -> 名称」查表，不能按下标硬映射。
+log("补充：AAL116 官方图谱（SPM12 Release2018，使用本地官方包）")
 aal_out = CACHE / "AAL_SPM12.nii"
-# 优先尝试 nilearn 官方源（NITRC 服务器，国内经代理常可直连，且支持断点续传）
-try:
-    from nilearn.datasets import fetch_atlas_aal
-    print("  尝试 nilearn/NITRC 官方源...")
-    _aal = fetch_atlas_aal(version="3v2", data_dir=str(CACHE / "nilearn_aal"))
-    if _aal.maps and Path(_aal.maps).exists():
-        aal_out = Path(_aal.maps)
-        print(f"  ✓ NITRC 下载成功: {aal_out.name}")
-except Exception as _e:
-    print(f"  nilearn/NITRC 源失败({type(_e).__name__})，改用镜像...")
-aal_urls = [
-    # jsdelivr 镜像 GitHub 仓库（国内可直连性较好）
-    "https://cdn.jsdelivr.net/gh/casperkaae/AAL_for_FSL@master/AAL.nii",
-    # gh 加速镜像
-    "https://ghfast.top/https://raw.githubusercontent.com/casperkaae/AAL_for_FSL/master/AAL.nii",
-    "https://gh-proxy.com/https://raw.githubusercontent.com/casperkaae/AAL_for_FSL/master/AAL.nii",
-    # GIN 官方（自签证书站点，verify=False）
-    "http://www.gin.cnrs.fr/AAL_files/aal_for_nifti.tar.gz",
-]
-if robust_download(aal_urls[:3], aal_out) or (aal_out.exists() and aal_out.stat().st_size > 0):
+aal_lbl = CACHE / "AAL_SPM12_labels.txt"
+
+def _load_aal_lookup(txt_path):
+    """读取官方 ROI_MNI_V4.txt：每行 '缩写<TAB>英文名<TAB>编号'"""
+    lut = {}
+    with open(txt_path, encoding="utf-8") as f:
+        for line in f:
+            parts = line.strip().split("\t")
+            if len(parts) == 3 and parts[2].isdigit():
+                lut[int(parts[2])] = parts[1]
+    return lut
+
+if aal_out.exists() and aal_out.stat().st_size > 0 and aal_lbl.exists():
+    print(f"  ✓ 使用本地官方包: {aal_out.name} + {aal_lbl.name}")
+    aal_lookup = _load_aal_lookup(aal_lbl)
+    print(f"  ✓ 官方标签表载入: {len(aal_lookup)} 条（编号 -> 英文名）")
+
     aal_res = resample_from_to(nib.load(str(aal_out)), (shape, affine), order=0)
     aal_vol = aal_res.get_fdata().astype(np.int16)
-    AAL_EN = ["Precentral_L","Precentral_R","Frontal_Sup_L","Frontal_Sup_R",
-        "Frontal_Sup_Orb_L","Frontal_Sup_Orb_R","Frontal_Mid_L","Frontal_Mid_R",
-        "Frontal_Mid_Orb_L","Frontal_Mid_Orb_R","Frontal_Inf_Oper_L","Frontal_Inf_Oper_R",
-        "Frontal_Inf_Tri_L","Frontal_Inf_Tri_R","Frontal_Inf_Orb_L","Frontal_Inf_Orb_R",
-        "Rolandic_Oper_L","Rolandic_Oper_R","Supp_Motor_Area_L","Supp_Motor_Area_R",
-        "Olfactory_L","Olfactory_R","Frontal_Sup_Medial_L","Frontal_Sup_Medial_R",
-        "Frontal_Med_Orb_L","Frontal_Med_Orb_R","Rectus_L","Rectus_R",
-        "Cingulum_Ant_L","Cingulum_Ant_R","Cingulum_Mid_L","Cingulum_Mid_R",
-        "Cingulum_Post_L","Cingulum_Post_R","Hippocampus_L","Hippocampus_R",
-        "Parahippocampal_L","Parahippocampal_R","Amygdala_L","Amygdala_R",
-        "Calcarine_L","Calcarine_R","Cuneus_L","Cuneus_R","Lingual_L","Lingual_R",
-        "Occipital_Sup_L","Occipital_Sup_R","Occipital_Mid_L","Occipital_Mid_R",
-        "Occipital_Inf_L","Occipital_Inf_R","Fusiform_L","Fusiform_R",
-        "Postcentral_L","Postcentral_R","Parietal_Sup_L","Parietal_Sup_R",
-        "Parietal_Inf_L","Parietal_Inf_R","SupraMarginal_L","SupraMarginal_R",
-        "Angular_L","Angular_R","Precuneus_L","Precuneus_R",
-        "Paracentral_Lobule_L","Paracentral_Lobule_R","Caudate_L","Caudate_R",
-        "Putamen_L","Putamen_R","Pallidum_L","Pallidum_R","Thalamus_L","Thalamus_R",
-        "Heschl_L","Heschl_R","Temporal_Sup_L","Temporal_Sup_R",
-        "Temporal_Pole_Sup_L","Temporal_Pole_Sup_R","Temporal_Mid_L","Temporal_Mid_R",
-        "Temporal_Pole_Mid_L","Temporal_Pole_Mid_R","Temporal_Inf_L","Temporal_Inf_R",
-        "Cerebelum_Crus1_L","Cerebelum_Crus1_R","Cerebelum_Crus2_L","Cerebelum_Crus2_R",
-        "Cerebelum_3_L","Cerebelum_3_R","Cerebelum_4_5_L","Cerebelum_4_5_R",
-        "Cerebelum_6_L","Cerebelum_6_R","Cerebelum_7b_L","Cerebelum_7b_R",
-        "Cerebelum_8_L","Cerebelum_8_R","Cerebelum_9_L","Cerebelum_9_R",
-        "Cerebelum_10_L","Cerebelum_10_R","Vermis_1","Vermis_2","Vermis_3",
-        "Vermis_4_5","Vermis_6","Vermis_7","Vermis_8","Vermis_9","Vermis_10"]
+
+    present = sorted(int(v) for v in np.unique(aal_vol) if v > 0)
+    missing = [v for v in present if v not in aal_lookup]
+    if missing:
+        print(f"  ⚠ {len(missing)} 个标签在官方表中缺失: {missing[:8]}")
+
     lut = {}
-    colors = generate_colors(len(AAL_EN), offset=0.0)
-    for vid in sorted(int(v) for v in np.unique(aal_vol) if v > 0):
-        en = AAL_EN[vid - 1] if vid - 1 < len(AAL_EN) else f"Region_{vid}"
+    colors = generate_colors(len(present), offset=0.0)
+    for k, vid in enumerate(present):
+        en = aal_lookup.get(vid, f"Region_{vid}")
         lut[vid] = {"zh": AAL_ZH.get(en, en), "en": en,
-                    "color": list(colors[(vid - 1) % len(colors)])}
+                    "color": list(colors[k % len(colors)])}
     save_atlas(aal_vol, lut, "aal116", "aal116", "AAL 体素图谱（116区，含小脑/皮层下）")
 else:
-    print("  ⚠ AAL 全部镜像失败，可稍后重跑补齐")
+    print("  ⚠ 未找到本地 AAL 官方包，请把 AAL.nii 与 ROI_MNI_V4.txt 放入 pipeline/.download_cache/")
+    print("     并分别重命名为 AAL_SPM12.nii 与 AAL_SPM12_labels.txt")
 
 # ---------------- Tian 皮层下 ----------------
 print("\n补充：下载 Tian 3T 皮层下图谱（含海马亚区）")

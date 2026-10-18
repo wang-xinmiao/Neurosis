@@ -107,7 +107,7 @@ void main() {
         for (const m of this.meshRegistry) { try { this.nv.removeMesh(m); } catch (e) { /* ignore */ } }
         this.meshRegistry = [];
 
-        const csv = await (await fetch(`${this.meshBase}atlas_${atlasId}/meta.csv?v=76`)).text();
+        const csv = await (await fetch(`${this.meshBase}atlas_${atlasId}/meta.csv?v=77`)).text();
         // meta.csv 为 CRLF 行尾：必须去掉 \r，否则表头最后一列会带 \r 导致 volume_mm3 取到 undefined
         const lines = csv.replace(/\r/g, '').trim().split('\n');
         const header = lines[0].split(',');
@@ -124,7 +124,7 @@ void main() {
 
         // 皮层下网格：首次加载，之后复用
         if (withSub && this.subMeshes.length === 0) {
-            const subCsv = await (await fetch(`${this.meshBase}atlas_subcortical/meta.csv?v=76`)).text();
+            const subCsv = await (await fetch(`${this.meshBase}atlas_subcortical/meta.csv?v=77`)).text();
             const sl = subCsv.replace(/\r/g, '').trim().split('\n'); const sh = sl[0].split(',');
             this.subMeta = sl.slice(1).filter(Boolean).map(l => {
                 const c = l.split(','); const o = {};
@@ -138,7 +138,7 @@ void main() {
             for (const reg of this.subMeta) {
                 try {
                     const m = await this.nv.addMeshFromUrl({
-                        url: `${this.meshBase}atlas_subcortical/${reg.filename}?v=76`,
+                        url: `${this.meshBase}atlas_subcortical/${reg.filename}?v=77`,
                         name: reg.filename,
                     });
                     if (m) { m.regionId = reg.id; m.isSub = true; this.subMeshes.push(m); this.meshRegistry.push(m); }
@@ -163,7 +163,7 @@ void main() {
             await Promise.all(batch.map(async (reg) => {
                 try {
                     const mesh = await this.nv.addMeshFromUrl({
-                        url: `${this.meshBase}atlas_${atlasId}/${reg.filename}?v=76`,
+                        url: `${this.meshBase}atlas_${atlasId}/${reg.filename}?v=77`,
                         name: reg.filename,
                     });
                     if (mesh) { mesh.regionId = reg.id; this.meshRegistry.push(mesh); }
@@ -221,7 +221,7 @@ void main() {
 
     /* ================= 体积模式（四视图） ================= */
     async _loadAtlasVolume(atlasId, withSub = true) {
-        this.atlasMeta = await (await fetch(`${this.dataBase}atlas_${atlasId}.json?v=76`)).json();
+        this.atlasMeta = await (await fetch(`${this.dataBase}atlas_${atlasId}.json?v=77`)).json();
         const maxId = (this.atlasMeta.regions || []).reduce((m, r) => Math.max(m, r.id), 0);
         const lutLen = maxId + 1;
         const cR = new Float32Array(lutLen), cG = new Float32Array(lutLen),
@@ -231,8 +231,8 @@ void main() {
             cB[r.id] = r.color[2]; cA[r.id] = 255;
         }
         const volumes = [
-            { url: `${this.dataBase}MNI152_T1w_1mm.nii.gz?v=76`, name: 't1.nii.gz', colormap: 'gray', opacity: 1.0 },
-            { url: `${this.dataBase}atlas_${atlasId}.nii.gz?v=76`, name: `atlas_${atlasId}.nii.gz`,
+            { url: `${this.dataBase}MNI152_T1w_1mm.nii.gz?v=77`, name: 't1.nii.gz', colormap: 'gray', opacity: 1.0 },
+            { url: `${this.dataBase}atlas_${atlasId}.nii.gz?v=77`, name: `atlas_${atlasId}.nii.gz`,
               colormap: 'gray', opacity: 0.85, colormapLabel: { R: cR, G: cG, B: cB, A: cA } },
         ];
         try {

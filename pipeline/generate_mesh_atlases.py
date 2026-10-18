@@ -26,7 +26,7 @@ STATIC = ROOT / "docs" / "static"
 
 # 各图谱的目标三角面保留率（越大保留越少）
 RETENTION = {"dk68": 0.40, "destrieux148": 0.35, "hcp360": 0.20, "aal116": 0.30, "subcortical": 0.35}
-ATLASES = ["dk68", "destrieux148", "hcp360", "subcortical"]
+ATLASES = ["dk68", "destrieux148", "hcp360", "aal116", "subcortical"]
 
 def write_mz3(path, verts, faces, rgba):
     """写 FreeSurfer/NiiVue 兼容 mz3（float32 顶点 + int32 面 + RGBA 颜色）"""

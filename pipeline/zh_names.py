@@ -22,6 +22,10 @@ AAL_ZH = {
     "Cingulum_Post_L": "左后扣带回", "Cingulum_Post_R": "右后扣带回",
     "Hippocampus_L": "左海马", "Hippocampus_R": "右海马",
     "Parahippocampal_L": "左海马旁回", "Parahippocampal_R": "右海马旁回",
+    # SPM12 官方 ROI_MNI_V4 使用的大小写变体
+    "ParaHippocampal_L": "左海马旁回", "ParaHippocampal_R": "右海马旁回",
+    "Insula_L": "左岛叶", "Insula_R": "右岛叶",
+    "Vermis_1_2": "蚓部Ⅰ-Ⅱ",
     "Amygdala_L": "左杏仁核", "Amygdala_R": "右杏仁核",
     "Calcarine_L": "左距状裂", "Calcarine_R": "右距状裂",
     "Cuneus_L": "左楔叶", "Cuneus_R": "右楔叶",
