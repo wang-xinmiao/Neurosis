@@ -6,6 +6,7 @@ class NeuroVizApp {
         this.viewers = {};
         this.sliceViewers = {};
         this.chartManager = null;
+        this.functionalManager = null;
 
         // State
         this.currentModule = 'module1';
@@ -89,6 +90,7 @@ class NeuroVizApp {
                 case 'module4': this.initModule4(); break;
             }
             if (this.chartManager) this.chartManager.resizeAll();
+            if (this.functionalManager) this.functionalManager.resizeAll();
         }, 100);
     }
 
@@ -878,12 +880,22 @@ class NeuroVizApp {
 
     /** 模型内点击拾取后的联动：图例选中 + 信息卡 */
     _onNiiRegionPick(info) {
+        if (!info) {
+            document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
+            document.getElementById('regionInfo1').innerHTML = '<p class="placeholder">点击右侧分区名称查看详情并跳转3D视图</p>';
+            return;
+        }
         const viewer = this.viewers['viewer1'];
+        const highlight = viewer && viewer.highlight;
         document.querySelectorAll('#structuralLegend .legend-item').forEach(el => {
             const sameId = Number(el.dataset.region) === info.id;
-            const sameVol = el.dataset.volindex === String(viewer.highlight ? viewer.highlight.volIndex : -1);
-            el.classList.toggle('selected', sameId && sameVol);
+            const sameSource = viewer && viewer.renderMode === 'mesh'
+                ? el.dataset.sub === (highlight && highlight.isSub ? '1' : '0')
+                : el.dataset.volindex === String(highlight ? highlight.volIndex : -1);
+            el.classList.toggle('selected', sameId && sameSource);
         });
+        const selected = document.querySelector('#structuralLegend .legend-item.selected');
+        if (selected) selected.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         this.showRegionInfoFromMeta(info, 'regionInfo1');
     }
 
@@ -1040,9 +1052,7 @@ class NeuroVizApp {
                 const regionId = Number(item.dataset.region);
                 const isSub = item.dataset.sub === '1';   // 皮层下与皮层可能 ID 撞车，必须带上来源
                 const info = viewer.setHighlight(regionId, { isSub });
-                document.querySelectorAll('#structuralLegend .legend-item').forEach(el => el.classList.remove('selected'));
-                item.classList.add('selected');
-                if (info) this.showRegionInfoFromMeta(info, 'regionInfo1');
+                if (info) this._onNiiRegionPick(info);
             });
         });
     }
@@ -1329,138 +1339,12 @@ class NeuroVizApp {
     }
 
     // ===== 模块2：功能网络可视化 =====
-    initModule2() {
-        document.querySelectorAll('.func-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const viewId = tab.dataset.view;
-                document.querySelectorAll('.func-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-
-                document.querySelectorAll('.func-view').forEach(v => v.classList.remove('active'));
-                const view = document.getElementById(`view-${viewId}`);
-                if (view) view.classList.add('active');
-
-                setTimeout(() => {
-                    if (!this.chartManager) this.chartManager = new ChartManager();
-                    switch (viewId) {
-                        case 'connectivity':
-                            this.chartManager.initHeatmap('chartHeatmap');
-                            break;
-                        case 'chord':
-                            this.chartManager.initChord('chartChord');
-                            break;
-                        case 'circular':
-                            this.chartManager.initCircular('chartCircular');
-                            break;
-                    }
-                }, 150);
-            });
+    async initModule2() {
+        if (this.functionalManager) return;
+        this.functionalManager = new FunctionalNetworkManager({
+            onToast: (message, type) => this.setToast(message, type),
         });
-
-        if (!this.viewers['viewer2']) {
-            const viewer = new BrainViewer('viewer3D2');
-            viewer.createFullBrain(null, 'both');
-            viewer.addNetworkOverlay(YEO7_NETWORKS);
-            this.viewers['viewer2'] = viewer;
-        }
-
-        if (!this.viewers['activation']) {
-            const actViewer = new BrainViewer('viewer3DActivation');
-            actViewer.createFullBrain(null, 'both');
-            const motorActivations = [
-                { phi: 0.8, theta: 0 },
-                { phi: 0.9, theta: 3.14 },
-                { phi: 2.3, theta: 1.57 },
-                { phi: 2.4, theta: 4.71 },
-            ];
-            actViewer.addActivationOverlay(motorActivations);
-            this.viewers['activation'] = actViewer;
-        }
-
-        this.buildNetworkLegend();
-
-        if (this.chartManager) {
-            this.chartManager.initNetworkStats('networkStats');
-        } else {
-            this.chartManager = new ChartManager();
-            this.chartManager.initNetworkStats('networkStats');
-        }
-
-        const yeoSelect = document.getElementById('yeoSelect');
-        if (yeoSelect) {
-            yeoSelect.addEventListener('change', () => {
-                const networks = yeoSelect.value === '7' ? YEO7_NETWORKS : YEO17_NETWORKS;
-                const viewer = this.viewers['viewer2'];
-                if (viewer) {
-                    viewer.removeOverlay();
-                    viewer.addNetworkOverlay(networks);
-                }
-                this.setToast(`已切换到 Yeo ${yeoSelect.value} 网络模板`, 'info');
-            });
-        }
-
-        const taskSelect = document.getElementById('taskSelect');
-        const thresholdSlider = document.getElementById('thresholdSlider');
-        const thresholdValue = document.getElementById('thresholdValue');
-
-        if (taskSelect) {
-            taskSelect.addEventListener('change', () => this.updateActivationOverlay());
-        }
-        if (thresholdSlider) {
-            thresholdSlider.addEventListener('input', () => {
-                thresholdValue.textContent = `阈值: ${(thresholdSlider.value / 2).toFixed(1)}`;
-                this.updateActivationOverlay();
-            });
-        }
-
-        const btnReset2 = document.getElementById('btnResetView2');
-        if (btnReset2) {
-            btnReset2.addEventListener('click', () => {
-                const viewer = this.viewers['viewer2'];
-                if (viewer) viewer.resetView();
-            });
-        }
-    }
-
-    updateActivationOverlay() {
-        const viewer = this.viewers['activation'];
-        if (!viewer) return;
-
-        const task = document.getElementById('taskSelect').value;
-        viewer.removeOverlay();
-
-        const activationMaps = {
-            motor: [
-                { phi: 0.7, theta: 0 }, { phi: 0.8, theta: 3.14 },
-                { phi: 2.3, theta: 1.57 }, { phi: 2.4, theta: 4.71 },
-            ],
-            language: [
-                { phi: 0.4, theta: 1.2 }, { phi: 0.5, theta: 2.0 },
-                { phi: 1.6, theta: 3.5 }, { phi: 1.7, theta: 4.8 },
-            ],
-            workingMemory: [
-                { phi: 0.3, theta: 2.5 }, { phi: 0.4, theta: 3.8 },
-                { phi: 1.2, theta: 5.0 }, { phi: 2.5, theta: 2.0 },
-            ],
-            emotion: [
-                { phi: 1.8, theta: 1.8 }, { phi: 1.9, theta: 3.2 },
-                { phi: 1.0, theta: 0.5 }, { phi: 2.7, theta: 4.0 },
-            ],
-        };
-
-        const activations = activationMaps[task] || activationMaps.motor;
-        viewer.addActivationOverlay(activations);
-    }
-
-    buildNetworkLegend() {
-        const container = document.getElementById('networkLegend');
-        if (!container) return;
-        container.innerHTML = YEO7_NETWORKS.map(n => `
-            <div class="legend-item">
-                <div class="legend-color" style="background:${n.color};"></div>
-                <span class="legend-name">${n.name}</span>
-            </div>
-        `).join('');
+        await this.functionalManager.init();
     }
 
     // ===== 模块3：白质连接 =====
@@ -1670,16 +1554,17 @@ class NeuroVizApp {
     }
 
     exportCSV() {
-        const matrix = generateConnectivityMatrix(YEO7_NETWORKS);
-        let csv = '网络,' + YEO7_NETWORKS.map(n => n.name).join(',') + '\n';
-        YEO7_NETWORKS.forEach((n, i) => {
-            csv += n.name + ',' + matrix[i].join(',') + '\n';
-        });
+        const csv = this.functionalManager ? this.functionalManager.getExportCsv() : '';
+        if (!csv) {
+            this.setToast('功能网络数据尚未加载', 'error');
+            return;
+        }
 
         const link = document.createElement('a');
-        link.download = `neuroviz-connectivity-${new Date().toISOString().slice(0, 10)}.csv`;
-        link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+        link.download = `neuroviz-connectivity-${this.functionalManager.currentAtlas}-${new Date().toISOString().slice(0, 10)}.csv`;
+        link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\uFEFF' + csv);
         link.click();
+        this.setToast('功能连接矩阵 CSV 已导出', 'success');
     }
 
     // ===== 引用栏 =====

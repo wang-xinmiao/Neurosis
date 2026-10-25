@@ -54,3 +54,20 @@ const WHITE_MATTER_STRUCTURES = [
 window.SUBCORTICAL_STRUCTURES = SUBCORTICAL_STRUCTURES;
 window.CEREBELLAR_REGIONS = CEREBELLAR_REGIONS;
 window.WHITE_MATTER_STRUCTURES = WHITE_MATTER_STRUCTURES;
+// 白质连接模块的兼容演示网络（功能网络模块已改用分区级 FunctionalNetworkManager）
+window.YEO7_NETWORKS = window.YEO7_NETWORKS || [
+    { id: 1, name: '视觉网络', color: '#7C3AED', regions: 52 },
+    { id: 2, name: '感觉运动网络', color: '#2563EB', regions: 58 },
+    { id: 3, name: '背侧注意网络', color: '#059669', regions: 45 },
+    { id: 4, name: '凸显/腹侧注意网络', color: '#D97706', regions: 41 },
+    { id: 5, name: '边缘网络', color: '#DB2777', regions: 33 },
+    { id: 6, name: '额顶控制网络', color: '#DC2626', regions: 55 },
+    { id: 7, name: '默认模式网络', color: '#0891B2', regions: 76 },
+];
+
+window.generateConnectivityMatrix = window.generateConnectivityMatrix || function generateConnectivityMatrix(networks = []) {
+    return networks.map((network, i) => networks.map((other, j) => {
+        if (i === j) return 1;
+        return Number((0.32 + ((i + 1) * (j + 3) % 17) / 50).toFixed(2));
+    }));
+};

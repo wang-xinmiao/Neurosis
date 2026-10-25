@@ -20,6 +20,7 @@ class NiiVueViewer {
         this.highlight = null;
         this.hemiFilter = 'both';
         this._pickPending = false;
+        this._pickPointerDown = null;
 
         const container = document.getElementById(containerId);
         container.querySelectorAll('canvas').forEach(c => c.remove());
@@ -44,7 +45,8 @@ class NiiVueViewer {
             atlasOutline: this.renderMode === 'volume' ? 2 : 0,
             showLegend: false,
         });
-        this.nv.attachToCanvas(this.canvas);
+        // 强制开启 WebGL 多重采样，保证白色轮廓线平滑
+        this.nv.attachToCanvas(this.canvas, true);
 
         // ===== 自定义"白色幽灵"网格着色器（用于非选中脑区）=====
         // 内部很透明，法线接近侧面（轮廓/边缘）处更不透明 -> 形成白色描边效果
@@ -89,8 +91,20 @@ void main() {
             container.style.position = 'relative';
         }
 
-        this.canvas.addEventListener('dblclick', () => { this._pickPending = true; });
         this.nv.onLocationChange = (loc) => this._handleLocation(loc);
+        // 单击选区；拖拽旋转不能被误判为点击
+        this.canvas.addEventListener('pointerdown', (e) => {
+            this._pickPointerDown = { x: e.clientX, y: e.clientY, button: e.button };
+        });
+        this.canvas.addEventListener('pointerup', (e) => {
+            const down = this._pickPointerDown;
+            this._pickPointerDown = null;
+            if (!down || down.button !== 0 || e.button !== 0) return;
+            if (Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) return;
+            if (this.functionalInteractionMode) return;
+            requestAnimationFrame(() => this._requestDepthPick());
+        });
+        this.canvas.addEventListener('pointercancel', () => { this._pickPointerDown = null; });
     }
 
     /* ---------------- 统一入口 ---------------- */
@@ -331,18 +345,15 @@ void main() {
         if (!this._pickPending) return;
         this._pickPending = false;
         if (this.renderMode === 'mesh') {
-            // 双击3D → NiiVue 深度拾取得到 RAS 坐标 → 最近质心确定脑区
             if (!loc || !loc.mm || !this.regionMeta) return;
-            const p = loc.mm;
-            let best = null, bd = Infinity;
-            for (const r of this.regionMeta) {
-                const c = r.centroid_mm;
-                const d = (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2 + (p[2] - c[2]) ** 2;
-                if (d < bd) { bd = d; best = r; }
-            }
+            const bestMesh = this._findMeshAtPoint(loc.mm);
+            if (!bestMesh) return;
+            const best = bestMesh.isSub
+                ? (this.subMeta || []).find(r => r.id === bestMesh.regionId)
+                : (this.regionMeta || []).find(r => r.id === bestMesh.regionId);
             if (best) {
                 // 3D 直接点击：仅隔离该区域（不旋转，因为用户已经在看这里）
-                this.setHighlight(best.id, { focus: false });
+                this.setHighlight(best.id, { focus: false, isSub: !!bestMesh.isSub });
                 if (this.onRegionPick) this.onRegionPick({ ...best });
             }
         } else {
@@ -358,6 +369,290 @@ void main() {
                 }
             }
         }
+    }
+
+    /** 深度拾取得到表面坐标后，用最近顶点确定实际命中的网格 */
+    _findMeshAtPoint(point) {
+        let best = null, bestDistance = Infinity;
+        for (const mesh of this.meshRegistry) {
+            const pts = mesh && mesh.pts;
+            if (!pts || pts.length < 3) continue;
+            for (let i = 0; i < pts.length; i += 3) {
+                const dx = pts[i] - point[0];
+                const dy = pts[i + 1] - point[1];
+                const dz = pts[i + 2] - point[2];
+                const distance = dx * dx + dy * dy + dz * dz;
+                if (distance < bestDistance) {
+                    bestDistance = distance;
+                    best = mesh;
+                }
+            }
+        }
+        return best;
+    }
+
+    /* ---------------- 单击深度拾取 ---------------- */
+    _requestDepthPick() {
+        const nv = this.nv;
+        if (!nv || !this.ready || !nv.uiData) return;
+        if (nv.uiData.mousedown || nv.uiData.isDragging) return;
+        this._pickPending = true;
+        try {
+            nv.uiData.mouseDepthPicker = true;
+            nv.drawScene();
+        } catch (e) {
+            this._pickPending = false;
+        }
+    }
+
+    /* ---------------- 功能网络：三维脑模型叠加 ---------------- */
+    setFunctionalInteractionMode(enabled) {
+        this.functionalInteractionMode = !!enabled;
+        if (this.functionalInteractionMode) this.setupFunctionalOrbitControls();
+    }
+
+    setupFunctionalOrbitControls() {
+        if (this._orbitControlsReady || !this.canvas) return;
+        this._orbitControlsReady = true;
+        const canvas = this.canvas;
+        const nv = this.nv;
+        if (!Array.isArray(nv.position)) nv.position = [0, 0, 0];
+
+        const state = this.functionalCamera = {
+            currentAzimuth: nv.scene.renderAzimuth || -35,
+            currentElevation: nv.scene.renderElevation || 12,
+            currentPosition: [...nv.position],
+            currentScale: nv.scene.volScaleMultiplier || 1,
+            targetAzimuth: nv.scene.renderAzimuth || -35,
+            targetElevation: nv.scene.renderElevation || 12,
+            targetPosition: [...nv.position],
+            targetScale: nv.scene.volScaleMultiplier || 1,
+            dragging: null,
+            moved: false,
+            lastX: 0,
+            lastY: 0,
+            dirty: false,
+            updateLoop: null,
+        };
+
+        const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+        const controlsUpdate = () => {
+            if (state.dirty) {
+                // 较低阻尼惯性、较高逐帧跟随系数，减少旋转/缩放输入延迟。
+                const follow = 0.34;
+                state.currentAzimuth += (state.targetAzimuth - state.currentAzimuth) * follow;
+                state.currentElevation += (state.targetElevation - state.currentElevation) * follow;
+                state.currentScale += (state.targetScale - state.currentScale) * follow;
+                for (let i = 0; i < 3; i++) {
+                    state.currentPosition[i] += (state.targetPosition[i] - state.currentPosition[i]) * follow;
+                }
+
+                nv.scene.renderAzimuth = state.currentAzimuth;
+                nv.scene.renderElevation = state.currentElevation;
+                nv.scene.volScaleMultiplier = state.currentScale;
+                nv.position = [...state.currentPosition];
+                nv.drawScene();
+                if (typeof nv.onAzimuthElevationChange === 'function') {
+                    nv.onAzimuthElevationChange(state.currentAzimuth, state.currentElevation);
+                }
+
+                const remaining =
+                    Math.abs(state.targetAzimuth - state.currentAzimuth) +
+                    Math.abs(state.targetElevation - state.currentElevation) +
+                    Math.abs(state.targetScale - state.currentScale) +
+                    state.targetPosition.reduce((sum, value, index) => sum + Math.abs(value - state.currentPosition[index]), 0);
+                if (remaining < 0.015) {
+                    state.currentAzimuth = state.targetAzimuth;
+                    state.currentElevation = state.targetElevation;
+                    state.currentScale = state.targetScale;
+                    state.currentPosition = [...state.targetPosition];
+                    state.dirty = false;
+                }
+            }
+            state.updateLoop = requestAnimationFrame(controlsUpdate);
+        };
+        controlsUpdate();
+
+        const requestAnimation = () => {
+            state.dirty = true;
+        };
+
+        canvas.addEventListener('contextmenu', (event) => event.preventDefault());
+
+        canvas.addEventListener('pointerdown', (event) => {
+            if (!this.functionalInteractionMode) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            state.dragging = event.button === 2 ? 'pan' : 'rotate';
+            state.moved = false;
+            state.lastX = event.clientX;
+            state.lastY = event.clientY;
+            try { canvas.setPointerCapture(event.pointerId); } catch (e) { /* ignore */ }
+        }, true);
+
+        canvas.addEventListener('pointermove', (event) => {
+            if (!this.functionalInteractionMode || !state.dragging) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            const dx = event.clientX - state.lastX;
+            const dy = event.clientY - state.lastY;
+            if (Math.abs(dx) + Math.abs(dy) > 1) state.moved = true;
+            state.lastX = event.clientX;
+            state.lastY = event.clientY;
+
+            if (state.dragging === 'rotate') {
+                state.targetAzimuth += dx * 0.42;
+                state.targetElevation = clamp(state.targetElevation + dy * 0.42, -89, 89);
+            } else {
+                const unit = (nv.furthestFromPivot || 100) / 520;
+                state.targetPosition[0] = clamp(state.targetPosition[0] - dx * unit, -260, 260);
+                state.targetPosition[1] = clamp(state.targetPosition[1] + dy * unit, -260, 260);
+            }
+            requestAnimation();
+        }, true);
+
+        const endDrag = (event) => {
+            if (!this.functionalInteractionMode) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            state.dragging = null;
+            try { canvas.releasePointerCapture(event.pointerId); } catch (e) { /* ignore */ }
+        };
+        canvas.addEventListener('pointerup', endDrag, true);
+        canvas.addEventListener('pointercancel', endDrag, true);
+
+        canvas.addEventListener('wheel', (event) => {
+            if (!this.functionalInteractionMode) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            state.targetScale = clamp(state.targetScale * Math.exp(-event.deltaY * 0.0012), 0.38, 4.2);
+            requestAnimation();
+        }, { capture: true, passive: false });
+    }
+
+    projectFunctionalPoints(points) {
+        const canvas = this.canvas;
+        const width = canvas.clientWidth || canvas.width;
+        const height = canvas.clientHeight || canvas.height;
+        const [mvp] = this.nv.calculateMvpMatrix(
+            this.nv.volumeObject3D,
+            [0, 0, width, height],
+            this.nv.scene.renderAzimuth,
+            this.nv.scene.renderElevation,
+        );
+        return points.map((point) => {
+            const [x, y, z] = point;
+            const cx = mvp[0] * x + mvp[4] * y + mvp[8] * z + mvp[12];
+            const cy = mvp[1] * x + mvp[5] * y + mvp[9] * z + mvp[13];
+            const cz = mvp[2] * x + mvp[6] * y + mvp[10] * z + mvp[14];
+            const cw = mvp[3] * x + mvp[7] * y + mvp[11] * z + mvp[15];
+            const w = Math.abs(cw) < 1e-6 ? 1 : cw;
+            return {
+                x: (cx / w + 1) * 0.5 * width,
+                y: (1 - cy / w) * 0.5 * height,
+                z: cz / w,
+            };
+        });
+    }
+
+
+    clearFunctionalConnectome() {
+        if (!this.functionalConnectomeMesh) return;
+        try { this.nv.removeMesh(this.functionalConnectomeMesh); } catch (e) { /* ignore */ }
+        this.functionalConnectomeMesh = null;
+        try { this.nv.drawScene(); } catch (e) { /* ignore */ }
+    }
+
+    setFunctionalConnectome(connectomeJson) {
+        this.clearFunctionalConnectome();
+        const nodes = connectomeJson.nodes || {};
+        const nodeCount = Array.isArray(nodes.names) ? nodes.names.length : 0;
+        const nodePts = new Float32Array(nodeCount * 3);
+        for (let i = 0; i < nodeCount; i++) {
+            nodePts[i * 3] = Number(nodes.x?.[i] || 0);
+            nodePts[i * 3 + 1] = Number(nodes.y?.[i] || 0);
+            nodePts[i * 3 + 2] = Number(nodes.z?.[i] || 0);
+        }
+        const mesh = new niivue.NVMesh(
+            nodePts,
+            new Uint32Array([0, 0, 0]),
+            connectomeJson.name || 'functional-connectome',
+            new Uint8Array([255, 255, 255, 255]),
+            1.0,
+            true,
+            this.nv.gl,
+            connectomeJson,
+        );
+        if (!mesh) return null;
+        mesh.opacity = 0.0;
+        mesh.visible = false;
+        mesh.showLegend = false;
+        this.functionalConnectomeMesh = mesh;
+        this.nv.addMesh(mesh);
+        try { this.nv.drawScene(); } catch (e) { /* ignore */ }
+        return mesh;
+    }
+
+    applyFunctionalHeatmap(regionColors, selectedRegionId = null) {
+        for (const mesh of this.meshRegistry) {
+            if (mesh.isSub || !mesh.pts || mesh.pts.length < 3 || !mesh.tris) continue;
+            const vertexCount = mesh.pts.length / 3;
+            const rgba = new Uint8Array(vertexCount * 4);
+            const entry = regionColors.get(mesh.regionId) || { rgb: [120, 132, 148], alpha: 105 };
+            const [r, g, b] = entry.rgb;
+            const alpha = selectedRegionId === mesh.regionId ? 255 : (entry.alpha ?? 185);
+            for (let i = 0; i < vertexCount; i++) {
+                const offset = i * 4;
+                rgba[offset] = r;
+                rgba[offset + 1] = g;
+                rgba[offset + 2] = b;
+                rgba[offset + 3] = alpha;
+            }
+            mesh.rgba255 = rgba;
+            mesh.meshShaderIndex = 0;
+            mesh.opacity = 1.0;
+            mesh.visible = true;
+            try { mesh.updateMesh(this.nv.gl); } catch (e) { console.warn('[NiiVueViewer] 热力图网格更新失败:', e); }
+        }
+        try { this.nv.drawScene(); } catch (e) { /* ignore */ }
+    }
+
+    setFunctionalBaseOpacity(opacity = 0.16, rgb = [182, 193, 204]) {
+        for (const mesh of this.meshRegistry) {
+            if (!mesh.pts || mesh.pts.length < 3 || !mesh.tris) continue;
+            const vertexCount = mesh.pts.length / 3;
+            const rgba = new Uint8Array(vertexCount * 4);
+            for (let i = 0; i < vertexCount; i++) {
+                const offset = i * 4;
+                rgba[offset] = rgb[0];
+                rgba[offset + 1] = rgb[1];
+                rgba[offset + 2] = rgb[2];
+                rgba[offset + 3] = 255;
+            }
+            mesh.rgba255 = rgba;
+            mesh.meshShaderIndex = 0;
+            mesh.opacity = opacity;
+            mesh.visible = true;
+            try { mesh.updateMesh(this.nv.gl); } catch (e) { /* ignore */ }
+        }
+        try { this.nv.drawScene(); } catch (e) { /* ignore */ }
+    }
+
+    destroy() {
+        if (this.functionalCamera?.updateLoop) {
+            cancelAnimationFrame(this.functionalCamera.updateLoop);
+            this.functionalCamera.updateLoop = null;
+        }
+        this.clearFunctionalConnectome();
+        for (const mesh of [...this.meshRegistry]) {
+            try { this.nv.removeMesh(mesh); } catch (e) { /* ignore */ }
+        }
+        this.meshRegistry = [];
+        try {
+            const loseContext = this.nv.gl && this.nv.gl.getExtension('WEBGL_lose_context');
+            if (loseContext) loseContext.loseContext();
+        } catch (e) { /* ignore */ }
+        if (this.canvas) this.canvas.remove();
     }
 
     getAllLegendData() {
