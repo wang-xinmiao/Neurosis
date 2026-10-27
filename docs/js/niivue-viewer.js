@@ -202,6 +202,9 @@ void main() {
         const sel = this.highlight;                    // {id, isSub}
         const selId = sel ? sel.id : null;
         const selSub = sel ? !!sel.isSub : false;
+        const selectedIds = this.functionalHighlightIds && this.functionalHighlightIds.size
+            ? this.functionalHighlightIds
+            : new Set(selId === null ? [] : [selId]);
         const DEFAULT_SHADER = 0;                     // NiiVue 默认 Phong（用顶点原色）
         const ghost = (this.ghostShaderIndex != null) ? this.ghostShaderIndex : DEFAULT_SHADER;
         for (const m of this.meshRegistry) {
@@ -209,7 +212,7 @@ void main() {
                 // 无选中：全部原色显示
                 m.meshShaderIndex = DEFAULT_SHADER;
                 m.opacity = 1.0; m.visible = true;
-            } else if (m.regionId === selId && !!m.isSub === selSub) {
+            } else if (selectedIds.has(m.regionId) && (!sel || !!m.isSub === selSub)) {
                 // 选中：原色 + 不透明（同时匹配 id 与是否皮层下，防止 ID 撞车）
                 m.meshShaderIndex = DEFAULT_SHADER;
                 m.opacity = 1.0; m.visible = true;
@@ -276,8 +279,11 @@ void main() {
             const left = this._isLeft(r.name_zh, r.name_en);
             const right = this._isRight(r.name_zh, r.name_en);
             if ((this.hemiFilter === 'left' && right) || (this.hemiFilter === 'right' && left)) alpha = 0;
-            if (this.highlight) {
-                if (r.id === this.highlight.id) { rr = r.color[0]; gg = r.color[1]; bb = r.color[2]; alpha = 255; }
+            const selectedIds = this.functionalHighlightIds && this.functionalHighlightIds.size
+                ? this.functionalHighlightIds
+                : new Set(this.highlight ? [this.highlight.id] : []);
+            if (selectedIds.size) {
+                if (selectedIds.has(r.id)) { rr = r.color[0]; gg = r.color[1]; bb = r.color[2]; alpha = 255; }
                 else { rr = 255; gg = 255; bb = 255; alpha = 45; }
             }
             const i4 = r.id * 4;
@@ -406,6 +412,13 @@ void main() {
     }
 
     /* ---------------- 功能网络：三维脑模型叠加 ---------------- */
+    setFunctionalHighlightIds(regionIds = []) {
+        this.functionalHighlightIds = new Set((regionIds || []).map(Number));
+        this.highlight = null;
+        if (this.renderMode === 'mesh') this._applyMeshHighlight();
+        else this._applyLUT();
+    }
+
     setFunctionalInteractionMode(enabled) {
         this.functionalInteractionMode = !!enabled;
         if (this.functionalInteractionMode) this.setupFunctionalOrbitControls();

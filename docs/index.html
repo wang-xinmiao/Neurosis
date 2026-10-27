@@ -6,9 +6,20 @@
     <link rel="icon" href="data:,">
     <title>NeuroViz - 多模态脑影像集成分析平台</title>
     <link rel="stylesheet" href="./vendor/font-awesome/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=89">
+    <link rel="stylesheet" href="css/style.css?v=90">
     <!-- 3D 引擎已迁移至 NiiVue（本地 vendor/niivue） -->
     <script src="./vendor/echarts/echarts.min.js"></script>
+    <script type="importmap">
+        {"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        const THREE_GLOBAL = Object.assign({}, THREE);
+        THREE_GLOBAL.OrbitControls = OrbitControls;
+        window.THREE = THREE_GLOBAL;
+        window.dispatchEvent(new Event('three-ready'));
+    </script>
 </head>
 <body>
     <!-- 顶部工具栏 -->
@@ -413,13 +424,10 @@
                     <span id="functionalDataStatus">演示连接数据 · 正在加载…</span>
                 </div>
                 <div class="panel-controls">
-                    <label class="control-label" for="funcAtlasSelect">分区类型</label>
-                    <select id="funcAtlasSelect" class="select-sm" aria-label="功能网络分区类型">
-                        <option value="hcp360" selected>HCP MMP 1.0（360区）</option>
-                        <option value="dk68">Desikan-Killiany（68区）</option>
-                        <option value="aal116">AAL（116区）</option>
-                        <option value="destrieux148">Destrieux（148区）</option>
-                        <option value="schaefer148" disabled>Schaefer 2018（148区·缺少数据）</option>
+                    <label class="control-label" for="yeoTemplateSelect">网络模板</label>
+                    <select id="yeoTemplateSelect" class="select-sm" aria-label="功能网络分组模板">
+                        <option value="yeo7" selected>Yeo 7网络</option>
+                        <option value="yeo17">Yeo 17网络</option>
                     </select>
                     <button class="icon-btn" id="btnResetFunctional" title="重置功能网络视图">
                         <i class="fa-solid fa-rotate"></i>
@@ -443,13 +451,12 @@
                                 <label for="topologyThreshold">连接阈值</label>
                                 <input type="range" id="topologyThreshold" min="20" max="85" step="1" value="42" class="slider-sm">
                                 <span class="slider-label" id="topologyThresholdValue">0.42</span>
+                                <label for="brainOpacity">脑透明度</label>
+                                <input type="range" id="brainOpacity" min="10" max="100" value="35" class="slider-sm">
+                                <span class="slider-label" id="brainOpacityValue">35%</span>
+                                <button class="small-action-btn" id="btnOnlySelected">显示全部连接</button>
+                                <button class="small-action-btn" id="btnResetSelection">重置选择</button>
                             </div>
-                        </div>
-                        <div class="network-checkbox-bar" id="networkCheckboxBar" aria-label="功能网络显示分组">
-                            <label class="network-check"><input type="checkbox" data-network="dmn" checked><span class="network-dot dmn"></span>默认模式网络 DMN</label>
-                            <label class="network-check"><input type="checkbox" data-network="attention" checked><span class="network-dot attention"></span>注意网络</label>
-                            <label class="network-check"><input type="checkbox" data-network="ecn" checked><span class="network-dot ecn"></span>执行控制网络 ECN</label>
-                            <label class="network-check"><input type="checkbox" data-network="smn" checked><span class="network-dot smn"></span>感觉运动网络 SMN</label>
                         </div>
                         <div class="viewer-container functional-brain-stage" id="functionalTopologyStage">
                             <svg class="topology-hit-overlay" id="topologyHitOverlay" aria-label="拓扑节点和连接交互层"></svg>
@@ -461,13 +468,6 @@
                         <div class="panel-header">
                             <h3><i class="fa-solid fa-fire"></i> 激活图（统计参数图）</h3>
                             <div class="panel-controls range-controls">
-                                <label for="activationNetworkSelect">激活网络</label>
-                                <select id="activationNetworkSelect" class="select-sm">
-                                    <option value="dmn">默认模式网络 DMN</option>
-                                    <option value="attention">注意网络</option>
-                                    <option value="ecn">执行控制网络 ECN</option>
-                                    <option value="smn" selected>感觉运动网络 SMN</option>
-                                </select>
                                 <label for="activationThreshold">显著阈值</label>
                                 <input type="range" id="activationThreshold" min="1.5" max="6" step="0.1" value="3" class="slider-sm">
                                 <span class="slider-label" id="activationThresholdValue">Z ≥ 3.0</span>
@@ -480,8 +480,14 @@
                     <div class="panel panel-main func-view" id="view-heatmap">
                         <div class="panel-header">
                             <h3><i class="fa-solid fa-table-cells-large"></i> 功能连接矩阵热力图</h3>
-                            <div class="panel-controls">
-                                <span class="slider-label">按四大功能网络分组排序</span>
+                            <div class="panel-controls range-controls">
+                                <label for="heatmapThreshold">r 阈值</label>
+                                <input type="range" id="heatmapThreshold" min="0" max="95" value="0" class="slider-sm">
+                                <span class="slider-label" id="heatmapThresholdValue">0.00</span>
+                                <label for="heatmapRangeMin">色值下限</label>
+                                <input type="number" id="heatmapRangeMin" class="range-number" min="0" max="1" step="0.05" value="0.2">
+                                <label for="heatmapRangeMax">色值上限</label>
+                                <input type="number" id="heatmapRangeMax" class="range-number" min="0" max="1" step="0.05" value="0.9">
                             </div>
                         </div>
                         <div class="chart-container" id="chartHeatmap" aria-label="功能连接矩阵热力图"></div>
@@ -504,6 +510,17 @@
 
                 <aside class="panel panel-side functional-explanation" id="functionalExplanation">
                     <div class="panel-header">
+                        <h3><i class="fa-solid fa-circle-nodes"></i> 功能网络</h3>
+                    </div>
+                    <div class="network-side-section">
+                        <h4>网络图例</h4>
+                        <div class="yeo-legend-list" id="yeoNetworkLegend"></div>
+                    </div>
+                    <div class="network-side-section">
+                        <h4>网络统计</h4>
+                        <div class="yeo-stats-list" id="yeoNetworkStats"></div>
+                    </div>
+                    <div class="panel-header network-detail-header">
                         <h3><i class="fa-solid fa-book-open"></i> 动态详情</h3>
                     </div>
                     <div class="functional-info-body">
@@ -559,6 +576,9 @@
                                 <input type="checkbox" id="toggleFuncOverlay" checked>
                                 <span>功能网络叠加</span>
                             </label>
+                            <select id="tractColorMode" class="select-sm"><option value="fa">FA着色</option><option value="direction">方向RGB</option></select>
+                            <button class="icon-btn" id="btnImportTracts" title="导入 .trk/.tck"><i class="fa-solid fa-file-import"></i></button>
+                            <input type="file" id="tractFileInput" accept=".trk,.tck" multiple hidden>
                             <button class="icon-btn" id="btnResetView3" title="重置视角"><i class="fa-solid fa-rotate"></i></button>
                         </div>
                     </div>
@@ -714,9 +734,12 @@
     <script src="js/atlas_data.js?v=89"></script>
     <script src="js/data.js?v=89"></script>
     <script src="./vendor/niivue/niivue.umd.js?v=89"></script>
-    <script src="js/niivue-viewer.js?v=89"></script>
+    <script src="js/network-resources.js?v=92"></script>
+    <script src="js/network-renderer.js?v=93"></script>
+    <script src="js/tract-renderer.js?v=92"></script>
+    <script src="js/niivue-viewer.js?v=92"></script>
     <script src="js/stub-3d.js?v=89"></script>
-    <script src="js/functional-network.js?v=89"></script>
+    <script src="js/functional-network.js?v=93"></script>
     <script src="js/charts.js?v=89"></script>
     <script src="js/app.js?v=89"></script>
 </body>

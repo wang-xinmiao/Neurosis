@@ -1351,12 +1351,22 @@ class NeuroVizApp {
     initModule3() {
         if (this.viewers['viewer3']) return;
 
-        const viewer = new BrainViewer('viewer3D3', {
-            cameraPosition: [0, -30, 320],
-        });
-        viewer.createFullBrain(null, 'both');
-        viewer.addNetworkOverlay(YEO7_NETWORKS);
-        viewer.generateDemoTracts();
+        let viewer;
+        if (window.TractRenderer && window.THREE) {
+            viewer = new TractRenderer(document.getElementById('viewer3D3'));
+            viewer.generateDemoTracts();
+            viewer.onSelect = (info) => {
+                const panel = document.getElementById('tractInfo');
+                if (panel) {
+                    panel.innerHTML = `<div class="tract-card highlighted"><div class="tract-detail"><strong>${info.id}</strong><p>纤维束已选中</p><span class="tract-stat">平均FA: ${(info.lineRanges?.[0]?.fa ?? 0).toFixed(2)}</span></div></div>`;
+                }
+            };
+        } else {
+            viewer = new BrainViewer('viewer3D3', { cameraPosition: [0, -30, 320] });
+            viewer.createFullBrain(null, 'both');
+            viewer.addNetworkOverlay(YEO7_NETWORKS);
+            viewer.generateDemoTracts();
+        }
         this.viewers['viewer3'] = viewer;
 
         const tractSelect = document.getElementById('tractSelect');
@@ -1410,6 +1420,28 @@ class NeuroVizApp {
                 if (tractSelect) tractSelect.value = tract;
             });
         });
+
+        const tractColorMode = document.getElementById('tractColorMode');
+        if (tractColorMode) {
+            tractColorMode.addEventListener('change', () => viewer.setColorMode?.(tractColorMode.value));
+        }
+
+        const tractFileInput = document.getElementById('tractFileInput');
+        const btnImportTracts = document.getElementById('btnImportTracts');
+        if (btnImportTracts && tractFileInput) {
+            btnImportTracts.addEventListener('click', () => tractFileInput.click());
+            tractFileInput.addEventListener('change', async () => {
+                const files = Array.from(tractFileInput.files || []);
+                for (const file of files) {
+                    try {
+                        if (viewer.loadFile) await viewer.loadFile(file);
+                    } catch (error) {
+                        this.setToast(`纤维文件加载失败：${error.message}`, 'error');
+                    }
+                }
+                tractFileInput.value = '';
+            });
+        }
 
         const btnReset3 = document.getElementById('btnResetView3');
         if (btnReset3) {

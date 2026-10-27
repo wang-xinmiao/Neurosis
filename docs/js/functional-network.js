@@ -30,6 +30,8 @@ const FUNCTIONAL_ATLASES = {
     },
 };
 
+window.ACTIVATION_DATA_CACHE = window.ACTIVATION_DATA_CACHE || new Map();
+
 const FUNCTIONAL_NETWORKS = {
     dmn: {
         label: '默认模式网络 DMN',
@@ -57,9 +59,55 @@ const FUNCTIONAL_NETWORKS = {
     },
 };
 
+const YEO_OTHER_NETWORK = {
+    id: 'other',
+    label: '其他',
+    short: '其他',
+    color: '#94A3B8',
+    description: '未匹配到当前 Yeo 功能网络模板的皮层下、小脑或其他区域。',
+    parent: 'other',
+};
+
+const YEO_NETWORK_TEMPLATES = {
+    yeo7: [
+        { id: 'y7_visual', label: '网络1-视觉', short: '视觉', color: '#7C3AED', description: '视觉网络，主要处理视觉信息与视觉空间特征。', parent: 'visual' },
+        { id: 'y7_somatomotor', label: '网络2-感觉运动', short: '感觉运动', color: '#2563EB', description: '感觉运动网络，参与动作执行与躯体感觉加工。', parent: 'somatomotor' },
+        { id: 'y7_dorsal_attention', label: '网络3-背侧注意', short: '背侧注意', color: '#10B981', description: '背侧注意网络，参与自上而下的空间注意与目标导向加工。', parent: 'dorsal_attention' },
+        { id: 'y7_salience', label: '网络4-腹侧注意/突显', short: '腹侧注意', color: '#A78BFA', description: '腹侧注意/突显网络，负责显著信息检测与注意资源切换。', parent: 'salience' },
+        { id: 'y7_limbic', label: '网络5-边缘系统', short: '边缘系统', color: '#FDE68A', description: '边缘系统网络，参与情绪、记忆与内脏信息加工。', parent: 'limbic' },
+        { id: 'y7_frontoparietal', label: '网络6-额顶控制', short: '额顶控制', color: '#F97316', description: '额顶控制网络，参与工作记忆、认知控制与目标维护。', parent: 'frontoparietal' },
+        { id: 'y7_default', label: '网络7-默认模式', short: '默认模式', color: '#EF4444', description: '默认模式网络，参与内部思考、情景记忆与自我参照加工。', parent: 'default' },
+        YEO_OTHER_NETWORK,
+    ],
+    yeo17: [
+        { id: 'y17_visual_a', label: '视觉A', short: '视觉A', color: '#6D28D9', description: '视觉网络 A 子网络。', parent: 'visual' },
+        { id: 'y17_visual_b', label: '视觉B', short: '视觉B', color: '#A855F7', description: '视觉网络 B 子网络。', parent: 'visual' },
+        { id: 'y17_somatomotor_a', label: '感觉运动A', short: '感觉运动A', color: '#1D4ED8', description: '感觉运动网络 A 子网络。', parent: 'somatomotor' },
+        { id: 'y17_somatomotor_b', label: '感觉运动B', short: '感觉运动B', color: '#60A5FA', description: '感觉运动网络 B 子网络。', parent: 'somatomotor' },
+        { id: 'y17_dorsal_attention_a', label: '背侧注意A', short: '背侧注意A', color: '#047857', description: '背侧注意网络 A 子网络。', parent: 'dorsal_attention' },
+        { id: 'y17_dorsal_attention_b', label: '背侧注意B', short: '背侧注意B', color: '#34D399', description: '背侧注意网络 B 子网络。', parent: 'dorsal_attention' },
+        { id: 'y17_salience_a', label: '腹侧注意A', short: '腹侧注意A', color: '#0F766E', description: '腹侧注意网络 A 子网络。', parent: 'salience' },
+        { id: 'y17_salience_b', label: '腹侧注意B', short: '腹侧注意B', color: '#5EEAD4', description: '腹侧注意网络 B 子网络。', parent: 'salience' },
+        { id: 'y17_salience_c', label: '突显A', short: '突显A', color: '#D97706', description: '突显网络 A 子网络。', parent: 'salience' },
+        { id: 'y17_salience_d', label: '突显B', short: '突显B', color: '#FBBF24', description: '突显网络 B 子网络。', parent: 'salience' },
+        { id: 'y17_limbic_a', label: '边缘系统A', short: '边缘A', color: '#B45309', description: '边缘系统网络 A 子网络。', parent: 'limbic' },
+        { id: 'y17_limbic_b', label: '边缘系统B', short: '边缘B', color: '#F59E0B', description: '边缘系统网络 B 子网络。', parent: 'limbic' },
+        { id: 'y17_control_a', label: '额顶控制A', short: '控制A', color: '#4338CA', description: '额顶控制网络 A 子网络。', parent: 'frontoparietal' },
+        { id: 'y17_control_b', label: '额顶控制B', short: '控制B', color: '#818CF8', description: '额顶控制网络 B 子网络。', parent: 'frontoparietal' },
+        { id: 'y17_default_a', label: '默认模式A', short: '默认A', color: '#B91C1C', description: '默认模式网络 A 子网络。', parent: 'default' },
+        { id: 'y17_default_b', label: '默认模式B', short: '默认B', color: '#EF4444', description: '默认模式网络 B 子网络。', parent: 'default' },
+        { id: 'y17_default_c', label: '默认模式C', short: '默认C', color: '#F87171', description: '默认模式网络 C 子网络。', parent: 'default' },
+        YEO_OTHER_NETWORK,
+    ],
+};
+
 class MniSliceViewer {
-    constructor(container, orientation, network, onReady) {
+    constructor(container, orientation, network, onReady, sharedState = { mni: [0, 0, 12], listeners: new Set() }, onProbe = null) {
         this.container = container;
+        this.sharedState = sharedState;
+        this.onProbe = onProbe;
+        this.sharedState.listeners ||= new Set();
+        this.sharedState.listeners.add(this);
         this.orientation = orientation;
         this.network = network;
         this.onReady = onReady || (() => {});
@@ -104,59 +152,93 @@ class MniSliceViewer {
             textHeight: 0.035,
         });
         this.nv.attachToCanvas(this.canvas, true);
+        this.nv.onLocationChange = (loc) => {
+            if (!loc?.mm) return;
+            this.setSharedMni(loc.mm);
+            if (this.onProbe) this.onProbe(this.probeActivation(loc.mm));
+        };
 
         this.slider.addEventListener('input', () => {
             const value = Number(this.slider.value);
             this.output.textContent = `${value} mm`;
-            this.setSlicePosition(value);
+            const mm = [...(this.sharedState.mni || [0, 0, 12])];
+            mm[this.settings.axis] = value;
+            this.setSharedMni(mm);
         });
 
         this.loadVolumes(network);
     }
 
+    async cachedBuffer(url) {
+        const cache = window.ACTIVATION_DATA_CACHE;
+        if (cache.has(url)) return cache.get(url);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const buffer = await response.arrayBuffer();
+        cache.set(url, buffer);
+        return buffer;
+    }
+
     async loadVolumes(network) {
         this.network = network;
         try {
-            await this.nv.loadVolumes([
-                {
-                    url: './data/MNI152_T1w_1mm.nii.gz?v=81',
-                    name: 'MNI152_T1w_1mm.nii.gz',
-                    colormap: 'gray',
-                    opacity: 1.0,
-                    ignoreZeroVoxels: false,
-                },
-                {
-                    url: `./data/demo_zstat_${network}.nii.gz?v=81`,
-                    name: `demo_zstat_${network}.nii.gz`,
-                    colormap: 'warm',
-                    colormapNegative: 'winter',
-                    opacity: 0.72,
-                    ignoreZeroVoxels: true,
-                    cal_min: this.threshold,
-                    cal_max: 8,
-                },
-            ]);
-            const overlay = this.nv.volumes[1];
-            if (overlay) {
-                overlay.useNegativeCmap = true;
-                overlay.cal_min = this.threshold;
-                overlay.cal_max = 8;
-                overlay.cal_minNeg = this.threshold;
-                overlay.cal_maxNeg = 8;
-                overlay.opacity = 0.72;
+            const key = this.activationFileKey(network);
+            const mniBuffer = await this.cachedBuffer('./data/MNI152_T1w_1mm.nii.gz');
+            let overlayBuffer;
+            try {
+                overlayBuffer = await this.cachedBuffer(`./data/demo_zstat_${key}.nii.gz`);
+            } catch (error) {
+                // 网络资源缺失时使用兜底激活图，保持界面可交互而不是空白。
+                overlayBuffer = await this.cachedBuffer('./data/demo_zstat_smn.nii.gz');
+            }
+            const mni = await niivue.NVImage.loadFromUrl({ url: 'array.nii.gz', buffer: mniBuffer, name: 'MNI152_T1w_1mm.nii.gz', colormap: 'gray', opacity: 1.0, ignoreZeroVoxels: false });
+            const overlay = await niivue.NVImage.loadFromUrl({ url: 'array.nii.gz', buffer: overlayBuffer, name: `demo_zstat_${key}.nii.gz`, colormap: 'warm', colormapNegative: 'winter', opacity: 0.72, ignoreZeroVoxels: true, cal_min: this.threshold, cal_max: 8 });
+            this.nv.volumes = [];
+            this.nv.addVolume(mni);
+            this.nv.addVolume(overlay);
+            const overlayVolume = this.nv.volumes[1];
+            if (overlayVolume) {
+                overlayVolume.useNegativeCmap = true;
+                overlayVolume.cal_min = this.threshold;
+                overlayVolume.cal_max = 8;
+                overlayVolume.cal_minNeg = this.threshold;
+                overlayVolume.cal_maxNeg = 8;
+                overlayVolume.opacity = 0.72;
             }
             this.ready = true;
-            this.setSlicePosition(Number(this.slider.value));
+            this.applySharedMni();
             this.onReady(this);
+            return true;
         } catch (error) {
             console.error('[MniSliceViewer] 切片加载失败:', error);
+            this.ready = false;
+            return false;
         }
     }
 
-    setSlicePosition(value) {
+    setSharedMni(mm) {
+        if (this.sharedState.syncing) return;
+        const bounds = [[-98, 98], [-134, 98], [-72, 106]];
+        const next = [0, 1, 2].map((axis) => Math.max(bounds[axis][0], Math.min(bounds[axis][1], Number(mm[axis]) || 0)));
+        this.sharedState.mni = next;
+        this.sharedState.syncing = true;
+        try {
+            this.sharedState.listeners.forEach((viewer) => viewer.applySharedMni());
+        } finally {
+            this.sharedState.syncing = false;
+        }
+    }
+
+    applySharedMni() {
         if (!this.ready) return;
-        const mm = [0, 0, 0];
-        mm[this.settings.axis] = Number(value);
+        const mm = this.sharedState.mni || [0, 0, 12];
+        this.slider.value = String(Math.round(mm[this.settings.axis]));
+        this.output.textContent = `${Math.round(mm[this.settings.axis])} mm`;
+        this.setSlicePosition(mm);
+    }
+
+    setSlicePosition(mm) {
+        if (!this.ready) return;
         try {
             const frac = this.nv.mm2frac(mm);
             this.nv.scene.crosshairPos = frac;
@@ -165,6 +247,57 @@ class MniSliceViewer {
         } catch (error) {
             console.warn('[MniSliceViewer] 设置切片位置失败:', error);
         }
+    }
+
+    activationFileKey(network) {
+        return ({
+            y7_visual: 'visual',
+            y7_somatomotor: 'somatomotor',
+            y7_dorsal_attention: 'dorsal',
+            y7_salience: 'salience',
+            y7_limbic: 'limbic',
+            y7_frontoparietal: 'frontoparietal',
+            y7_default: 'default',
+            y17_visual_a: 'visual',
+            y17_visual_b: 'visual',
+            y17_somatomotor_a: 'somatomotor',
+            y17_somatomotor_b: 'somatomotor',
+            y17_dorsal_attention_a: 'dorsal',
+            y17_dorsal_attention_b: 'dorsal',
+            y17_salience_a: 'salience',
+            y17_salience_b: 'salience',
+            y17_salience_c: 'salience',
+            y17_salience_d: 'salience',
+            y17_limbic_a: 'limbic',
+            y17_limbic_b: 'limbic',
+            y17_control_a: 'frontoparietal',
+            y17_control_b: 'frontoparietal',
+            y17_default_a: 'default',
+            y17_default_b: 'default',
+            y17_default_c: 'default',
+        })[network] || network;
+    }
+
+    probeActivation(mm) {
+        const overlay = this.nv.volumes?.[1];
+        if (!overlay?.img) return { network: this.network, mni: [Number(mm[0]) || 0, Number(mm[1]) || 0, Number(mm[2]) || 0], z: 0 };
+        const dims = overlay.dims || overlay.hdr?.dims || [];
+        const nx = Number(dims[1] || 0), ny = Number(dims[2] || 0);
+        const x = Math.round(Number(mm[0]) + 98);
+        const y = Math.round(Number(mm[1]) + 134);
+        const z = Math.round(Number(mm[2]) + 72);
+        const index = (z * ny + y) * nx + x;
+        return {
+            network: this.network,
+            mni: [Number(mm[0]) || 0, Number(mm[1]) || 0, Number(mm[2]) || 0],
+            z: Number(overlay.img[index] || 0),
+        };
+    }
+
+    async setNetwork(network) {
+        if (this.network === network && this.ready) return true;
+        this.ready = false;
+        return await this.loadVolumes(network);
     }
 
     setThreshold(threshold) {
@@ -191,15 +324,31 @@ class FunctionalNetworkManager {
         this.currentAtlas = 'hcp360';
         this.currentView = 'topology';
         this.activeNetworks = new Set(Object.keys(FUNCTIONAL_NETWORKS));
-        this.activationNetwork = 'smn';
+        this.yeoTemplate = 'yeo7';
+        this.topologyActiveNetworks = new Set(YEO_NETWORK_TEMPLATES[this.yeoTemplate].map((network) => network.id));
+        this.focusedNetwork = null;
+        this.activationNetwork = 'y7_somatomotor';
+        this.activationProbe = null;
+        this.heatmapNetworkFilter = null;
         this.data = null;
         this.charts = {};
         this.brainViewers = {};
         this.sliceViewers = [];
+        this.sharedMni = { mni: [0, 0, 12], listeners: new Set() };
         this.topologySelection = null;
         this.heatmapPair = null;
         this._resizeTimer = null;
         this._overlayFrame = null;
+        this.networkRenderer = null;
+        this.onlySelectedTopology = false;
+        this.topologyAllMode = true;
+        this.brainOpacity = 0.34;
+        this.resourceManager = typeof NetworkResourceManager !== 'undefined' ? new NetworkResourceManager({
+            onProgress: (message) => {
+                const status = document.getElementById('functionalDataStatus');
+                if (status) status.textContent = message;
+            },
+        }) : null;
     }
 
     async init() {
@@ -212,41 +361,93 @@ class FunctionalNetworkManager {
         document.querySelectorAll('#funcTabs .func-tab').forEach((tab) => {
             tab.addEventListener('click', () => {
                 this.currentView = tab.dataset.view;
+                if (this.currentView === 'activation') {
+                    // 激活图是独立视图状态，每次进入都回到网络1，不继承拓扑选择。
+                    this.activationNetwork = 'y7_visual';
+                    this.activationProbe = null;
+                }
+                if (this.currentView === 'topology') {
+                    this.clearTopologyHighlightState();
+                    this.topologyAllMode = true;
+                    this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((item) => item.id));
+                    this.focusedNetwork = null;
+                    this.networkRenderer?.setFocusNetwork(null);
+                    this.networkRenderer?.setPickingLocked(true);
+                }
+                if (this.currentView === 'heatmap') {
+                    // 热力图初始状态始终是全网络合并大图。
+                    this.heatmapNetworkFilter = null;
+                    this.focusedNetwork = null;
+                }
                 document.querySelectorAll('#funcTabs .func-tab').forEach((item) => {
                     item.classList.toggle('active', item === tab);
                 });
                 document.querySelectorAll('#module2 .func-view').forEach((panel) => {
                     panel.classList.toggle('active', panel.id === `view-${this.currentView}`);
                 });
+                this.renderNetworkSidebar();
                 requestAnimationFrame(() => this.renderCurrentView());
             });
         });
     }
 
     bindControls() {
-        const atlasSelect = document.getElementById('funcAtlasSelect');
-        if (atlasSelect) {
-            atlasSelect.addEventListener('change', async () => {
-                await this.loadAtlas(atlasSelect.value);
+        const yeoSelect = document.getElementById('yeoTemplateSelect');
+        if (yeoSelect) {
+            yeoSelect.addEventListener('change', async () => {
+                await this.setYeoTemplate(yeoSelect.value);
             });
         }
 
-        document.querySelectorAll('#networkCheckboxBar input[data-network]').forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-                const network = checkbox.dataset.network;
-                if (checkbox.checked) this.activeNetworks.add(network);
-                else this.activeNetworks.delete(network);
-                if (this.activeNetworks.size === 0) {
-                    checkbox.checked = true;
-                    this.activeNetworks.add(network);
-                    this.onToast('至少保留一个功能网络', 'info');
+        const brainOpacity = document.getElementById('brainOpacity');
+        if (brainOpacity) {
+            brainOpacity.addEventListener('input', () => {
+                this.brainOpacity = Number(brainOpacity.value) / 100;
+                const label = document.getElementById('brainOpacityValue');
+                if (label) label.textContent = `${brainOpacity.value}%`;
+                if (this.networkRenderer) this.networkRenderer.setBrainOpacity(this.brainOpacity);
+            });
+        }
+
+        const onlySelected = document.getElementById('btnOnlySelected');
+        if (onlySelected) {
+            onlySelected.addEventListener('click', () => {
+                this.clearTopologyHighlightState();
+                this.topologyAllMode = true;
+                this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((item) => item.id));
+                this.focusedNetwork = null;
+                this.networkRenderer?.setFocusNetwork(null);
+                if (this.networkRenderer) {
+                    this.hideSourceMeshes(this.brainViewers.topology);
+                    this.networkRenderer.setOnlySelected(false);
+                    // 全部连接模式禁用单条连线拾取，只能整体查看。
+                    this.networkRenderer.setPickingLocked(true);
                 }
-                this.topologySelection = null;
-                this.heatmapPair = null;
+                this.renderNetworkSidebar();
                 if (this.currentView === 'topology') this.renderTopology();
-                if (this.currentView === 'heatmap') this.renderHeatmap();
-                if (this.currentView === 'chord') this.renderChord();
                 this.updateExplanation();
+            });
+        }
+        const resetSelection = document.getElementById('btnResetSelection');
+        if (resetSelection) {
+            resetSelection.addEventListener('click', () => {
+                this.clearTopologyHighlightState();
+                this.topologyAllMode = true;
+                this.networkRenderer?.setPickingLocked(true);
+                this.updateExplanation();
+            });
+        }
+
+        ['heatmapThreshold', 'heatmapRangeMin', 'heatmapRangeMax'].forEach((id) => {
+            const control = document.getElementById(id);
+            if (!control) return;
+            control.addEventListener('input', () => {
+                if (id === 'heatmapThreshold') {
+                    const value = Number(control.value) / 100;
+                    const label = document.getElementById('heatmapThresholdValue');
+                    if (label) label.textContent = value.toFixed(2);
+                }
+                if (this.currentView === 'heatmap') this.renderHeatmap();
             });
         });
 
@@ -296,9 +497,8 @@ class FunctionalNetworkManager {
                 };
                 [this.heatmapPair.source, this.heatmapPair.target].forEach((index) => {
                     const network = this.data.regions[index].network;
-                    this.activeNetworks.add(network);
-                    const checkbox = document.querySelector(`#networkCheckboxBar input[data-network="${network}"]`);
-                    if (checkbox) checkbox.checked = true;
+                    this.topologyActiveNetworks = new Set([network]);
+                    this.focusedNetwork = network;
                 });
                 document.querySelector('#funcTabs [data-view="topology"]')?.click();
             });
@@ -311,9 +511,9 @@ class FunctionalNetworkManager {
                 this.destroyBrainViewers();
                 this.disposeSliceViewers();
                 this.activeNetworks = new Set(Object.keys(FUNCTIONAL_NETWORKS));
-                document.querySelectorAll('#networkCheckboxBar input[data-network]').forEach((item) => {
-                    item.checked = true;
-                });
+                this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((network) => network.id));
+                this.focusedNetwork = null;
+                this.renderNetworkControls();
                 this.topologySelection = null;
                 this.heatmapPair = null;
                 this.renderCurrentView();
@@ -325,6 +525,252 @@ class FunctionalNetworkManager {
             clearTimeout(this._resizeTimer);
             this._resizeTimer = setTimeout(() => this.resizeAll(), 120);
         });
+    }
+
+    getYeoNetworks() {
+        return YEO_NETWORK_TEMPLATES[this.yeoTemplate] || YEO_NETWORK_TEMPLATES.yeo7;
+    }
+
+    getNetworkDefinition(networkId) {
+        return this.getYeoNetworks().find((network) => network.id === networkId) || YEO_OTHER_NETWORK;
+    }
+
+    clearTopologyHighlightState() {
+        this.topologySelection = null;
+        this.onlySelectedTopology = false;
+        this.networkRenderer?.setPickingLocked(false);
+        this.networkRenderer?.setOnlySelected(false);
+        this.networkRenderer?.clearHighlight();
+        this.networkRenderer?.setRoiHighlight([]);
+        this.networkRenderer?.setSelection(null);
+        this.brainViewers.topology?.setFunctionalHighlightIds([]);
+    }
+
+    async setYeoTemplate(template) {
+        this.yeoTemplate = template === 'yeo17' ? 'yeo17' : 'yeo7';
+        if (this.resourceManager) {
+            try {
+                this.templateResource = await this.resourceManager.ensure(this.yeoTemplate === 'yeo17' ? 'schaefer17' : 'schaefer7');
+            } catch (error) {
+                this.templateResource = null;
+                this.onToast(`网络图谱资源暂不可用：${error.message}`, 'error');
+            }
+        }
+        if (this.data) {
+            this.data.regions.forEach((region, index) => {
+                region.network = this.mapRegionToYeoNetwork(region, index);
+            });
+        }
+        this.clearTopologyHighlightState();
+        this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((network) => network.id));
+        this.focusedNetwork = null;
+        this.heatmapNetworkFilter = null;
+        this.activationProbe = null;
+        this.networkRenderer?.setFocusNetwork(null);
+        this.renderNetworkControls();
+        this.renderNetworkSidebar();
+        this.updateExplanation();
+        if (this.currentView === 'topology') this.refreshTopologyStyles();
+        else if (this.currentView === 'heatmap') this.renderHeatmap();
+        else if (this.currentView === 'activation') await this.renderActivation();
+    }
+
+    bindNetworkControls() {
+        const bar = document.getElementById('networkCheckboxBar');
+        if (!bar || bar._networkChangeBound) return;
+        bar._networkChangeBound = true;
+        bar.addEventListener('change', (event) => {
+            const checkbox = event.target.closest('input[data-network]');
+            if (!checkbox) return;
+            const network = checkbox.dataset.network;
+            if (checkbox.checked) this.topologyActiveNetworks.add(network);
+            else this.topologyActiveNetworks.delete(network);
+
+            if (this.topologyActiveNetworks.size === 0) {
+                checkbox.checked = true;
+                this.topologyActiveNetworks.add(network);
+                this.onToast('至少保留一个功能网络', 'info');
+            }
+            if (this.focusedNetwork && !this.topologyActiveNetworks.has(this.focusedNetwork)) {
+                this.focusedNetwork = null;
+            }
+            this.topologySelection = null;
+            this.renderNetworkSidebar();
+            if (this.currentView === 'topology') this.renderTopology();
+            this.updateExplanation();
+        });
+    }
+
+    renderNetworkControls() {
+        const bar = document.getElementById('networkCheckboxBar');
+        if (bar) bar.innerHTML = '';
+    }
+
+    getSidebarNetworks() {
+        return this.currentView === 'activation'
+            ? YEO_NETWORK_TEMPLATES.yeo7.filter((network) => network.id !== 'other')
+            : this.getYeoNetworks();
+    }
+
+    getActivationNetworkDefinition(networkId) {
+        return YEO_NETWORK_TEMPLATES.yeo7.find((network) => network.id === networkId)
+            || YEO_NETWORK_TEMPLATES.yeo7[YEO_NETWORK_TEMPLATES.yeo7.length - 1];
+    }
+
+    renderNetworkSidebar() {
+        const legend = document.getElementById('yeoNetworkLegend');
+        const stats = document.getElementById('yeoNetworkStats');
+        if (!legend || !stats || !this.data) return;
+
+        const networks = this.getSidebarNetworks();
+        const volumes = new Map(networks.map((network) => [network.id, 0]));
+        let totalVolume = 0;
+        this.data.regions.forEach((region) => {
+            const volume = Number(region.volume_mm3) || 0;
+            totalVolume += volume;
+            const networkId = volumes.has(region.network) ? region.network : 'other';
+            volumes.set(networkId, (volumes.get(networkId) || 0) + volume);
+        });
+
+        legend.innerHTML = networks.map((network) => `
+            <button class="yeo-legend-item ${this.focusedNetwork === network.id ? 'active' : ''}" data-network="${network.id}">
+                <span class="network-dot" style="background:${network.color};"></span>
+                <span>${network.label}</span>
+            </button>
+        `).join('');
+        legend.querySelectorAll('[data-network]').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const network = button.dataset.network;
+                const sameNetwork = this.focusedNetwork === network;
+                this.clearTopologyHighlightState();
+                if (this.currentView === 'topology') {
+                    this.clearTopologyHighlightState();
+                    this.topologyAllMode = true;
+                    this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((item) => item.id));
+                    this.focusedNetwork = null;
+                    this.networkRenderer?.setFocusNetwork(null);
+                    this.networkRenderer?.setPickingLocked(true);
+                }
+                if (this.currentView === 'heatmap') {
+                    this.heatmapNetworkFilter = this.heatmapNetworkFilter === network ? null : network;
+                    this.focusedNetwork = this.heatmapNetworkFilter;
+                    this.renderNetworkSidebar();
+                    this.renderHeatmap();
+                    this.updateExplanation();
+                    return;
+                }
+                if (this.currentView === 'activation') {
+                    this.activationProbe = null;
+                    this.activationNetwork = network;
+                    this.focusedNetwork = network;
+                    await Promise.all(this.sliceViewers.map((viewer) => viewer.setNetwork(network)));
+                    this.renderNetworkSidebar();
+                    await this.renderActivation();
+                    this.updateExplanation();
+                    return;
+                }
+                this.focusedNetwork = network;
+                this.topologyAllMode = false;
+                this.topologyActiveNetworks = new Set([network]);
+                this.networkRenderer?.setFocusNetwork(network);
+                this.networkRenderer?.setPickingLocked(false);
+                this.renderNetworkSidebar();
+                if (this.currentView === 'topology') this.renderTopology();
+                this.updateExplanation();
+            });
+        });
+
+        const networkCount = networks.filter((network) => network.id !== 'other').length;
+        stats.innerHTML = networks.map((network) => {
+            const volumeCm3 = (volumes.get(network.id) || 0) / 1000;
+            const percent = totalVolume > 0 ? (volumes.get(network.id) || 0) / totalVolume * 100 : 0;
+            return `
+                <div class="yeo-stat-row">
+                    <div class="yeo-stat-head">
+                        <span class="yeo-stat-name"><span class="network-dot" style="background:${network.color};"></span>${network.label}</span>
+                        <span class="yeo-stat-value">${volumeCm3.toFixed(2)} cm³ · ${percent.toFixed(1)}%</span>
+                    </div>
+                    <div class="yeo-stat-bar"><span style="width:${Math.max(0, Math.min(100, percent))}%;background:${network.color};"></span></div>
+                </div>
+            `;
+        }).join('') + `
+            <div class="yeo-stat-total">
+                <span>总计</span>
+                <span>${(totalVolume / 1000).toFixed(2)} cm³ · ${networkCount} 个网络</span>
+            </div>
+        `;
+    }
+
+    mapRegionToYeoNetwork(region, index) {
+        const text = `${region.name_zh || region.name || ''} ${region.name_en || region.code || ''}`.toLowerCase();
+        let parent = 'other';
+
+        if (/视|距状|楔叶|枕|visual|occip|cuneus|calcar|v1|v2|v3|v4|v5|mt|mst/.test(text)) parent = 'visual';
+        else if (/中央前|中央后|旁中央|运动|感觉|precentral|postcentral|paracentral|motor|somatosensory|4_roi|3b_roi|s1|s2/.test(text)) parent = 'somatomotor';
+        else if (/额眼|顶内|上顶|背侧注意|fef|ips|intraparietal|superior_parietal|dorsal_attention/.test(text)) parent = 'dorsal_attention';
+        else if (/岛叶|岛盖|额下|颞顶|腹侧注意|突显|insula|opercul|ifg|temporoparietal|salience|ventral_attention/.test(text)) parent = 'salience';
+        else if (/海马|海马旁|内嗅|杏仁|眶额|颞极|边缘|limbic|hippoc|parahippoc|entorhinal|amygd|olfact|temporalpole|ofc/.test(text)) parent = 'limbic';
+        else if (/执行|控制|工作记忆|额中|顶下|角回|缘上|frontoparietal|control|working|middle_frontal|inferior_parietal|angular|supramarginal/.test(text)) parent = 'frontoparietal';
+        else if (/楔前|后扣带|压后|内侧前额|默认|precuneus|posterior_cingulate|retrosplenial|medial_prefrontal|default/.test(text)) parent = 'default';
+
+        if (parent === 'other') {
+            const system = this.inferSystem(region);
+            parent = {
+                visual: 'visual',
+                somatomotor: 'somatomotor',
+                dorsal: 'dorsal_attention',
+                salience: 'salience',
+                limbic: 'limbic',
+                frontoparietal: 'frontoparietal',
+                default: 'default',
+            }[system] || 'other';
+        }
+
+        if (parent === 'other') {
+            if (/小脑|cerebell|vermis|dentate|丘脑|海马|杏仁|尾状|壳核|苍白|thalam|hippoc|amygd|caudate|putamen|pallid|accumb|subcort/.test(text)) {
+                return 'other';
+            }
+            const centroid = region.centroid || region.centroid_mm || [0, 0, 0];
+            const x = Number(centroid[0]) || 0;
+            const y = Number(centroid[1]) || 0;
+            const z = Number(centroid[2]) || 0;
+            if (y < -58) parent = 'visual';
+            else if (z > 30 && Math.abs(x) > 18) parent = 'somatomotor';
+            else if (y > 18 && z > 6) parent = 'frontoparietal';
+            else if (y > 5 && z <= 12) parent = 'salience';
+            else if (z < -8 && Math.abs(x) > 22) parent = 'limbic';
+            else if (y < -12) parent = 'default';
+            else parent = 'dorsal_attention';
+        }
+
+        if (this.yeoTemplate === 'yeo7') {
+            return {
+                visual: 'y7_visual',
+                somatomotor: 'y7_somatomotor',
+                dorsal_attention: 'y7_dorsal_attention',
+                salience: 'y7_salience',
+                limbic: 'y7_limbic',
+                frontoparietal: 'y7_frontoparietal',
+                default: 'y7_default',
+            }[parent] || 'other';
+        }
+
+        const variant = /(^|[^a-z])(1|2|3a|3b|4|6|primary|初级|中央|a\b)|前部|anterior|rostral|medial|内侧/.test(text) ? 'a' : 'b';
+        if (parent === 'visual') return variant === 'a' ? 'y17_visual_a' : 'y17_visual_b';
+        if (parent === 'somatomotor') return variant === 'a' ? 'y17_somatomotor_a' : 'y17_somatomotor_b';
+        if (parent === 'dorsal_attention') return variant === 'a' ? 'y17_dorsal_attention_a' : 'y17_dorsal_attention_b';
+        if (parent === 'limbic') return variant === 'a' ? 'y17_limbic_a' : 'y17_limbic_b';
+        if (parent === 'frontoparietal') return variant === 'a' ? 'y17_control_a' : 'y17_control_b';
+        if (parent === 'salience') {
+            if (/岛叶|前扣带|突显|insula|anterior_cingulate|salience/.test(text)) return variant === 'a' ? 'y17_salience_c' : 'y17_salience_d';
+            return variant === 'a' ? 'y17_salience_a' : 'y17_salience_b';
+        }
+        if (parent === 'default') {
+            if (/后扣带|楔前|precuneus|posterior_cingulate/.test(text)) return 'y17_default_a';
+            if (/海马|颞|内侧前额|hippoc|temporal|medial_prefrontal/.test(text)) return 'y17_default_b';
+            return 'y17_default_c';
+        }
+        return 'other';
     }
 
     updateControlLabels() {
@@ -343,41 +789,100 @@ class FunctionalNetworkManager {
         const config = FUNCTIONAL_ATLASES[atlasId] || FUNCTIONAL_ATLASES.hcp360;
         this.currentAtlas = FUNCTIONAL_ATLASES[atlasId] ? atlasId : 'hcp360';
         const status = document.getElementById('functionalDataStatus');
-        if (status) status.textContent = `正在加载 ${config.label} …`;
+        if (status) status.textContent = '正在加载演示连接数据…';
 
         try {
-            const response = await fetch(config.url);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const raw = await response.json();
+            let raw;
+            if (config.resourceTemplate) {
+                raw = await this.loadResourceAtlas(config.resourceTemplate);
+            } else {
+                const response = await fetch(config.url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                raw = await response.json();
+            }
             const regions = (raw.regions || []).map((region, index) => this.normalizeRegion(region, index));
             this.data = {
                 atlasId: this.currentAtlas,
                 label: config.label,
                 nominalRegions: config.nominalRegions,
                 regions,
-                matrix: this.generateCorrelationMatrix(regions),
+                matrix: raw.matrix || this.generateCorrelationMatrix(regions),
                 activation: this.generateActivation(regions),
             };
+            this.renderNetworkControls();
+            this.renderNetworkSidebar();
+            this.preloadActivationBuffers();
 
             if (status) {
-                status.textContent = `${config.label} · ${regions.length}/${config.nominalRegions} 个可用 ROI · 演示连接数据`;
+                status.textContent = `演示连接数据 · 默认360 分区 · ${regions.length} 个可用 ROI`;
                 status.classList.toggle('incomplete', regions.length !== config.nominalRegions);
             }
+            const matrixWarning = this.resourceManager?.validateMatrixDistribution?.(this.data.matrix);
+            if (matrixWarning) this.onToast(matrixWarning, 'error');
             this.disposeCharts();
             this.destroyBrainViewers();
             this.topologySelection = null;
             this.heatmapPair = null;
+            this.heatmapNetworkFilter = null;
+            this.focusedNetwork = null;
             this.updateControlLabels();
             this.renderCurrentView();
             this.updateExplanation();
         } catch (error) {
             console.error('[FunctionalNetwork] 图谱数据加载失败:', error);
             if (status) {
-                status.textContent = `${config.label} 加载失败：${error.message}`;
+                status.textContent = `默认360 分区加载失败：${error.message}`;
                 status.classList.add('incomplete');
             }
             this.onToast('功能网络图谱数据加载失败', 'error');
         }
+    }
+
+    async preloadActivationBuffers() {
+        const cache = window.ACTIVATION_DATA_CACHE;
+        const keys = ['visual', 'somatomotor', 'dorsal', 'salience', 'limbic', 'frontoparietal', 'default'];
+        await Promise.all(keys.map(async (key) => {
+            const url = `./data/demo_zstat_${key}.nii.gz`;
+            if (cache.has(url)) return;
+            try {
+                const response = await fetch(url);
+                if (response.ok) cache.set(url, await response.arrayBuffer());
+            } catch (error) {
+                // 预加载失败不阻塞当前视图，切换时仍有兜底数据。
+            }
+        }));
+    }
+
+    async loadResourceAtlas(templateId) {
+        if (!this.resourceManager) this.resourceManager = new NetworkResourceManager();
+        const resource = await this.resourceManager.ensure(templateId);
+        const image = await niivue.NVImage.loadFromUrl({ url: 'array.nii.gz', buffer: resource.niftiBuffer });
+        const dims = image.dims || image.hdr?.dims || [];
+        const nx = Number(dims[1] || 0), ny = Number(dims[2] || 0), nz = Number(dims[3] || 0);
+        const img = image.img;
+        const rows = [image.hdr?.srow_x, image.hdr?.srow_y, image.hdr?.srow_z].map((row) => row || [1, 0, 0, 0]);
+        const sums = new Map(), counts = new Map(), seen = new Set();
+        for (let z = 0; z < nz; z++) for (let y = 0; y < ny; y++) for (let x = 0; x < nx; x++) {
+            const id = Math.round(Number(img[(z * ny + y) * nx + x]) || 0);
+            if (!id) continue;
+            seen.add(id);
+            const mm = [0, 1, 2].map((r) => rows[r][0] * x + rows[r][1] * y + rows[r][2] * z + rows[r][3]);
+            const sum = sums.get(id) || [0, 0, 0];
+            sums.set(id, [sum[0] + mm[0], sum[1] + mm[1], sum[2] + mm[2]]);
+            counts.set(id, (counts.get(id) || 0) + 1);
+        }
+        const declared = new Set(resource.labels.map((label) => label.id));
+        const missingLabels = [...seen].filter((id) => !declared.has(id));
+        const missingVoxels = [...declared].filter((id) => !seen.has(id));
+        if (missingLabels.length || missingVoxels.length) throw new Error('标签映射异常：NIfTI 与标签 ID 不一一对应');
+        const regions = resource.labels.map((label) => {
+            const count = counts.get(label.id) || 1;
+            const sum = sums.get(label.id) || [0, 0, 0];
+            return { id: label.id, name_zh: label.name, name_en: label.name, color: [120, 132, 148], volume_mm3: count, centroid_mm: sum.map((v) => v / count) };
+        });
+        const matrix = resource.matrix || this.generateCorrelationMatrix(regions);
+        this.resourceManager.validateMatrix(matrix, regions.length);
+        return { regions, matrix, matrixType: 'FC' };
     }
 
     normalizeRegion(region, index) {
@@ -391,8 +896,10 @@ class FunctionalNetworkManager {
             code,
             color,
             centroid: Array.isArray(region.centroid_mm) ? region.centroid_mm.map(Number) : [0, 0, 0],
+            volume_mm3: Number(region.volume_mm3) || 0,
             system: this.inferSystem(region),
-            network: this.inferNetwork(region, index),
+            network: this.mapRegionToYeoNetwork(region, index),
+            legacyNetwork: this.inferNetwork(region, index),
         };
     }
 
@@ -497,16 +1004,16 @@ class FunctionalNetworkManager {
         }
     }
 
-    getVisibleIndices() {
+    getVisibleIndices(networkSet = this.activeNetworks, networkField = 'legacyNetwork') {
         if (!this.data) return [];
         return this.data.regions
             .map((region, index) => ({ region, index }))
-            .filter((item) => this.activeNetworks.has(item.region.network))
+            .filter((item) => networkSet.has(item.region[networkField]))
             .map((item) => item.index);
     }
 
-    getVisibleEdges(threshold, density = 1) {
-        const indices = this.getVisibleIndices();
+    getVisibleEdges(threshold, density = 1, networkSet = this.activeNetworks, networkField = 'legacyNetwork') {
+        const indices = this.getVisibleIndices(networkSet, networkField);
         const candidates = [];
         for (let a = 0; a < indices.length; a++) {
             for (let b = a + 1; b < indices.length; b++) {
@@ -526,6 +1033,10 @@ class FunctionalNetworkManager {
             try { viewer.destroy(); } catch (e) { /* ignore */ }
         });
         this.brainViewers = {};
+        if (this.networkRenderer) {
+            try { this.networkRenderer.dispose(); } catch (e) { /* ignore */ }
+            this.networkRenderer = null;
+        }
     }
 
     async ensureBrainViewer() {
@@ -558,8 +1069,8 @@ class FunctionalNetworkManager {
         if (!viewer) return;
 
         const threshold = Number(document.getElementById('topologyThreshold')?.value || 42) / 100;
-        const indices = this.getVisibleIndices();
-        const edges = this.getVisibleEdges(threshold, 0.08);
+        const indices = this.getVisibleIndices(this.topologyActiveNetworks, 'network');
+        const edges = this.getVisibleEdges(threshold, 0.08, this.topologyActiveNetworks, 'network');
         if (this.topologySelection?.type === 'edge') {
             const selected = this.topologySelection;
             const included = edges.some((edge) =>
@@ -584,6 +1095,16 @@ class FunctionalNetworkManager {
         });
 
         const maxDegree = Math.max(...degree, 0.01);
+        if (window.BallStickNetworkRenderer && window.THREE) {
+            this.renderTopologyThree(viewer, indices, edges, degree, maxDegree);
+            const meta = document.getElementById('topologyMeta');
+            if (meta) {
+                meta.textContent = `${this.yeoTemplate === 'yeo17' ? 'Yeo17' : 'Yeo7'} · ${indices.length} 个节点 · ${edges.length} 条圆柱连接 · 已显示 ${this.topologyActiveNetworks.size}/${this.getYeoNetworks().length} 个网络分组`;
+            }
+            this.updateExplanation();
+            return;
+        }
+
         const connectome = {
             name: `${this.data.label}-四网络拓扑`,
             nodeColormap: 'warm',
@@ -617,8 +1138,131 @@ class FunctionalNetworkManager {
 
         const meta = document.getElementById('topologyMeta');
         if (meta) {
-            meta.textContent = `${indices.length} 个脑区质心节点 · ${edges.length} 条功能连接 · 已显示 ${this.activeNetworks.size}/4 个功能网络`;
+            meta.textContent = `${this.yeoTemplate === 'yeo17' ? 'Yeo17' : 'Yeo7'} · ${indices.length} 个脑区质心节点 · ${edges.length} 条功能连接 · 已显示 ${this.topologyActiveNetworks.size}/${this.getYeoNetworks().length} 个网络分组`;
         }
+        this.updateExplanation();
+    }
+
+    hideSourceMeshes(viewer) {
+        (viewer?.meshRegistry || []).forEach((mesh) => {
+            mesh.visible = false;
+            mesh.opacity = 0;
+        });
+        (viewer?.nv?.meshes || []).forEach((mesh) => {
+            mesh.visible = false;
+            mesh.opacity = 0;
+        });
+        if (viewer?.canvas) {
+            viewer.canvas.style.setProperty('display', 'none', 'important');
+            viewer.canvas.style.setProperty('visibility', 'hidden', 'important');
+            viewer.canvas.style.pointerEvents = 'none';
+        }
+    }
+
+    refreshTopologyStyles() {
+        if (!this.networkRenderer || !this.data) {
+            this.renderTopology();
+            return;
+        }
+        const nodes = this.data.regions.map((region, index) => ({
+            index,
+            network: region.network,
+            color: this.getNetworkDefinition(region.network).color,
+            centroid: this.networkRenderer.getSurfaceCentroid(region.id) || region.centroid,
+        }));
+        const edges = this.networkRenderer.edgeObjects.map((mesh) => {
+            const edge = mesh.userData.edge;
+            const source = this.data.regions[edge.source];
+            const target = this.data.regions[edge.target];
+            return {
+                ...edge,
+                sourceNetwork: source.network,
+                targetNetwork: target.network,
+                network: source.network,
+                color: this.getNetworkDefinition(source.network).color,
+                opacity: source.network === target.network ? 0.62 : 0.18,
+            };
+        });
+        this.networkRenderer.updateNetworkStyles(nodes, edges);
+    }
+
+    renderTopologyThree(viewer, indices, edges, degree, maxDegree) {
+        const container = document.getElementById('functionalTopologyStage');
+        if (!container) return;
+        const overlay = document.getElementById('topologyHitOverlay');
+        if (overlay) overlay.style.display = 'none';
+        if (viewer.canvas) {
+            viewer.canvas.style.setProperty('display', 'none', 'important');
+            viewer.canvas.style.setProperty('visibility', 'hidden', 'important');
+            viewer.canvas.style.pointerEvents = 'none';
+        }
+
+        if (!this.networkRenderer) {
+            this.networkRenderer = new BallStickNetworkRenderer(container, {
+                radiusMin: 0.15,
+                radiusMax: 1.2,
+                nodeRadius: 1.9,
+                collisionScale: 2.8,
+                onSelect: (userData) => this.handleNetworkSelection(userData, viewer),
+            });
+        }
+        // 源 NiiVue 彩色脑区网格只作为几何数据来源，渲染时彻底隐藏，
+        // 避免缩放/旋转后出现固定不动的彩色脑体残影。
+        this.hideSourceMeshes(viewer);
+        this.networkRenderer.setBrainMeshes(viewer.meshRegistry || []);
+        this.networkRenderer.setBrainOpacity(this.brainOpacity);
+        const nodes = indices.map((index, localIndex) => {
+            const region = this.data.regions[index];
+            return {
+                index,
+                id: region.id,
+                name: region.name,
+                network: region.network,
+                color: this.getNetworkDefinition(region.network).color,
+                centroid: this.networkRenderer?.getSurfaceCentroid?.(region.id) || region.centroid,
+                degree: degree[localIndex] || 0,
+            };
+        });
+        const edgesWithStyle = edges.map((edge) => {
+            const source = this.data.regions[edge.source];
+            const target = this.data.regions[edge.target];
+            const same = source.network === target.network;
+            return {
+                ...edge,
+                type: 'FC',
+                sourceNetwork: source.network,
+                targetNetwork: target.network,
+                color: this.getNetworkDefinition(source.network).color,
+                opacity: same ? 0.62 : 0.18,
+            };
+        });
+        this.networkRenderer.setNetworkData(nodes, edgesWithStyle);
+        this.networkRenderer.setSelection(this.topologySelection);
+        this.networkRenderer.setOnlySelected(this.onlySelectedTopology);
+        this.networkRenderer.setFocusNetwork(this.focusedNetwork);
+        this.networkRenderer.setPickingLocked(this.topologyAllMode && !this.onlySelectedTopology && !this.topologySelection);
+    }
+
+    handleNetworkSelection(userData, viewer) {
+        if (!userData || !this.data) return;
+        this.clearTopologyHighlightState();
+        if (userData.kind === 'node') {
+            this.networkRenderer?.setPickingLocked(false);
+            this.topologySelection = { type: 'node', index: Number(userData.index) };
+            this.networkRenderer.setRoiHighlight([this.data.regions[userData.index].id]);
+            viewer.setFunctionalHighlightIds([this.data.regions[userData.index].id]);
+        } else if (userData.kind === 'edge') {
+            const edge = userData.edge;
+            this.topologySelection = { ...edge, type: 'edge', connectionType: edge.type || 'FC' };
+            const regionIds = [this.data.regions[edge.source].id, this.data.regions[edge.target].id];
+            this.networkRenderer.setRoiHighlight(regionIds);
+            viewer.setFunctionalHighlightIds(regionIds);
+            this.onlySelectedTopology = true;
+            this.topologyAllMode = false;
+            this.networkRenderer.setOnlySelected(true);
+            this.networkRenderer.setPickingLocked(true);
+        }
+        this.networkRenderer.setSelection(this.topologySelection);
         this.updateExplanation();
     }
 
@@ -730,14 +1374,17 @@ class FunctionalNetworkManager {
             const sourceNetwork = this.data.regions[edge.source].network;
             const targetNetwork = this.data.regions[edge.target].network;
             const sameNetwork = sourceNetwork === targetNetwork;
+            const sourceDef = this.getNetworkDefinition(sourceNetwork);
+            const inFocus = !this.focusedNetwork || sourceNetwork === this.focusedNetwork || targetNetwork === this.focusedNetwork;
+            const focusFactor = inFocus ? 1 : 0.18;
             svg.appendChild(make('path', {
                 d: pathData,
                 class: 'topology-visible-edge',
-                stroke: sameNetwork ? FUNCTIONAL_NETWORKS[sourceNetwork].color : '#94A3B8',
+                stroke: sourceDef.color,
                 'stroke-width': String(0.35 + Math.pow(strength, 2) * 4.2),
-                'stroke-opacity': sameNetwork
-                    ? String(0.16 + strength * 0.28)
-                    : String(0.06 + strength * 0.12),
+                'stroke-opacity': String((sameNetwork
+                    ? 0.16 + strength * 0.28
+                    : 0.06 + strength * 0.12) * focusFactor),
             }));
 
             const hit = make('path', {
@@ -771,12 +1418,14 @@ class FunctionalNetworkManager {
             const selected = this.topologySelection?.type === 'node' && this.topologySelection.index === regionIndex;
             const degree = this.topologyData.degree?.[localIndex] || 0;
             const maxDegree = this.topologyData.maxDegree || 1;
+            const nodeFocused = !this.focusedNetwork || region.network === this.focusedNetwork;
             svg.appendChild(make('circle', {
                 cx: point.x,
                 cy: point.y,
                 r: String(2.1 + Math.sqrt(Math.max(0, degree) / maxDegree) * 2.8),
                 class: 'topology-visible-node',
-                fill: FUNCTIONAL_NETWORKS[region.network].color,
+                fill: this.getNetworkDefinition(region.network).color,
+                opacity: nodeFocused ? '1' : '0.22',
             }));
             const hit = make('circle', {
                 cx: point.x,
@@ -808,7 +1457,17 @@ class FunctionalNetworkManager {
         const container = document.getElementById('chartHeatmap');
         if (!container) return;
         const chart = this.getChart('chartHeatmap', container);
-        const networkOrder = ['dmn', 'attention', 'ecn', 'smn'];
+
+        const minInput = Number(document.getElementById('heatmapRangeMin')?.value ?? 0.2);
+        const maxInput = Number(document.getElementById('heatmapRangeMax')?.value ?? 0.9);
+        const rangeMin = Math.max(0, Math.min(1, minInput));
+        const rangeMax = Math.max(rangeMin + 0.01, Math.min(1, maxInput));
+        const threshold = Number(document.getElementById('heatmapThreshold')?.value || 0) / 100;
+
+        // 四大网络/当前Yeo分组按固定顺序聚集，形成块状连接集群。
+        const networkOrder = this.heatmapNetworkFilter
+            ? [this.heatmapNetworkFilter]
+            : this.getYeoNetworks().map((network) => network.id);
         const indices = [];
         networkOrder.forEach((network) => {
             this.data.regions.forEach((region, index) => {
@@ -816,13 +1475,18 @@ class FunctionalNetworkManager {
             });
         });
 
-        const labels = indices.map((index) => this.data.regions[index].name);
-        const showLabels = labels.length <= 64;
+        // 坐标轴显示脑区序号，而不是脑区名称。
+        const labels = indices.map((_, index) => String(index + 1));
         const data = [];
         for (let i = 0; i < indices.length; i++) {
             for (let j = 0; j < indices.length; j++) {
-                const value = i === j ? 1 : this.data.matrix[indices[i]][indices[j]];
-                data.push([j, i, Number(value.toFixed(3)), indices[i], indices[j]]);
+                const sourceIndex = indices[i];
+                const targetIndex = indices[j];
+                const rawValue = i === j ? 1 : this.data.matrix[sourceIndex][targetIndex];
+                const displayValue = i === j || Math.abs(rawValue) >= threshold
+                    ? Math.max(rangeMin, Math.min(rangeMax, Number(rawValue)))
+                    : null;
+                data.push([j, i, displayValue, sourceIndex, targetIndex, Number(rawValue)]);
             }
         }
 
@@ -831,75 +1495,76 @@ class FunctionalNetworkManager {
         networkOrder.forEach((network) => {
             const count = indices.filter((index) => this.data.regions[index].network === network).length;
             if (!count) return;
-            groups.push({
-                network,
-                start: cursor,
-                end: cursor + count - 1,
-            });
+            groups.push({ network, start: cursor, end: cursor + count - 1 });
             cursor += count;
         });
 
-        const markAreaData = [];
-        groups.forEach((group) => {
-            markAreaData.push([
-                {
-                    name: FUNCTIONAL_NETWORKS[group.network].short,
-                    xAxis: labels[group.start],
-                    yAxis: labels[group.start],
-                    itemStyle: {
-                        color: 'transparent',
-                        borderColor: FUNCTIONAL_NETWORKS[group.network].color,
-                        borderWidth: 2,
-                    },
-                    label: { show: false },
+        const markAreaData = groups.map((group) => [
+            {
+                name: this.getNetworkDefinition(group.network).short,
+                xAxis: labels[group.start],
+                yAxis: labels[group.start],
+                itemStyle: {
+                    color: 'transparent',
+                    borderColor: this.getNetworkDefinition(group.network).color,
+                    borderWidth: 2,
                 },
-                {
-                    xAxis: labels[group.end],
-                    yAxis: labels[group.end],
-                },
-            ]);
-        });
+                label: { show: false },
+            },
+            { xAxis: labels[group.end], yAxis: labels[group.end] },
+        ]);
 
         chart.setOption({
             animation: false,
-            grid: { left: showLabels ? 150 : 58, right: 82, top: 32, bottom: showLabels ? 150 : 62 },
+            title: {
+                text: 'Averaged Connectivity',
+                left: 'center',
+                top: 4,
+                textStyle: { color: '#1F2937', fontSize: 15, fontWeight: 600 },
+            },
+            grid: { left: 58, right: 86, top: 34, bottom: 58 },
             tooltip: {
                 formatter: (params) => {
                     const row = this.data.regions[params.value[3]];
                     const column = this.data.regions[params.value[4]];
-                    return `<strong>${row.name}</strong> · ${FUNCTIONAL_NETWORKS[row.network].short}<br/>` +
-                        `<strong>${column.name}</strong> · ${FUNCTIONAL_NETWORKS[column.network].short}<br/>` +
-                        `连接强度 r = ${params.value[2].toFixed(3)}`;
+                    return `<strong>ROI #${indices.indexOf(params.value[3]) + 1}</strong> · ${row.name}<br/>` +
+                        `<strong>ROI #${indices.indexOf(params.value[4]) + 1}</strong> · ${column.name}<br/>` +
+                        `连接权重 r = ${Number(params.value[5]).toFixed(3)}<br/>` +
+                        `${this.getNetworkDefinition(row.network).short} ↔ ${this.getNetworkDefinition(column.network).short}`;
                 },
             },
             xAxis: {
                 type: 'category',
                 data: labels,
                 splitArea: { show: true },
-                axisLabel: {
-                    show: showLabels,
-                    rotate: 60,
-                    fontSize: 8,
-                    formatter: (value) => value,
-                    color: '#475569',
-                },
+                axisLabel: { rotate: 0, fontSize: 8, color: '#475569', interval: labels.length > 80 ? 9 : 0 },
+                name: '脑区序号',
+                nameLocation: 'middle',
+                nameGap: 30,
             },
             yAxis: {
                 type: 'category',
                 data: labels,
                 splitArea: { show: true },
-                axisLabel: { show: showLabels, fontSize: 8, color: '#475569' },
+                axisLabel: { fontSize: 8, color: '#475569', interval: labels.length > 80 ? 9 : 0 },
+                name: '脑区序号',
+                nameLocation: 'middle',
+                nameGap: 42,
+                inverse: true,
             },
             visualMap: {
-                min: -1,
-                max: 1,
+                min: rangeMin,
+                max: rangeMax,
                 calculable: true,
                 orient: 'vertical',
                 right: 8,
                 top: 'center',
-                text: ['正相关 r=1', '负相关 r=-1'],
+                itemHeight: 180,
+                text: [String(rangeMax), String(rangeMin)],
                 textStyle: { color: '#64748B', fontSize: 10 },
-                inRange: { color: ['#2166AC', '#67A9CF', '#D1E5F0', '#F7F7F7', '#FDDBC7', '#EF8A62', '#B2182B'] },
+                inRange: {
+                    color: ['#08306B', '#2166AC', '#00BFC4', '#FDE725', '#F58220', '#7F0000'],
+                },
             },
             dataZoom: [
                 { type: 'inside', xAxisIndex: 0, filterMode: 'none' },
@@ -909,7 +1574,7 @@ class FunctionalNetworkManager {
             series: [{
                 type: 'heatmap',
                 data,
-                itemStyle: { borderColor: 'rgba(255,255,255,0.12)', borderWidth: labels.length <= 70 ? 1 : 0 },
+                itemStyle: { borderColor: 'rgba(255,255,255,0.68)', borderWidth: 0.7 },
                 emphasis: { itemStyle: { borderColor: '#111827', borderWidth: 2 } },
                 markArea: { silent: true, data: markAreaData },
             }],
@@ -938,196 +1603,77 @@ class FunctionalNetworkManager {
 
         const meta = document.getElementById('heatmapMeta');
         if (meta) {
-            meta.textContent = `${indices.length} × ${indices.length} 方阵 · 按 DMN → 注意 → ECN → SMN 排序并绘制分组边框 · 点击方格联动三维拓扑图`;
-        }
-        this.updateExplanation();
-    }
-
-    renderChord() {
-        const container = document.getElementById('chartChord');
-        if (!container || !this.data) return;
-        container.innerHTML = '';
-        const threshold = Number(document.getElementById('chordThreshold')?.value || 52) / 100;
-        const domainIndices = this.getVisibleIndices();
-        const allEdges = this.getVisibleEdges(threshold, 1);
-        const strength = new Float32Array(this.data.regions.length);
-        allEdges.forEach((edge) => {
-            strength[edge.source] += Math.abs(edge.value);
-            strength[edge.target] += Math.abs(edge.value);
-        });
-        const nodeLimit = Math.min(54, domainIndices.length);
-        const included = domainIndices
-            .sort((a, b) => strength[b] - strength[a])
-            .slice(0, nodeLimit)
-            .sort((a, b) => this.data.regions[a].centroid[0] - this.data.regions[b].centroid[0]);
-        const includedSet = new Set(included);
-        const edges = allEdges
-            .filter((edge) => includedSet.has(edge.source) && includedSet.has(edge.target))
-            .slice(0, 720);
-
-        const width = Math.max(560, container.clientWidth || 900);
-        const height = Math.max(470, container.clientHeight || 620);
-        const size = Math.min(width, height);
-        const cx = width / 2;
-        const cy = height / 2 + 6;
-        const radius = size * 0.36;
-        const positions = new Map();
-
-        included.forEach((regionIndex, order) => {
-            const angle = -Math.PI / 2 + order / included.length * Math.PI * 2;
-            positions.set(regionIndex, {
-                x: cx + Math.cos(angle) * radius,
-                y: cy + Math.sin(angle) * radius,
-                angle,
-            });
-        });
-
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-        svg.setAttribute('role', 'img');
-        svg.setAttribute('aria-label', `${this.data.label} 四网络功能连接弦图`);
-        svg.classList.add('functional-chord-svg');
-
-        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-        title.textContent = `${this.data.label} 四网络功能连接弦图`;
-        svg.appendChild(title);
-
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', cx);
-        circle.setAttribute('cy', cy);
-        circle.setAttribute('r', radius);
-        circle.setAttribute('fill', 'none');
-        circle.setAttribute('stroke', '#CBD5E1');
-        circle.setAttribute('stroke-width', '1');
-        svg.appendChild(circle);
-
-        edges.forEach((edge) => {
-            const source = positions.get(edge.source);
-            const target = positions.get(edge.target);
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.setAttribute('d', `M ${source.x} ${source.y} Q ${cx} ${cy} ${target.x} ${target.y}`);
-            path.setAttribute('fill', 'none');
-            path.setAttribute('stroke', edge.value >= 0 ? '#0F766E' : '#BE123C');
-            path.setAttribute('stroke-width', String(0.45 + Math.abs(edge.value) * 5.2));
-            path.setAttribute('stroke-opacity', String(0.12 + Math.abs(edge.value) * 0.48));
-            path.setAttribute('stroke-linecap', 'round');
-            const edgeTitle = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-            edgeTitle.textContent = `${this.data.regions[edge.source].name} ↔ ${this.data.regions[edge.target].name}：${edge.value.toFixed(3)}`;
-            path.appendChild(edgeTitle);
-            svg.appendChild(path);
-        });
-
-        included.forEach((regionIndex) => {
-            const region = this.data.regions[regionIndex];
-            const position = positions.get(regionIndex);
-            const node = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            node.setAttribute('cx', position.x);
-            node.setAttribute('cy', position.y);
-            node.setAttribute('r', String(3.4 + Math.sqrt(strength[regionIndex]) * 1.45));
-            node.setAttribute('fill', region.color);
-            node.setAttribute('stroke', '#FFFFFF');
-            node.setAttribute('stroke-width', '1');
-            const nodeTitle = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-            nodeTitle.textContent = `${region.name}（${region.code}）`;
-            node.appendChild(nodeTitle);
-            svg.appendChild(node);
-
-            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            const outside = radius + 12;
-            const x = cx + Math.cos(position.angle) * outside;
-            const y = cy + Math.sin(position.angle) * outside;
-            label.setAttribute('x', String(x));
-            label.setAttribute('y', String(y + 3));
-            label.setAttribute('text-anchor', Math.cos(position.angle) >= 0 ? 'start' : 'end');
-            label.setAttribute('fill', '#475569');
-            label.setAttribute('font-size', included.length > 38 ? '8' : '9.5');
-            label.textContent = region.name.length > 12 ? `${region.name.slice(0, 11)}…` : region.name;
-            svg.appendChild(label);
-        });
-
-        container.appendChild(svg);
-        const meta = document.getElementById('chordMeta');
-        if (meta) {
-            meta.textContent = `已选 ${this.activeNetworks.size}/4 个功能网络 · 显示连接度最高的 ${included.length} 个 ROI · ${edges.length} 条连接`;
+            meta.textContent = `${indices.length} × ${indices.length} · 按网络分组排序 · 色标 ${rangeMin.toFixed(2)}–${rangeMax.toFixed(2)} · 点击方格联动三维拓扑图`;
         }
         this.updateExplanation();
     }
 
     updateExplanation() {
-        const titles = {
-            topology: '三维脑模型拓扑连接图',
-            activation: '激活图（统计参数图）',
-            heatmap: '功能连接矩阵热力图',
-            chord: '功能连接弦图',
-        };
-        const summaries = {
-            topology: '节点位于脑区三维质心，连线表示脑区之间的功能连接。节点和连线按 DMN、注意、ECN、SMN 四个固定网络分组，可用复选框任意叠加或隐藏。',
-            activation: '底层使用标准 MNI152 灰度脑模板，统计 Z 图仅在脑组织内部透明叠加。三张切片从左到右依次为轴位、矢状位和冠状位。',
-            heatmap: '横轴和纵轴都是脑区，方格颜色表示 Pearson 相关系数 r。矩阵按 DMN、注意、ECN、SMN 分组排序，并用边框区分网络块。',
-            chord: '脑区沿圆环排列，弧线连接两个脑区。粗细和颜色编码连接强度与正负方向。',
-        };
-        const interactions = {
-            topology: '拖动旋转、滚轮缩放；点击节点或连线查看详情；复选框控制四个网络的显示；阈值滑块过滤弱连接。',
-            activation: '拖动每张切片下方的 X/Y/Z 滑块改变切片层；右上角阈值控制显示的 |Z|。',
-            heatmap: '悬停方格查看脑区和 r 值；点击方格后，可在右侧通过“在三维拓扑图中查看”联动一对脑区。',
-            chord: '悬停节点或弧线查看名称和连接值，拖动阈值筛选强连接。',
-        };
-
         const setText = (id, value) => {
             const element = document.getElementById(id);
             if (element) element.textContent = value;
         };
-
+        const titles = {
+            topology: '三维脑模型拓扑连接图',
+            activation: '激活图（统计参数图）',
+            heatmap: 'Averaged Connectivity',
+            chord: '功能连接弦图',
+        };
         setText('funcInfoTitle', titles[this.currentView] || '功能网络可视化');
-        setText('funcInfoSummary', summaries[this.currentView] || '');
-        setText('funcInfoInteraction', interactions[this.currentView] || '');
 
         let networkText = '—';
         let regionText = '—';
         let targetText = '—';
         let valueText = '—';
-        let interpretation = '点击拓扑节点、连接或热力图方格后，这里会显示对应网络和脑区信息。';
+        let interpretation = '点击节点、连线或热力图方格查看详情。';
 
         if (this.currentView === 'activation') {
-            const network = FUNCTIONAL_NETWORKS[this.activationNetwork];
+            const network = this.getActivationNetworkDefinition(this.activationNetwork);
             networkText = network.label;
-            regionText = '体素级统计参数图';
-            targetText = 'MNI152 标准脑模板';
-            valueText = `显示 |Z| ≥ ${Number(document.getElementById('activationThreshold')?.value || 3).toFixed(1)}`;
-            interpretation = network.description;
+            interpretation = `${network.description} 光标探测仅查询当前网络的激活信息。`;
+            if (this.activationProbe?.mni) {
+                regionText = `MNI [${this.activationProbe.mni.map((value) => Number(value).toFixed(1)).join(', ')}]`;
+                targetText = '当前网络激活探测';
+                valueText = `Z = ${Number(this.activationProbe.z || 0).toFixed(2)}`;
+            } else {
+                regionText = '体素级统计参数图';
+                targetText = 'MNI152 标准脑模板';
+                valueText = `显示 |Z| ≥ ${Number(document.getElementById('activationThreshold')?.value || 3).toFixed(1)}`;
+            }
         } else if (this.currentView === 'topology' && this.topologySelection) {
             const selection = this.topologySelection;
             if (selection.type === 'node') {
                 const region = this.data.regions[selection.index];
-                networkText = FUNCTIONAL_NETWORKS[region.network].label;
+                const networkDef = this.getNetworkDefinition(region.network);
+                networkText = networkDef.label;
                 regionText = `${region.name}（${region.code}）`;
                 let strength = 0;
-                this.getVisibleIndices().forEach((index) => {
+                this.getVisibleIndices(this.topologyActiveNetworks, 'network').forEach((index) => {
                     if (index !== selection.index) strength += Math.abs(this.data.matrix[selection.index][index]);
                 });
-                valueText = `域内连接强度和 ${strength.toFixed(2)}`;
-                interpretation = FUNCTIONAL_NETWORKS[region.network].description;
+                valueText = `连接强度和 ${strength.toFixed(2)}`;
+                interpretation = networkDef.description;
             } else {
                 const source = this.data.regions[selection.source];
                 const target = this.data.regions[selection.target];
-                networkText = source.network === target.network
-                    ? FUNCTIONAL_NETWORKS[source.network].label
-                    : `${FUNCTIONAL_NETWORKS[source.network].short} ↔ ${FUNCTIONAL_NETWORKS[target.network].short}`;
+                const sourceDef = this.getNetworkDefinition(source.network);
+                const targetDef = this.getNetworkDefinition(target.network);
+                networkText = source.network === target.network ? sourceDef.label : `${sourceDef.short} ↔ ${targetDef.short}`;
                 regionText = source.name;
                 targetText = target.name;
                 valueText = `r = ${Number(selection.value).toFixed(3)}`;
-                interpretation = `${FUNCTIONAL_NETWORKS[source.network].description} 对端脑区属于${FUNCTIONAL_NETWORKS[target.network].label}。`;
+                interpretation = `${sourceDef.description} 对端脑区属于${targetDef.label}。`;
             }
         } else if (this.currentView === 'heatmap' && this.heatmapPair) {
             const source = this.data.regions[this.heatmapPair.source];
             const target = this.data.regions[this.heatmapPair.target];
-            networkText = source.network === target.network
-                ? FUNCTIONAL_NETWORKS[source.network].label
-                : `${FUNCTIONAL_NETWORKS[source.network].short} ↔ ${FUNCTIONAL_NETWORKS[target.network].short}`;
-            regionText = source.name;
-            targetText = target.name;
+            const sourceDef = this.getNetworkDefinition(source.network);
+            const targetDef = this.getNetworkDefinition(target.network);
+            networkText = source.network === target.network ? sourceDef.label : `${sourceDef.short} ↔ ${targetDef.short}`;
+            regionText = `${source.name}（${source.code}）`;
+            targetText = `${target.name}（${target.code}）`;
             valueText = `r = ${Number(this.heatmapPair.value).toFixed(3)}`;
-            interpretation = `${FUNCTIONAL_NETWORKS[source.network].description} 点击“在三维拓扑图中查看”可定位这对脑区。`;
+            interpretation = `点击“在三维拓扑图中查看”可定位对应脑区连接。`;
         }
 
         setText('funcInfoNetwork', networkText);
@@ -1135,9 +1681,6 @@ class FunctionalNetworkManager {
         setText('funcInfoTarget', targetText);
         setText('funcInfoValue', valueText);
         setText('funcInfoInterpretation', interpretation);
-
-        const viewPair = document.getElementById('btnViewPairInTopology');
-        if (viewPair) viewPair.hidden = this.currentView !== 'heatmap' || !this.heatmapPair;
     }
 
     disposeSliceViewers() {
@@ -1155,11 +1698,7 @@ class FunctionalNetworkManager {
         const layout = document.createElement('div');
         layout.className = 'activation-slice-grid';
 
-        [
-            ['axial', '轴位 Axial'],
-            ['sagittal', '矢状位 Sagittal'],
-            ['coronal', '冠状位 Coronal'],
-        ].forEach(([orientation, label]) => {
+        [['axial', '轴位 Axial'], ['sagittal', '矢状位 Sagittal'], ['coronal', '冠状位 Coronal']].forEach(([orientation, label]) => {
             const figure = document.createElement('figure');
             figure.className = 'activation-figure';
             figure.dataset.orientation = orientation;
@@ -1169,6 +1708,11 @@ class FunctionalNetworkManager {
                 orientation,
                 this.activationNetwork,
                 () => viewer.setThreshold(document.getElementById('activationThreshold')?.value || 3),
+                this.sharedMni,
+                (probe) => {
+                    this.activationProbe = probe;
+                    if (this.currentView === 'activation') this.updateExplanation();
+                },
             );
             this.sliceViewers.push(viewer);
         });
@@ -1176,17 +1720,18 @@ class FunctionalNetworkManager {
         container.appendChild(layout);
         const meta = document.getElementById('activationMeta');
         if (meta) {
-            meta.textContent = `${FUNCTIONAL_NETWORKS[this.activationNetwork].label} · MNI152 灰度底层 + 体素级 Z 图透明叠加 · 支持独立拖动三层切片`;
+            meta.textContent = `${this.getActivationNetworkDefinition(this.activationNetwork).label} · MNI152 灰度底层 + 体素级 Z 图透明叠加 · 支持独立拖动三层切片`;
         }
     }
 
     async renderActivation() {
         if (!this.sliceViewers.length) await this.buildActivationCanvasLayout();
         const threshold = Number(document.getElementById('activationThreshold')?.value || 3);
+        await Promise.all(this.sliceViewers.map((viewer) => viewer.setNetwork(this.activationNetwork)));
         this.sliceViewers.forEach((viewer) => viewer.setThreshold(threshold));
         const meta = document.getElementById('activationMeta');
         if (meta) {
-            meta.textContent = `${FUNCTIONAL_NETWORKS[this.activationNetwork].label} · MNI152 灰度底层 + 体素级 Z 图透明叠加 · |Z| ≥ ${threshold.toFixed(1)}`;
+            meta.textContent = `${this.getActivationNetworkDefinition(this.activationNetwork).label} · MNI152 灰度底层 + 体素级 Z 图透明叠加 · |Z| ≥ ${threshold.toFixed(1)}`;
         }
         this.updateExplanation();
     }
@@ -1196,6 +1741,10 @@ class FunctionalNetworkManager {
         const value = source === target ? 1 : this.data.matrix[source][target];
         this.heatmapPair = { source, target, value };
         this.topologySelection = { type: 'edge', source, target, value };
+        const ids = [this.data.regions[source].id, this.data.regions[target].id];
+        this.networkRenderer?.setSelection(this.topologySelection);
+        this.networkRenderer?.setRoiHighlight(ids);
+        this.brainViewers.topology?.setFunctionalHighlightIds(ids);
         this.updateExplanation();
     }
 
@@ -1233,7 +1782,7 @@ class FunctionalNetworkManager {
         if (!this.data) return '';
         const rows = [['ROI', '功能网络', ...this.data.regions.map((region) => region.name)]];
         this.data.regions.forEach((region, index) => {
-            rows.push([region.name, FUNCTIONAL_NETWORKS[region.network].label, ...Array.from(this.data.matrix[index], (value) => value.toFixed(4))]);
+            rows.push([region.name, FUNCTIONAL_NETWORKS[region.legacyNetwork].label, ...Array.from(this.data.matrix[index], (value) => value.toFixed(4))]);
         });
         return rows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
     }
