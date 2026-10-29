@@ -7,6 +7,7 @@ class NeuroVizApp {
         this.sliceViewers = {};
         this.chartManager = null;
         this.functionalManager = null;
+        this.whiteMatterManager = null;
 
         // State
         this.currentModule = 'module1';
@@ -46,6 +47,11 @@ class NeuroVizApp {
         this.setupCitationBar();
         this.loadUserFromStorage();
 
+        const requestedModule = location.hash.slice(1);
+        if (/^module[1-4]$/.test(requestedModule)) {
+            setTimeout(() => this.switchModule(requestedModule), 0);
+        }
+
         // Auto-load standard brain on first visit
         if (this.isLoggedIn) {
             this.applyLoggedInUI();
@@ -72,6 +78,11 @@ class NeuroVizApp {
     }
 
     switchModule(moduleId) {
+        const previousModule = this.currentModule;
+        if (previousModule !== moduleId) {
+            this.releaseModuleResources(previousModule);
+        }
+
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         const activeTab = document.querySelector(`[data-module="${moduleId}"]`);
         if (activeTab) activeTab.classList.add('active');
@@ -81,6 +92,9 @@ class NeuroVizApp {
         if (panel) panel.classList.add('active');
 
         this.currentModule = moduleId;
+        if (location.hash !== `#${moduleId}`) {
+            history.replaceState(null, '', `#${moduleId}`);
+        }
 
         setTimeout(() => {
             switch (moduleId) {
@@ -91,7 +105,18 @@ class NeuroVizApp {
             }
             if (this.chartManager) this.chartManager.resizeAll();
             if (this.functionalManager) this.functionalManager.resizeAll();
+            if (this.whiteMatterManager) this.whiteMatterManager.resize();
         }, 100);
+    }
+
+    releaseModuleResources(moduleId) {
+        // 结构分区包含约 390 个独立三维网格。离开该模块时必须销毁其
+        // WebGL 上下文，否则切到白质连接后仍会占用大量显存并造成拖拽卡顿。
+        if (moduleId !== 'module1') return;
+        const viewer = this.viewers['viewer1'];
+        if (!viewer) return;
+        try { viewer.destroy(); } catch (error) { console.warn('[NeuroViz] 释放结构视图失败:', error); }
+        delete this.viewers['viewer1'];
     }
 
     // ===== 用户持久化 =====
@@ -862,6 +887,7 @@ class NeuroVizApp {
             this.setToast('数据加载失败: ' + (e && e.message ? e.message : e), 'error');
             throw e;
         }
+        if (viewer._destroyed || this.currentModule !== 'module1') return;
 
         this.buildStructuralLegend();
         this.setupLegendSearch();
@@ -1348,107 +1374,27 @@ class NeuroVizApp {
     }
 
     // ===== 模块3：白质连接 =====
-    initModule3() {
-        if (this.viewers['viewer3']) return;
-
-        let viewer;
-        if (window.TractRenderer && window.THREE) {
-            viewer = new TractRenderer(document.getElementById('viewer3D3'));
-            viewer.generateDemoTracts();
-            viewer.onSelect = (info) => {
-                const panel = document.getElementById('tractInfo');
-                if (panel) {
-                    panel.innerHTML = `<div class="tract-card highlighted"><div class="tract-detail"><strong>${info.id}</strong><p>纤维束已选中</p><span class="tract-stat">平均FA: ${(info.lineRanges?.[0]?.fa ?? 0).toFixed(2)}</span></div></div>`;
-                }
-            };
-        } else {
-            viewer = new BrainViewer('viewer3D3', { cameraPosition: [0, -30, 320] });
-            viewer.createFullBrain(null, 'both');
-            viewer.addNetworkOverlay(YEO7_NETWORKS);
-            viewer.generateDemoTracts();
-        }
-        this.viewers['viewer3'] = viewer;
-
-        const tractSelect = document.getElementById('tractSelect');
-        if (tractSelect) {
-            tractSelect.style.height = 'auto';
-            tractSelect.addEventListener('change', () => {
-                const selected = tractSelect.value;
-                const v = this.viewers['viewer3'];
-                if (v) {
-                    if (selected === 'all') {
-                        v.setTractVisibility(null, true);
-                    } else {
-                        v.setTractVisibility(null, false);
-                        v.setTractVisibility(selected, true);
-                    }
-                }
-                document.querySelectorAll('.tract-card').forEach(card => {
-                    card.classList.remove('highlighted');
-                });
-                if (selected !== 'all') {
-                    const card = document.querySelector(`[data-tract="${selected}"]`);
-                    if (card) card.classList.add('highlighted');
-                }
-            });
+    async initModule3() {
+        if (this.whiteMatterManager) {
+            this.whiteMatterManager.resize();
+            return;
         }
 
-        const toggleFunc = document.getElementById('toggleFuncOverlay');
-        if (toggleFunc) {
-            toggleFunc.addEventListener('change', () => {
-                const v = this.viewers['viewer3'];
-                if (v) {
-                    if (toggleFunc.checked) {
-                        v.addNetworkOverlay(YEO7_NETWORKS);
-                    } else {
-                        v.removeOverlay();
-                    }
-                }
-            });
+        if (typeof WhiteMatterManager !== 'function') {
+            this.setToast('白质连接模块脚本未加载', 'error');
+            return;
         }
 
-        document.querySelectorAll('.tract-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const tract = card.dataset.tract;
-                const v = this.viewers['viewer3'];
-                if (v) {
-                    v.setTractVisibility(null, false);
-                    v.setTractVisibility(tract, true);
-                }
-                document.querySelectorAll('.tract-card').forEach(c => c.classList.remove('highlighted'));
-                card.classList.add('highlighted');
-                if (tractSelect) tractSelect.value = tract;
-            });
+        this.whiteMatterManager = new WhiteMatterManager({
+            onToast: (message, type) => this.setToast(message, type),
         });
+        this.viewers['viewer3'] = this.whiteMatterManager;
 
-        const tractColorMode = document.getElementById('tractColorMode');
-        if (tractColorMode) {
-            tractColorMode.addEventListener('change', () => viewer.setColorMode?.(tractColorMode.value));
-        }
-
-        const tractFileInput = document.getElementById('tractFileInput');
-        const btnImportTracts = document.getElementById('btnImportTracts');
-        if (btnImportTracts && tractFileInput) {
-            btnImportTracts.addEventListener('click', () => tractFileInput.click());
-            tractFileInput.addEventListener('change', async () => {
-                const files = Array.from(tractFileInput.files || []);
-                for (const file of files) {
-                    try {
-                        if (viewer.loadFile) await viewer.loadFile(file);
-                    } catch (error) {
-                        this.setToast(`纤维文件加载失败：${error.message}`, 'error');
-                    }
-                }
-                tractFileInput.value = '';
-            });
-        }
-
-        const btnReset3 = document.getElementById('btnResetView3');
-        if (btnReset3) {
-            btnReset3.addEventListener('click', () => {
-                const v = this.viewers['viewer3'];
-                if (v) v.resetView();
-            });
+        try {
+            await this.whiteMatterManager.init();
+            this.whiteMatterManager.resize();
+        } catch (error) {
+            console.error('[NeuroViz] 白质连接模块初始化失败:', error);
         }
     }
 
