@@ -1315,10 +1315,21 @@ class FunctionalNetworkManager {
     }
 
     scheduleTopologyOverlay() {
+        const panel = document.getElementById('module2');
+        if (!panel?.classList.contains('active')) return;
         cancelAnimationFrame(this._overlayFrame);
         this._overlayFrame = requestAnimationFrame(() => {
             const viewer = this.brainViewers.topology;
-            if (viewer && this.topologyData) this.renderTopologyOverlay(viewer);
+            const svg = document.getElementById('topologyHitOverlay');
+            if (
+                viewer
+                && this.topologyData
+                && svg
+                && svg.clientWidth > 1
+                && svg.clientHeight > 1
+            ) {
+                this.renderTopologyOverlay(viewer);
+            }
         });
     }
 
@@ -1328,10 +1339,16 @@ class FunctionalNetworkManager {
         const { indices, edges } = this.topologyData;
         const width = svg.clientWidth || viewer.canvas.clientWidth;
         const height = svg.clientHeight || viewer.canvas.clientHeight;
+        if (width < 2 || height < 2) return;
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
         svg.innerHTML = '';
 
         const points = viewer.projectFunctionalPoints(indices.map((index) => this.data.regions[index].centroid));
+        if (points.some((point) =>
+            !Number.isFinite(point.x) || !Number.isFinite(point.y) || !Number.isFinite(point.z)
+        )) {
+            return;
+        }
         this.topologyData.projected = points;
 
         const ns = 'http://www.w3.org/2000/svg';
@@ -1367,6 +1384,11 @@ class FunctionalNetworkManager {
                 ]);
             }
             const projectedCurve = viewer.projectFunctionalPoints(curvePoints);
+            if (projectedCurve.some((point) =>
+                !Number.isFinite(point.x) || !Number.isFinite(point.y)
+            )) {
+                return;
+            }
             this.topologyData.hitEdges.push({ edge, points: projectedCurve });
             const pathData = projectedCurve.map((point, index) =>
                 `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(' ');
@@ -1759,6 +1781,8 @@ class FunctionalNetworkManager {
     }
 
     resizeAll() {
+        const panel = document.getElementById('module2');
+        if (!panel?.classList.contains('active')) return;
         Object.values(this.charts).forEach((chart) => {
             if (chart && !chart.isDisposed()) chart.resize();
         });

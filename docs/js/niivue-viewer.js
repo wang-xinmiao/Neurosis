@@ -21,6 +21,7 @@ class NiiVueViewer {
         this.hemiFilter = 'both';
         this._pickPending = false;
         this._pickPointerDown = null;
+        this._destroyed = false;
 
         const container = document.getElementById(containerId);
         container.querySelectorAll('canvas').forEach(c => c.remove());
@@ -44,6 +45,7 @@ class NiiVueViewer {
             blendOpacity: 0.9,
             atlasOutline: this.renderMode === 'volume' ? 2 : 0,
             showLegend: false,
+            forceDevicePixelRatio: Math.min(window.devicePixelRatio || 1, 1.25),
         });
         // 强制开启 WebGL 多重采样，保证白色轮廓线平滑
         this.nv.attachToCanvas(this.canvas, true);
@@ -109,6 +111,7 @@ void main() {
 
     /* ---------------- 统一入口 ---------------- */
     async loadAtlas(atlasId, withSub = true) {
+        if (this._destroyed) return null;
         this.atlasId = atlasId;
         this.highlight = null;
         if (this.renderMode === 'mesh') return this._loadAtlasMesh(atlasId, withSub);
@@ -117,11 +120,13 @@ void main() {
 
     /* ================= 网格模式 ================= */
     async _loadAtlasMesh(atlasId, withSub) {
+        if (this._destroyed) return null;
         // ★ 清空注册表：先移除全部 mesh，防止叠加
         for (const m of this.meshRegistry) { try { this.nv.removeMesh(m); } catch (e) { /* ignore */ } }
         this.meshRegistry = [];
 
         const csv = await (await fetch(`${this.meshBase}atlas_${atlasId}/meta.csv?v=77`)).text();
+        if (this._destroyed) return null;
         // meta.csv 为 CRLF 行尾：必须去掉 \r，否则表头最后一列会带 \r 导致 volume_mm3 取到 undefined
         const lines = csv.replace(/\r/g, '').trim().split('\n');
         const header = lines[0].split(',');
@@ -155,7 +160,7 @@ void main() {
                         url: `${this.meshBase}atlas_subcortical/${reg.filename}?v=77`,
                         name: reg.filename,
                     });
-                    if (m) { m.regionId = reg.id; m.isSub = true; this.subMeshes.push(m); this.meshRegistry.push(m); }
+                    if (m && !this._destroyed) { m.regionId = reg.id; m.isSub = true; this.subMeshes.push(m); this.meshRegistry.push(m); }
                 } catch (e) { console.warn('sub mesh 失败', reg.filename); }
             }
         } else if (withSub) {
@@ -169,10 +174,12 @@ void main() {
             'background:rgba(5,5,14,0.75);color:#9be8ff;font-size:13px;z-index:6;gap:8px;';
         ov.innerHTML = '<div>正在加载脑区模型，请稍候…</div><div id="nvLoadPct_' + this.containerId + '" style="font-size:12px;color:#7a8aa0;">0 / ' + this.regionMeta.length + '</div>';
         container.style.position = 'relative';
+        this.loadingOverlay = ov;
         container.appendChild(ov);
 
         const BATCH = 12; let done = 0;
         for (let i = 0; i < this.regionMeta.length; i += BATCH) {
+            if (this._destroyed) break;
             const batch = this.regionMeta.slice(i, i + BATCH);
             await Promise.all(batch.map(async (reg) => {
                 try {
@@ -180,14 +187,17 @@ void main() {
                         url: `${this.meshBase}atlas_${atlasId}/${reg.filename}?v=77`,
                         name: reg.filename,
                     });
-                    if (mesh) { mesh.regionId = reg.id; this.meshRegistry.push(mesh); }
+                    if (mesh && !this._destroyed) { mesh.regionId = reg.id; this.meshRegistry.push(mesh); }
                 } catch (e) { console.warn('[NiiVueViewer] 网格加载失败:', reg.filename, e); }
                 done++;
             }));
+            if (this._destroyed) break;
             const pct = document.getElementById('nvLoadPct_' + this.containerId);
             if (pct) pct.textContent = `${done} / ${this.regionMeta.length}`;
         }
         ov.remove();
+        this.loadingOverlay = null;
+        if (this._destroyed) return null;
         this._applyMeshHighlight();
         this.ready = true;
         return { name: atlasId, regions: this.regionMeta };
@@ -652,6 +662,11 @@ void main() {
     }
 
     destroy() {
+        this._destroyed = true;
+        if (this.loadingOverlay) {
+            this.loadingOverlay.remove();
+            this.loadingOverlay = null;
+        }
         if (this.functionalCamera?.updateLoop) {
             cancelAnimationFrame(this.functionalCamera.updateLoop);
             this.functionalCamera.updateLoop = null;

@@ -6,8 +6,8 @@
     <link rel="icon" href="data:,">
     <title>NeuroViz - 多模态脑影像集成分析平台</title>
     <link rel="stylesheet" href="./vendor/font-awesome/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=90">
-    <!-- 3D 引擎已迁移至 NiiVue（本地 vendor/niivue） -->
+    <link rel="stylesheet" href="css/style.css?v=100">
+    <!-- 结构/功能模块使用 NiiVue；白质纤维使用 Three.js 科研渲染层 -->
     <script src="./vendor/echarts/echarts.min.js"></script>
     <script type="importmap">
         {"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}
@@ -337,7 +337,7 @@
                 <a href="https://www.bic.mni.mcgill.ca/ServicesAtlases/ICBM152NLin2009" target="_blank" rel="noopener">ICBM MNI152 模板</a> (MNI, McGill Univ.)、
                 <a href="https://www.nature.com/articles/nature18933" target="_blank" rel="noopener">HCP MMP 1.0 图谱</a> (Glasser et al., 2016, Nature)、
                 <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/CorticalParcellation_Yeo2011" target="_blank" rel="noopener">Yeo 7/17 网络</a> (Yeo et al., 2011, J. Neurophysiol.)、
-                <a href="https://www.nitrc.org/projects/jhu_dti" target="_blank" rel="noopener">JHU DTI 白质图谱</a> (Hua et al., 2008, NeuroImage)、
+                <a href="https://pubmed.ncbi.nlm.nih.gov/35995773/" target="_blank" rel="noopener">Yeh 2022 群体纤维束图集</a>、
                 <a href="https://www.gin.cnrs.fr/en/tools/aal/" target="_blank" rel="noopener">AAL 图谱</a> (Tzourio-Mazoyer et al., 2002, NeuroImage)、
                 <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/DestrieuxAtlas" target="_blank" rel="noopener">Destrieux 图谱</a> (Destrieux et al., 2010, NeuroImage)
             </span>
@@ -559,68 +559,169 @@
             <div class="module-grid-white">
                 <div class="panel panel-main">
                     <div class="panel-header">
-                        <h3><i class="fa-solid fa-project-diagram"></i> DTI 纤维束追踪 3D 视图</h3>
-                        <div class="panel-controls">
-                            <select id="tractSelect" class="select-sm" multiple size="1">
-                                <option value="all" selected>全部纤维束</option>
-                                <option value="arcuate">弓状束 (Arcuate)</option>
-                                <option value="cingulum">扣带束 (Cingulum)</option>
-                                <option value="cst">皮质脊髓束 (CST)</option>
-                                <option value="ilf">下纵束 (ILF)</option>
-                                <option value="slf">上纵束 (SLF)</option>
-                                <option value="uncinate">钩束 (Uncinate)</option>
-                                <option value="forcepsMajor">胼胝体大钳</option>
-                                <option value="forcepsMinor">胼胝体小钳</option>
-                            </select>
-                            <label class="toggle-label">
-                                <input type="checkbox" id="toggleFuncOverlay" checked>
-                                <span>功能网络叠加</span>
-                            </label>
-                            <select id="tractColorMode" class="select-sm"><option value="fa">FA着色</option><option value="direction">方向RGB</option></select>
-                            <button class="icon-btn" id="btnImportTracts" title="导入 .trk/.tck"><i class="fa-solid fa-file-import"></i></button>
-                            <input type="file" id="tractFileInput" accept=".trk,.tck" multiple hidden>
+                        <h3><i class="fa-solid fa-project-diagram"></i> <span id="whiteViewTitle">DTI 纤维束科研渲染</span></h3>
+                        <div class="panel-controls white-3d-only">
+                            <button class="btn-outline-sm" id="btnImportTract" title="加载本地 .trx、.trk、.tck 或 .vtk 纤维束文件">
+                                <i class="fa-solid fa-file-import"></i> 导入纤维束
+                            </button>
+                            <button class="btn-outline-sm" id="btnRestoreDemoTracts" disabled title="恢复内置演示纤维束">
+                                <i class="fa-solid fa-rotate-left"></i> 恢复演示
+                            </button>
                             <button class="icon-btn" id="btnResetView3" title="重置视角"><i class="fa-solid fa-rotate"></i></button>
                         </div>
                     </div>
-                    <div class="viewer-container" id="viewer3D3">
-                        <div class="viewer-watermark">数据来源：JHU DTI White Matter Atlas (Hua et al., 2008, NeuroImage)</div>
+                    <div class="white-view-tabs" aria-label="白质连接显示方式">
+                        <button class="white-view-tab active" data-white-view="3d">
+                            <i class="fa-solid fa-cube"></i> 3D 纤维束
+                        </button>
+                        <button class="white-view-tab" data-white-view="matrix">
+                            <i class="fa-solid fa-table-cells"></i> 结构连接矩阵
+                        </button>
                     </div>
+                    <div class="white-matter-toolbar">
+                        <label class="white-control">
+                            <span>纤维束</span>
+                            <select id="tractSelect" class="select-sm">
+                                <option value="overview" selected>主要纤维束（分类着色）</option>
+                                <option value="all">全脑纤维流线（方向着色）</option>
+                                <option value="arcuate">弓状束 AF</option>
+                                <option value="cingulum">扣带束 CB</option>
+                                <option value="cst">皮质脊髓束 CST</option>
+                                <option value="ilf">下纵束 ILF</option>
+                                <option value="slf">上纵束 SLF</option>
+                                <option value="uncinate">钩束 UF</option>
+                                <option value="corpusCallosum">胼胝体 CC</option>
+                                <option value="ifof">额枕下束 IFOF</option>
+                            </select>
+                        </label>
+                        <label class="white-control range-controls">
+                            <span>纤维粗细</span>
+                            <input type="range" id="fiberRadius" min="8" max="28" value="12" step="1" class="slider-sm">
+                            <output class="slider-label" id="fiberRadiusValue">1.2 px</output>
+                        </label>
+                        <label class="white-control">
+                            <span>显示比例</span>
+                            <select id="fiberDensity" class="select-sm">
+                                <option value="1">100%</option>
+                                <option value="2">50%</option>
+                                <option value="4" selected>25%</option>
+                                <option value="10">10%</option>
+                            </select>
+                        </label>
+                        <label class="white-control range-controls">
+                            <span>短流线过滤</span>
+                            <input type="range" id="fiberMinLength" min="0" max="100" value="50" step="10" class="slider-sm">
+                            <output class="slider-label" id="fiberMinLengthValue">≥50 mm</output>
+                        </label>
+                        <label class="white-control">
+                            <span>功能网络</span>
+                            <select id="functionalOverlaySelect" class="select-sm">
+                                <option value="smn" selected>感觉运动 SMN</option>
+                                <option value="dmn">默认模式 DMN</option>
+                                <option value="attention">注意网络</option>
+                                <option value="ecn">执行控制 ECN</option>
+                            </select>
+                        </label>
+                        <label class="toggle-label white-overlay-toggle">
+                            <input type="checkbox" id="toggleFuncOverlay">
+                            <span>叠加网络</span>
+                        </label>
+                        <label class="toggle-label">
+                            <input type="checkbox" id="toggleCortexShell" checked>
+                            <span>玻璃脑</span>
+                        </label>
+                    </div>
+                    <div class="viewer-container" id="viewer3D3">
+                        <div class="viewer-watermark">Three.js 屏幕空间纤维渲染 · Yeh 群体纤维束图集 · 仅用于科研演示</div>
+                        <div class="direction-legend" id="fiberDirectionLegend" aria-label="方向着色图例">
+                            <span><i style="background:#ff4d5c"></i>左右</span>
+                            <span><i style="background:#39d98a"></i>前后</span>
+                            <span><i style="background:#4d8dff"></i>上下</span>
+                        </div>
+                    </div>
+                    <div class="white-matter-status-row">
+                        <span id="whiteMatterStatus"><i class="fa-solid fa-spinner fa-spin"></i> 准备加载纤维束…</span>
+                        <span id="functionalOverlayStatus">功能网络叠加：待加载</span>
+                    </div>
+                    <div class="white-matrix-view" id="whiteMatrixView" hidden>
+                        <div class="white-matrix-toolbar">
+                            <label class="white-control">
+                                <span>连接范围</span>
+                                <select id="structuralMatrixFilter" class="select-sm">
+                                    <option value="all" selected>全部主要纤维束</option>
+                                    <option value="arcuate">弓状束 AF</option>
+                                    <option value="cingulum">扣带束 CB</option>
+                                    <option value="cst">皮质脊髓束 CST</option>
+                                    <option value="ilf">下纵束 ILF</option>
+                                    <option value="slf">上纵束 SLF</option>
+                                    <option value="uncinate">钩束 UF</option>
+                                    <option value="corpusCallosum">胼胝体 CC</option>
+                                    <option value="ifof">额枕下束 IFOF</option>
+                                </select>
+                            </label>
+                            <label class="white-control range-controls">
+                                <span>显示脑区</span>
+                                <input type="range" id="structuralMatrixRegionCount" min="8" max="32" value="16" step="2" class="slider-sm">
+                                <output class="slider-label" id="structuralMatrixRegionCountValue">16</output>
+                            </label>
+                            <span class="white-matrix-note">AAL116 · 端点 8 mm 邻域 · 原始流线计数</span>
+                        </div>
+                        <div class="white-matrix-body">
+                            <div id="structuralMatrixChart" class="structural-matrix-chart" aria-label="结构连接矩阵热力图"></div>
+                            <aside class="structural-top-connections">
+                                <h4>最强连接</h4>
+                                <div id="structuralTopConnections" class="structural-top-list">
+                                    <p class="placeholder">正在计算结构连接矩阵…</p>
+                                </div>
+                                <p id="structuralMatrixStatus" class="white-matrix-status"></p>
+                            </aside>
+                        </div>
+                    </div>
+                    <input type="file" id="tractFileInput" accept=".trx,.trk,.tck,.vtk" hidden>
                 </div>
                 <div class="panel panel-side">
                     <div class="panel-header">
-                        <h3><i class="fa-solid fa-list-check"></i> 纤维束信息</h3>
+                        <h3><i class="fa-solid fa-list-check"></i> 白质通路信息</h3>
+                    </div>
+                    <div class="white-matter-selection">
+                        <div class="white-matter-selection-title">
+                            <span class="white-matter-selection-swatch" id="whiteMatterSelectionSwatch"></span>
+                            <strong id="whiteMatterSelectionTitle">主要纤维束</strong>
+                        </div>
+                        <p id="whiteMatterSelectionDescription">按解剖类别显示主要白质纤维束。</p>
+                        <span id="whiteMatterSelectionStats">正在读取纤维组…</span>
                     </div>
                     <div class="tract-info" id="tractInfo">
                         <div class="tract-card" data-tract="arcuate">
                             <div class="tract-color" style="background:#FF6B6B;"></div>
                             <div class="tract-detail">
                                 <strong>弓状束 (Arcuate Fasciculus)</strong>
-                                <p>连接 Broca 区与 Wernicke 区，参与语言处理</p>
-                                <span class="tract-stat">纤维数: ~12,500 | 平均FA: 0.45</span>
+                                <p>连接额颞语言相关区域，参与语言处理</p>
+                                <span class="tract-stat">AF_L + AF_R · 782 条组内流线</span>
                             </div>
                         </div>
                         <div class="tract-card" data-tract="cingulum">
                             <div class="tract-color" style="background:#4ECDC4;"></div>
                             <div class="tract-detail">
                                 <strong>扣带束 (Cingulum Bundle)</strong>
-                                <p>连接边缘系统结构，参与情绪与记忆</p>
-                                <span class="tract-stat">纤维数: ~10,200 | 平均FA: 0.42</span>
+                                <p>沿扣带皮层走行，参与情绪、记忆与认知</p>
+                                <span class="tract-stat">CB_L + CB_R · 1,217 条组内流线</span>
                             </div>
                         </div>
                         <div class="tract-card" data-tract="cst">
                             <div class="tract-color" style="background:#FFE66D;"></div>
                             <div class="tract-detail">
                                 <strong>皮质脊髓束 (CST)</strong>
-                                <p>连接运动皮层与脊髓，控制随意运动</p>
-                                <span class="tract-stat">纤维数: ~8,800 | 平均FA: 0.52</span>
+                                <p>连接运动皮层与脑干、脊髓，控制随意运动</p>
+                                <span class="tract-stat">CST_L + CST_R · 208 条组内流线</span>
                             </div>
                         </div>
                         <div class="tract-card" data-tract="ilf">
-                            <div class="tract-color" style="background:#A8E6CF;"></div>
+                            <div class="tract-color" style="background:#7BDff2;"></div>
                             <div class="tract-detail">
                                 <strong>下纵束 (ILF)</strong>
                                 <p>连接枕叶与颞叶前部，参与视觉识别</p>
-                                <span class="tract-stat">纤维数: ~7,500 | 平均FA: 0.40</span>
+                                <span class="tract-stat">ILF_L + ILF_R · 1,343 条组内流线</span>
                             </div>
                         </div>
                         <div class="tract-card" data-tract="slf">
@@ -628,9 +729,38 @@
                             <div class="tract-detail">
                                 <strong>上纵束 (SLF)</strong>
                                 <p>连接额叶-顶叶-颞叶，参与空间注意</p>
-                                <span class="tract-stat">纤维数: ~11,000 | 平均FA: 0.44</span>
+                                <span class="tract-stat">SLF1–3 双侧 · 1,672 条组内流线</span>
                             </div>
                         </div>
+                        <div class="tract-card" data-tract="uncinate">
+                            <div class="tract-color" style="background:#B388FF;"></div>
+                            <div class="tract-detail">
+                                <strong>钩束 (Uncinate Fasciculus)</strong>
+                                <p>连接眶额叶与前颞叶，参与情绪和记忆</p>
+                                <span class="tract-stat">UF_L + UF_R · 384 条组内流线</span>
+                            </div>
+                        </div>
+                        <div class="tract-card" data-tract="corpusCallosum">
+                            <div class="tract-color" style="background:#F5B041;"></div>
+                            <div class="tract-detail">
+                                <strong>胼胝体 (Corpus Callosum)</strong>
+                                <p>连接左右半球，负责跨半球信息交换</p>
+                                <span class="tract-stat">CC · 2,477 条组内流线</span>
+                            </div>
+                        </div>
+                        <div class="tract-card" data-tract="ifof">
+                            <div class="tract-color" style="background:#A5D6A7;"></div>
+                            <div class="tract-detail">
+                                <strong>额枕下束 (IFOF)</strong>
+                                <p>连接枕顶区与额叶，参与视觉与语义整合</p>
+                                <span class="tract-stat">IFOF_L + IFOF_R · 1,412 条组内流线</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="white-matter-caveat">
+                        <i class="fa-solid fa-circle-info"></i>
+                        当前使用公开群体纤维束图集作教学演示；流线反映概率追踪结果，不等同于真实个体的一对一解剖连接。
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/35995773/" target="_blank" rel="noopener">数据依据</a>
                     </div>
                 </div>
             </div>
@@ -737,10 +867,11 @@
     <script src="js/network-resources.js?v=92"></script>
     <script src="js/network-renderer.js?v=93"></script>
     <script src="js/tract-renderer.js?v=92"></script>
-    <script src="js/niivue-viewer.js?v=92"></script>
+    <script src="js/niivue-viewer.js?v=100"></script>
     <script src="js/stub-3d.js?v=89"></script>
-    <script src="js/functional-network.js?v=93"></script>
+    <script src="js/white-matter.js?v=100"></script>
+    <script src="js/functional-network.js?v=100"></script>
     <script src="js/charts.js?v=89"></script>
-    <script src="js/app.js?v=89"></script>
+    <script src="js/app.js?v=100"></script>
 </body>
 </html>
