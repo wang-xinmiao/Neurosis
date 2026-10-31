@@ -5,7 +5,7 @@ import { LineSegmentsGeometry } from '../vendor/three/lines/LineSegmentsGeometry
 import { LineMaterial } from '../vendor/three/lines/LineMaterial.js';
 
 const BLACK = 0x000000;
-const GLASS_COLOR = new THREE.Color(0x8fc6e8);
+const GLASS_COLOR = new THREE.Color(0xd9dee5);
 
 function parseMZ3(arrayBuffer) {
     const view = new DataView(arrayBuffer);
@@ -59,6 +59,7 @@ export class WhiteMatterThreeViewer {
         this.decimationStride = options.decimationStride ?? 4;
         this.fiberRadius = options.fiberRadius ?? 1.2;
         this.glassVisible = options.glassVisible ?? true;
+        this.endpointSnapRadius = options.endpointSnapRadius ?? 28;
         this.activeTract = 'overview';
         this.functionalOverlayId = null;
         this.categoryMeshes = new Map();
@@ -66,7 +67,12 @@ export class WhiteMatterThreeViewer {
         this.streamlineLengths = null;
         this.streamlineCategories = null;
         this.tractData = null;
+        this.renderedStreamlineIds = [];
+        this.visibleStreamlineIds = [];
         this.visibleStreamlines = 0;
+        this.filterValidation = null;
+        this.modelCenter = new THREE.Vector3(0, -12, 12);
+        this.defaultCameraOffset = new THREE.Vector3(-360, -318, 133);
         this._needsRender = true;
         this._animationFrame = null;
         this._disposed = false;
@@ -79,6 +85,7 @@ export class WhiteMatterThreeViewer {
         this._prepareStreamlineMetadata();
         await this._loadGlassBrain();
         await this.rebuildFibers();
+        this._updateCameraPivot();
         this._startRenderLoop();
         this.resize();
         return this;
@@ -88,6 +95,7 @@ export class WhiteMatterThreeViewer {
         this.tractData = tractData;
         this._prepareStreamlineMetadata();
         await this.rebuildFibers();
+        this._updateCameraPivot();
         if (options.resetActive !== false) {
             this.setActiveTract(options.activeTract || 'all');
         }
@@ -125,29 +133,54 @@ export class WhiteMatterThreeViewer {
 
         this.controls = new OrbitControls(this.camera, this.canvas);
         this.controls.target.set(0, -12, 12);
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.055;
-        this.controls.rotateSpeed = 0.58;
-        this.controls.zoomSpeed = 0.78;
-        this.controls.panSpeed = 0.62;
+        this.controls.enableDamping = false;
+        this.controls.rotateSpeed = 0.72;
+        this.controls.zoomSpeed = 0.82;
+        this.controls.panSpeed = 0.72;
+        this.controls.enablePan = true;
+        this.controls.screenSpacePanning = true;
+        this.controls.zoomToCursor = false;
+        this.controls.minPolarAngle = -Infinity;
+        this.controls.maxPolarAngle = Infinity;
+        this.controls.minAzimuthAngle = -Infinity;
+        this.controls.maxAzimuthAngle = Infinity;
         this.controls.minDistance = 170;
         this.controls.maxDistance = 950;
         this.controls.addEventListener('change', () => {
             this._needsRender = true;
         });
+        this._cameraPivotPointerHandler = (event) => {
+            if (event.button === 0) this._updateCameraPivot();
+        };
+        this._cameraPivotWheelHandler = () => {
+            this._updateCameraPivot();
+        };
+        this.canvas.addEventListener('pointerdown', this._cameraPivotPointerHandler, { capture: true });
+        this.canvas.addEventListener('wheel', this._cameraPivotWheelHandler, { capture: true, passive: true });
         this.controls.update();
+
+        this.scene.add(new THREE.HemisphereLight(0xf4f7fb, 0x263241, 1.25));
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.05);
+        keyLight.position.set(180, 220, 260);
+        const fillLight = new THREE.DirectionalLight(0xdbeafe, 0.55);
+        fillLight.position.set(-220, -80, 180);
+        this.scene.add(keyLight, fillLight);
+
+        this.spatialRoot = new THREE.Group();
+        this.spatialRoot.name = 'white-matter-spatial-root';
+        this.scene.add(this.spatialRoot);
 
         this.fiberRoot = new THREE.Group();
         this.fiberRoot.name = 'fiber-tracts';
-        this.scene.add(this.fiberRoot);
+        this.spatialRoot.add(this.fiberRoot);
 
         this.networkRoot = new THREE.Group();
         this.networkRoot.name = 'functional-networks';
-        this.scene.add(this.networkRoot);
+        this.spatialRoot.add(this.networkRoot);
 
         this.glassRoot = new THREE.Group();
         this.glassRoot.name = 'glass-brain';
-        this.scene.add(this.glassRoot);
+        this.spatialRoot.add(this.glassRoot);
     }
 
     _prepareStreamlineMetadata() {
@@ -206,35 +239,13 @@ export class WhiteMatterThreeViewer {
         geometry.computeVertexNormals();
         geometry.computeBoundingSphere();
 
-        const material = new THREE.ShaderMaterial({
-            uniforms: {
-                uColor: { value: GLASS_COLOR },
-                uOpacity: { value: 0.16 },
-            },
-            vertexShader: `
-                varying vec3 vNormalView;
-                varying vec3 vViewDirection;
-                void main() {
-                    vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
-                    vNormalView = normalize(normalMatrix * normal);
-                    vViewDirection = normalize(-viewPosition.xyz);
-                    gl_Position = projectionMatrix * viewPosition;
-                }
-            `,
-            fragmentShader: `
-                uniform vec3 uColor;
-                uniform float uOpacity;
-                varying vec3 vNormalView;
-                varying vec3 vViewDirection;
-                void main() {
-                    float facing = abs(dot(normalize(vNormalView), normalize(vViewDirection)));
-                    float fresnel = pow(1.0 - facing, 2.35);
-                    float alpha = uOpacity * (0.04 + fresnel * 0.96);
-                    vec3 color = uColor * (0.58 + fresnel * 0.72);
-                    gl_FragColor = vec4(color, alpha);
-                }
-            `,
+        // 与功能网络视图统一的浅灰树脂材质；透明度略高于该视图默认值，减少对纤维的遮挡。
+        const material = new THREE.MeshStandardMaterial({
+            color: GLASS_COLOR,
+            roughness: 0.78,
+            metalness: 0.015,
             transparent: true,
+            opacity: 0.3,
             depthWrite: false,
             depthTest: true,
             side: THREE.DoubleSide,
@@ -244,6 +255,40 @@ export class WhiteMatterThreeViewer {
         this.glassMesh.renderOrder = 2;
         this.glassMesh.visible = this.glassVisible;
         this.glassRoot.add(this.glassMesh);
+    }
+
+    _removeFiberPointObjects() {
+        const pointObjects = [...this.fiberRoot.children].filter((object) =>
+            object.isPoints
+            || object.type === 'Points'
+            || object.material?.isPointsMaterial
+        );
+        pointObjects.forEach((object) => {
+            this.fiberRoot.remove(object);
+            object.geometry?.dispose?.();
+            object.material?.dispose?.();
+        });
+        this.fiberPointObjectsRemoved = (this.fiberPointObjectsRemoved || 0) + pointObjects.length;
+        return pointObjects.length;
+    }
+
+    validateFiberRenderMode() {
+        const pointObjects = [...this.fiberRoot.children].filter((object) =>
+            object.isPoints
+            || object.type === 'Points'
+            || object.material?.isPointsMaterial
+        );
+        const lineObjects = [...this.fiberRoot.children].filter((object) =>
+            object.type === 'LineSegments2'
+        );
+        const expectedLineObjects = this.categoryMeshes.size * 2;
+        const valid = pointObjects.length === 0 && lineObjects.length === expectedLineObjects;
+        return {
+            valid,
+            pointObjects: pointObjects.length,
+            lineObjects: lineObjects.length,
+            expectedLineObjects,
+        };
     }
 
     _streamlineBounds(streamlineId) {
@@ -275,6 +320,7 @@ export class WhiteMatterThreeViewer {
 
     async rebuildFibers() {
         if (!this.tractData) return;
+        this._removeFiberPointObjects();
         const { points, offsets } = this.tractData;
         const streamlineCount = offsets.length - 1;
         const segmentCounts = new Uint32Array(this.categoryCount + 1);
@@ -282,6 +328,7 @@ export class WhiteMatterThreeViewer {
             { length: this.categoryCount + 1 },
             () => [],
         );
+        const renderedStreamlineIds = [];
 
         for (let streamlineId = 0; streamlineId < streamlineCount; streamlineId++) {
             if (streamlineId % this.decimationStride !== 0) continue;
@@ -290,6 +337,7 @@ export class WhiteMatterThreeViewer {
             const category = this.streamlineCategories[streamlineId];
             const categoryIndex = category >= 0 ? category : this.otherCategory;
             selectedIds[categoryIndex].push(streamlineId);
+            renderedStreamlineIds.push(streamlineId);
             segmentCounts[categoryIndex] += offsets[streamlineId + 1] - offsets[streamlineId] - 1;
         }
 
@@ -369,9 +417,12 @@ export class WhiteMatterThreeViewer {
                 streamlineCount: selectedIds[categoryIndex].length,
             });
         }
+        this.renderedStreamlineIds = renderedStreamlineIds;
         this.applyTractFocus();
         this.resizeMaterials();
         this._updateVisibleCount();
+        this._updateFunctionalOverlayEndpoints();
+        this.filterValidation = this.validateFiberFilter();
         this._needsRender = true;
         this.renderer?.render(this.scene, this.camera);
     }
@@ -397,6 +448,7 @@ export class WhiteMatterThreeViewer {
         this.activeTract = tractId;
         this.applyTractFocus();
         this._updateVisibleCount();
+        this._updateFunctionalOverlayEndpoints();
         this._needsRender = true;
     }
 
@@ -404,33 +456,36 @@ export class WhiteMatterThreeViewer {
         const selectedCategory = this.bundleDefinitions.findIndex(
             (bundle) => bundle.id === this.activeTract
         );
-        const showOther = this.activeTract === 'all' || selectedCategory >= 0;
         for (const [categoryIndex, entry] of this.categoryMeshes.entries()) {
             const isOther = categoryIndex === this.otherCategory;
-            if (isOther && !showOther) {
-                entry.core.visible = false;
-                entry.glow.visible = false;
-                continue;
-            }
-            entry.core.visible = true;
-            entry.glow.visible = true;
+            let visible = true;
             if (selectedCategory >= 0) {
-                const selected = categoryIndex === selectedCategory;
-                entry.core.material.opacity = selected ? 0.92 : (isOther ? 0.025 : 0.075);
-                entry.glow.material.opacity = selected ? 0.16 : (isOther ? 0.001 : 0.004);
+                visible = categoryIndex === selectedCategory;
+            } else if (this.activeTract === 'overview') {
+                visible = !isOther;
+            }
+
+            entry.core.visible = visible;
+            entry.glow.visible = visible;
+            if (!visible) continue;
+
+            if (selectedCategory >= 0) {
+                entry.core.material.opacity = 0.92;
+                entry.glow.material.opacity = 0.16;
             } else {
-                entry.core.material.opacity = showOther ? 0.54 : 0.64;
-                entry.glow.material.opacity = showOther ? 0.06 : 0.1;
+                entry.core.material.opacity = this.activeTract === 'all' ? 0.54 : 0.64;
+                entry.glow.material.opacity = this.activeTract === 'all' ? 0.06 : 0.1;
             }
         }
-        for (const [networkId, entry] of this.networkMeshes.entries()) {
-            const visible = this.functionalOverlayId === networkId;
-            entry.group.visible = visible;
-        }
+        this._updateFunctionalOverlayVisibility();
     }
 
     setFiberRadius(radius) {
-        this.fiberRadius = Number(radius) || 1;
+        const nextRadius = Number(radius);
+        if (!Number.isFinite(nextRadius) || nextRadius <= 0) {
+            throw new Error('纤维线宽必须为正数');
+        }
+        this.fiberRadius = nextRadius;
         for (const entry of this.categoryMeshes.values()) {
             entry.core.material.linewidth = this.fiberRadius;
             entry.glow.material.linewidth = this.fiberRadius * 3.4;
@@ -439,11 +494,76 @@ export class WhiteMatterThreeViewer {
     }
 
     async setFiberFilter({ minLength = this.minLength, decimationStride = this.decimationStride } = {}) {
-        this.minLength = Number(minLength);
-        this.decimationStride = Math.max(1, Number(decimationStride) || 1);
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        const nextMinLength = Number(minLength);
+        const nextStride = Number(decimationStride);
+        if (!Number.isFinite(nextMinLength) || nextMinLength < 0) {
+            throw new Error('短流线阈值必须为非负数');
+        }
+        if (!Number.isInteger(nextStride) || nextStride < 1) {
+            throw new Error('显示比例步长必须为正整数');
+        }
+
+        this.minLength = nextMinLength;
+        this.decimationStride = nextStride;
         await this.rebuildFibers();
+        const validation = this.validateFiberFilter();
+        if (!validation.valid) {
+            throw new Error(`纤维过滤状态校验失败：${validation.reason}`);
+        }
         return this.getStats();
+    }
+
+    _isStreamlineInActiveTract(streamlineId) {
+        const category = this.streamlineCategories?.[streamlineId] ?? -1;
+        const selectedCategory = this.bundleDefinitions.findIndex(
+            (bundle) => bundle.id === this.activeTract,
+        );
+        if (this.activeTract === 'all') return true;
+        if (this.activeTract === 'overview') return category >= 0;
+        return selectedCategory >= 0 && category === selectedCategory;
+    }
+
+    validateFiberFilter() {
+        const rendered = this.renderedStreamlineIds || [];
+        const visible = (this.visibleStreamlineIds || []).filter(
+            (streamlineId) => this._isStreamlineInActiveTract(streamlineId),
+        );
+        const expected = [];
+        const offsets = this.tractData?.offsets;
+        for (let streamlineId = 0; streamlineId < (this.streamlineLengths?.length || 0); streamlineId++) {
+            const hasSegment = offsets
+                ? offsets[streamlineId + 1] - offsets[streamlineId] >= 2
+                : true;
+            if (
+                streamlineId % this.decimationStride === 0
+                && this.streamlineLengths[streamlineId] >= this.minLength
+                && hasSegment
+            ) {
+                expected.push(streamlineId);
+            }
+        }
+
+        const renderedCategoryCount = [...this.categoryMeshes.values()]
+            .reduce((sum, entry) => sum + entry.streamlineCount, 0);
+        const exactExpectedIds = expected.length === rendered.length
+            && expected.every((streamlineId, index) => rendered[index] === streamlineId);
+        const renderMode = this.validateFiberRenderMode();
+        const valid = exactExpectedIds
+            && renderedCategoryCount === rendered.length
+            && visible.length === this.visibleStreamlines
+            && renderMode.valid;
+
+        return {
+            valid,
+            reason: valid
+                ? ''
+                : `期望 ${expected.length} 条、渲染 ${rendered.length} 条、分类计数 ${renderedCategoryCount} 条、当前可见 ${visible.length} 条、散点 ${renderMode.pointObjects} 个`,
+            expectedStreamlines: expected.length,
+            renderedStreamlines: rendered.length,
+            visibleStreamlines: visible.length,
+            threshold: this.minLength,
+            renderMode,
+        };
     }
 
     setGlassBrainVisible(visible) {
@@ -462,70 +582,177 @@ export class WhiteMatterThreeViewer {
             });
         }
         if (!nodes?.length) return;
-        const group = new THREE.Group();
-        const positions = new Float32Array(nodes.length * 3);
-        nodes.forEach((node, index) => {
-            positions[index * 3] = node[0];
-            positions[index * 3 + 1] = node[1];
-            positions[index * 3 + 2] = node[2];
-        });
-        const pointGeometry = new THREE.BufferGeometry();
-        pointGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const pointMaterial = new THREE.PointsMaterial({
-            color: new THREE.Color(color),
-            size: 3.6,
-            sizeAttenuation: true,
-            transparent: true,
-            opacity: 0.82,
-            depthWrite: false,
-            blending: THREE.AdditiveBlending,
-        });
-        const points = new THREE.Points(pointGeometry, pointMaterial);
-        group.add(points);
 
-        if (edges?.length) {
-            const edgePositions = new Float32Array(edges.length * 6);
-            edges.forEach(([source, target], index) => {
-                edgePositions.set(nodes[source], index * 6);
-                edgePositions.set(nodes[target], index * 6 + 3);
+        const group = new THREE.Group();
+        group.name = `functional-network-${networkId}`;
+        const nodeObjects = nodes.map((node, index) => {
+            const geometry = new THREE.SphereGeometry(2.35, 18, 12);
+            const material = new THREE.MeshStandardMaterial({
+                color: new THREE.Color(color),
+                emissive: new THREE.Color(color),
+                emissiveIntensity: 0.16,
+                roughness: 0.52,
+                metalness: 0.02,
+                transparent: true,
+                opacity: 0.84,
+                depthWrite: false,
             });
-            const edgeGeometry = new THREE.BufferGeometry();
-            edgeGeometry.setAttribute('position', new THREE.BufferAttribute(edgePositions, 3));
-            const edgeMaterial = new THREE.LineBasicMaterial({
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(node[0], node[1], node[2]);
+            mesh.renderOrder = 5;
+            mesh.userData = { networkId, nodeIndex: index, kind: 'functional-endpoint' };
+            group.add(mesh);
+            return mesh;
+        });
+
+        const edgeObjects = (edges || []).map(([source, target]) => {
+            if (!nodes[source] || !nodes[target]) return null;
+            const geometry = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(...nodes[source]),
+                new THREE.Vector3(...nodes[target]),
+            ]);
+            const material = new THREE.LineBasicMaterial({
                 color: new THREE.Color(color),
                 transparent: true,
-                opacity: 0.22,
+                opacity: 0.24,
                 depthWrite: false,
                 blending: THREE.AdditiveBlending,
             });
-            group.add(new THREE.LineSegments(edgeGeometry, edgeMaterial));
-        }
+            const line = new THREE.Line(geometry, material);
+            line.renderOrder = 4;
+            line.userData = { source, target, kind: 'functional-network-edge' };
+            group.add(line);
+            return line;
+        }).filter(Boolean);
+
         group.visible = false;
-        this.networkMeshes.set(networkId, { group });
+        this.networkMeshes.set(networkId, {
+            group,
+            nodeObjects,
+            edgeObjects,
+            nodes: nodes.map((node) => node.slice()),
+            edges: (edges || []).map(([source, target]) => [source, target]),
+            endpointNodeIds: new Set(),
+            endpointPairs: new Set(),
+        });
         this.networkRoot.add(group);
+        this._updateFunctionalOverlayEndpoints();
     }
 
     setFunctionalOverlay(networkId) {
         this.functionalOverlayId = networkId || null;
-        for (const [id, entry] of this.networkMeshes.entries()) {
-            entry.group.visible = id === this.functionalOverlayId;
+        this._updateFunctionalOverlayEndpoints();
+        this._needsRender = true;
+    }
+
+    _nearestFunctionalNode(nodes, x, y, z) {
+        let bestIndex = -1;
+        let bestDistanceSquared = Infinity;
+        for (let index = 0; index < nodes.length; index++) {
+            const node = nodes[index];
+            const dx = node[0] - x;
+            const dy = node[1] - y;
+            const dz = node[2] - z;
+            const distanceSquared = dx * dx + dy * dy + dz * dz;
+            if (distanceSquared < bestDistanceSquared) {
+                bestDistanceSquared = distanceSquared;
+                bestIndex = index;
+            }
+        }
+        const radiusSquared = this.endpointSnapRadius * this.endpointSnapRadius;
+        return bestDistanceSquared <= radiusSquared ? bestIndex : -1;
+    }
+
+    _updateFunctionalOverlayEndpoints() {
+        const entry = this.functionalOverlayId
+            ? this.networkMeshes.get(this.functionalOverlayId)
+            : null;
+        for (const networkEntry of this.networkMeshes.values()) {
+            networkEntry.endpointNodeIds.clear();
+            networkEntry.endpointPairs.clear();
+        }
+        if (!entry || !this.tractData) {
+            this._updateFunctionalOverlayVisibility();
+            return entry ? { nodeCount: 0, edgeCount: 0, pairCount: 0 } : null;
+        }
+
+        const points = this.tractData.points;
+        const offsets = this.tractData.offsets;
+        for (const streamlineId of this.renderedStreamlineIds) {
+            if (!this._isStreamlineInActiveTract(streamlineId)) continue;
+            const start = offsets[streamlineId];
+            const end = offsets[streamlineId + 1];
+            if (end - start < 2) continue;
+
+            const source = this._nearestFunctionalNode(
+                entry.nodes,
+                points[start * 3],
+                points[start * 3 + 1],
+                points[start * 3 + 2],
+            );
+            const target = this._nearestFunctionalNode(
+                entry.nodes,
+                points[(end - 1) * 3],
+                points[(end - 1) * 3 + 1],
+                points[(end - 1) * 3 + 2],
+            );
+            if (source < 0 || target < 0) continue;
+            entry.endpointNodeIds.add(source);
+            entry.endpointNodeIds.add(target);
+            entry.endpointPairs.add(`${source}:${target}`);
+        }
+
+        this._updateFunctionalOverlayVisibility();
+        return this.getFunctionalOverlayStats();
+    }
+
+    _updateFunctionalOverlayVisibility() {
+        this.networkRoot.visible = !!this.functionalOverlayId;
+        for (const [networkId, entry] of this.networkMeshes.entries()) {
+            const active = networkId === this.functionalOverlayId;
+            entry.group.visible = active;
+            entry.nodeObjects.forEach((mesh, index) => {
+                mesh.visible = active && entry.endpointNodeIds.has(index);
+            });
+            entry.edgeObjects.forEach((line) => {
+                const { source, target } = line.userData;
+                line.visible = active
+                    && entry.endpointNodeIds.has(source)
+                    && entry.endpointNodeIds.has(target);
+            });
         }
         this._needsRender = true;
     }
 
-    _updateVisibleCount() {
-        let visible = 0;
-        const selectedCategory = this.bundleDefinitions.findIndex(
-            (bundle) => bundle.id === this.activeTract
-        );
-        for (const [categoryIndex, entry] of this.categoryMeshes.entries()) {
-            const isOther = categoryIndex === this.otherCategory;
-            if (isOther && this.activeTract !== 'all') continue;
-            if (selectedCategory < 0 || categoryIndex === selectedCategory || isOther) {
-                visible += entry.streamlineCount;
-            }
+    getFunctionalOverlayStats() {
+        const entry = this.functionalOverlayId
+            ? this.networkMeshes.get(this.functionalOverlayId)
+            : null;
+        if (!entry) {
+            return {
+                enabled: false,
+                networkId: null,
+                nodeCount: 0,
+                edgeCount: 0,
+                pairCount: 0,
+                endpointSnapRadius: this.endpointSnapRadius,
+            };
         }
-        this.visibleStreamlines = visible;
+        return {
+            enabled: true,
+            networkId: this.functionalOverlayId,
+            nodeCount: entry.endpointNodeIds.size,
+            edgeCount: entry.edgeObjects.filter((line) => line.visible).length,
+            pairCount: entry.endpointPairs.size,
+            endpointSnapRadius: this.endpointSnapRadius,
+        };
+    }
+
+    _updateVisibleCount() {
+        this.visibleStreamlineIds = this.renderedStreamlineIds.filter(
+            (streamlineId) => this._isStreamlineInActiveTract(streamlineId),
+        );
+        this.visibleStreamlines = this.visibleStreamlineIds.length;
     }
 
     getStats() {
@@ -536,14 +763,21 @@ export class WhiteMatterThreeViewer {
                 : this.bundleDefinitions[categoryIndex]?.id;
             if (id) categoryStreamlines[id] = entry.streamlineCount;
         }
+        const totalStreamlines = this.tractData
+            ? Math.max(0, this.tractData.offsets.length - 1)
+            : 0;
         return {
-            totalStreamlines: this.tractData
-                ? Math.max(0, this.tractData.offsets.length - 1)
-                : 0,
+            totalStreamlines,
+            renderedStreamlines: this.renderedStreamlineIds.length,
             visibleStreamlines: this.visibleStreamlines,
+            hiddenByLength: (this.streamlineLengths || []).reduce(
+                (count, length) => count + (length < this.minLength ? 1 : 0),
+                0,
+            ),
             minLength: this.minLength,
             decimationStride: this.decimationStride,
             categoryStreamlines,
+            filterValidation: this.filterValidation || this.validateFiberFilter(),
         };
     }
 
@@ -579,9 +813,57 @@ export class WhiteMatterThreeViewer {
         }
     }
 
+    computeModelCenter() {
+        const bounds = new THREE.Box3();
+        const points = this.tractData?.points;
+        if (points?.length >= 3) {
+            const point = new THREE.Vector3();
+            for (let index = 0; index < points.length; index += 3) {
+                point.set(points[index], points[index + 1], points[index + 2]);
+                bounds.expandByPoint(point);
+            }
+        }
+
+        const glassGeometry = this.glassMesh?.geometry;
+        if (glassGeometry) {
+            if (!glassGeometry.boundingBox) glassGeometry.computeBoundingBox();
+            if (glassGeometry.boundingBox) bounds.union(glassGeometry.boundingBox);
+        }
+
+        return bounds.isEmpty()
+            ? this.modelCenter.clone()
+            : bounds.getCenter(new THREE.Vector3());
+    }
+
+    _updateCameraPivot() {
+        const center = this.computeModelCenter();
+        this.modelCenter.copy(center);
+        if (!this.controls) return center;
+
+        const currentOffset = this.camera.position.clone().sub(this.controls.target);
+        const offset = currentOffset.lengthSq() > 0 ? currentOffset : this.defaultCameraOffset.clone();
+        this.controls.target.copy(center);
+        this.camera.position.copy(center).add(offset);
+        this.controls.update();
+        this._needsRender = true;
+        return center;
+    }
+
+    getModelCenter() {
+        return this.modelCenter.clone();
+    }
+
+    validateSpatialBinding() {
+        return this.spatialRoot?.parent === this.scene
+            && this.glassRoot?.parent === this.spatialRoot
+            && this.fiberRoot?.parent === this.spatialRoot
+            && this.networkRoot?.parent === this.spatialRoot;
+    }
+
     resetView() {
-        this.camera.position.set(-360, -330, 145);
-        this.controls.target.set(0, -12, 12);
+        this._updateCameraPivot();
+        this.camera.position.copy(this.modelCenter).add(this.defaultCameraOffset);
+        this.controls.target.copy(this.modelCenter);
         this.controls.update();
         this._needsRender = true;
     }
@@ -595,6 +877,12 @@ export class WhiteMatterThreeViewer {
     dispose() {
         this._disposed = true;
         if (this._animationFrame) cancelAnimationFrame(this._animationFrame);
+        if (this._cameraPivotPointerHandler) {
+            this.canvas?.removeEventListener('pointerdown', this._cameraPivotPointerHandler, { capture: true });
+        }
+        if (this._cameraPivotWheelHandler) {
+            this.canvas?.removeEventListener('wheel', this._cameraPivotWheelHandler, { capture: true });
+        }
         this.controls?.dispose();
         this.scene?.traverse((object) => {
             object.geometry?.dispose?.();

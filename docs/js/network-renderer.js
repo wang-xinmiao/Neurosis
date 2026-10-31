@@ -25,6 +25,7 @@ class BallStickNetworkRenderer {
 
         this.scene = new THREE.Scene();
         this.root = new THREE.Group();
+        this.root.name = 'functional-spatial-root';
         this.scene.add(this.root);
         this.brainGroup = new THREE.Group();
         this.networkGroup = new THREE.Group();
@@ -39,11 +40,17 @@ class BallStickNetworkRenderer {
         this.container.appendChild(this.renderer.domElement);
 
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.08;
-        this.controls.rotateSpeed = 0.85;
-        this.controls.zoomSpeed = 0.85;
-        this.controls.panSpeed = 0.75;
+        this.controls.enableDamping = false;
+        this.controls.rotateSpeed = 0.72;
+        this.controls.zoomSpeed = 0.82;
+        this.controls.panSpeed = 0.72;
+        this.controls.enablePan = true;
+        this.controls.screenSpacePanning = true;
+        this.controls.zoomToCursor = false;
+        this.controls.minPolarAngle = -Infinity;
+        this.controls.maxPolarAngle = Infinity;
+        this.controls.minAzimuthAngle = -Infinity;
+        this.controls.maxAzimuthAngle = Infinity;
         this.controls.target.set(0, 0, 0);
 
         this.scene.add(new THREE.HemisphereLight(0xf4f7fb, 0x263241, 1.25));
@@ -73,6 +80,14 @@ class BallStickNetworkRenderer {
         this._raf = null;
 
         const canvas = this.renderer.domElement;
+        this._cameraPivotPointerHandler = (event) => {
+            if (event.button === 0) this._updateCameraPivot();
+        };
+        this._cameraPivotWheelHandler = () => {
+            this._updateCameraPivot();
+        };
+        canvas.addEventListener('pointerdown', this._cameraPivotPointerHandler, { capture: true });
+        canvas.addEventListener('wheel', this._cameraPivotWheelHandler, { capture: true, passive: true });
         canvas.addEventListener('pointerdown', (event) => {
             this._dragStart = { x: event.clientX, y: event.clientY };
             this._dragMoved = false;
@@ -432,6 +447,28 @@ class BallStickNetworkRenderer {
         this.surfaceCentroids = new Map();
     }
 
+    getModelCenter() {
+        return this.brainCenter.clone();
+    }
+
+    _updateCameraPivot() {
+        const center = this.brainCenter.clone();
+        const currentOffset = this.camera.position.clone().sub(this.controls.target);
+        const offset = currentOffset.lengthSq() > 0
+            ? currentOffset
+            : new THREE.Vector3(0, 0, 315);
+        this.controls.target.copy(center);
+        this.camera.position.copy(center).add(offset);
+        this.controls.update();
+        return center;
+    }
+
+    validateSpatialBinding() {
+        return this.root.parent === this.scene
+            && this.brainGroup.parent === this.root
+            && this.networkGroup.parent === this.root;
+    }
+
     resize() {
         const width = this.container.clientWidth || 900;
         const height = this.container.clientHeight || 650;
@@ -448,6 +485,12 @@ class BallStickNetworkRenderer {
 
     dispose() {
         cancelAnimationFrame(this._raf);
+        if (this._cameraPivotPointerHandler) {
+            this.renderer.domElement.removeEventListener('pointerdown', this._cameraPivotPointerHandler, { capture: true });
+        }
+        if (this._cameraPivotWheelHandler) {
+            this.renderer.domElement.removeEventListener('wheel', this._cameraPivotWheelHandler, { capture: true });
+        }
         this.clearNetwork();
         this.clearBrain();
         this.controls.dispose();

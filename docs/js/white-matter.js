@@ -110,6 +110,11 @@ class WhiteMatterManager {
         this.cortexShellEnabled = true;
         this.structuralConnectivity = null;
         this.matrixChart = null;
+        this.matrixHighlight = null;
+        this.matrixIndexView = null;
+        this.matrixIndexTemplate = 'yeo7';
+        this._pendingFiberFilterUpdate = null;
+        this._fiberFilterTask = null;
         this._initPromise = null;
         this._customTractData = null;
         this._demoTractData = null;
@@ -192,11 +197,6 @@ class WhiteMatterManager {
         if (this._controlsBound) return;
         this._controlsBound = true;
 
-        this.tractSelect = document.getElementById('tractSelect');
-        this.tractSelect?.addEventListener('change', () => {
-            if (!this.isCustomTract) this.selectTract(this.tractSelect.value);
-        });
-
         const radius = document.getElementById('fiberRadius');
         const radiusValue = document.getElementById('fiberRadiusValue');
         radius?.addEventListener('input', () => {
@@ -213,10 +213,8 @@ class WhiteMatterManager {
 
         const minLength = document.getElementById('fiberMinLength');
         const minLengthValue = document.getElementById('fiberMinLengthValue');
-        minLength?.addEventListener('input', () => {
+        minLength?.addEventListener('input', async () => {
             if (minLengthValue) minLengthValue.textContent = `≥${minLength.value} mm`;
-        });
-        minLength?.addEventListener('change', async () => {
             await this._setFiberFilters({ minLength: Number(minLength.value) });
         });
 
@@ -246,6 +244,7 @@ class WhiteMatterManager {
 
         this.matrixFilterSelect = document.getElementById('structuralMatrixFilter');
         this.matrixFilterSelect?.addEventListener('change', () => {
+            this._clearMatrixHighlight();
             const value = this.matrixFilterSelect.value;
             this.selectTract(value === 'all' ? 'overview' : value);
         });
@@ -253,6 +252,7 @@ class WhiteMatterManager {
         const matrixRegionCount = document.getElementById('structuralMatrixRegionCount');
         const matrixRegionCountValue = document.getElementById('structuralMatrixRegionCountValue');
         matrixRegionCount?.addEventListener('input', () => {
+            this._clearMatrixHighlight();
             this.matrixRegionCount = Number(matrixRegionCount.value);
             if (matrixRegionCountValue) {
                 matrixRegionCountValue.textContent = String(this.matrixRegionCount);
@@ -270,20 +270,25 @@ class WhiteMatterManager {
             });
         });
 
-        const importButton = document.getElementById('btnImportTract');
-        const fileInput = document.getElementById('tractFileInput');
-        importButton?.addEventListener('click', () => fileInput?.click());
-        fileInput?.addEventListener('change', () => {
-            const file = fileInput.files?.[0];
-            fileInput.value = '';
-            if (file) this.loadLocalTract(file);
+        document.getElementById('btnShowAllFibers')?.addEventListener('click', () => {
+            this.selectTract('all');
         });
 
-        document.getElementById('btnRestoreDemoTracts')?.addEventListener('click', () => {
-            this.restoreDemoTracts();
+        const yeoTemplateSelect = document.getElementById('yeoTemplateSelect');
+        yeoTemplateSelect?.addEventListener('change', () => {
+            this._clearMatrixHighlight();
+            this.matrixIndexTemplate = this._activeYeoTemplate();
+            if (this.viewMode === 'matrix') this.renderStructuralMatrix();
         });
-        document.getElementById('btnResetView3')?.addEventListener('click', () => {
-            this.resetView();
+
+        document.addEventListener('click', (event) => {
+            if (this.viewMode !== 'matrix' || !this.matrixHighlight) return;
+            const target = event.target instanceof Element ? event.target : null;
+            if (!target) return;
+            if (target.closest('.structural-top-item')) return;
+            if (target.closest('#structuralMatrixChart')) return;
+            if (target.closest('button, select, input, label, a')) return;
+            this._clearMatrixHighlight();
         });
     }
 
@@ -293,8 +298,12 @@ class WhiteMatterManager {
         if (!config) return;
 
         this.currentTract = tractId;
-        if (this.tractSelect && this.tractSelect.value !== tractId) this.tractSelect.value = tractId;
+        const showAllFibers = document.getElementById('btnShowAllFibers');
+        if (showAllFibers) {
+            showAllFibers.disabled = !config.groups || ['overview', 'all'].includes(tractId);
+        }
         this.threeViewer?.setActiveTract(tractId);
+        this._applyFunctionalOverlay();
         this._setDirectionLegend(true);
 
         if (tractId === 'all') {
@@ -357,19 +366,35 @@ class WhiteMatterManager {
 
     async _setFiberFilters(update) {
         if (!this.threeViewer) return;
-        this._showBusy('正在重建纤维管并过滤短流线…');
-        try {
-            const stats = await this.threeViewer.setFiberFilter(update);
-            this._setStatus(
-                `显示 ${stats.visibleStreamlines.toLocaleString()} 条 · `
-                + `过滤短于 ${stats.minLength} mm 的流线`
-            );
-        } catch (error) {
+        this._pendingFiberFilterUpdate = {
+            ...(this._pendingFiberFilterUpdate || {}),
+            ...update,
+        };
+        if (this._fiberFilterTask) return this._fiberFilterTask;
+
+        this._fiberFilterTask = (async () => {
+            while (this._pendingFiberFilterUpdate) {
+                const nextUpdate = this._pendingFiberFilterUpdate;
+                this._pendingFiberFilterUpdate = null;
+                const stats = await this.threeViewer.setFiberFilter(nextUpdate);
+                if (!stats.filterValidation?.valid) {
+                    throw new Error(stats.filterValidation?.reason || '纤维过滤状态不一致');
+                }
+                this._setStatus(
+                    `显示 ${stats.visibleStreamlines.toLocaleString()} 条 · `
+                    + `显示比例 ${stats.decimationStride === 1 ? '100%' : `${100 / stats.decimationStride}%`} · `
+                    + `阈值 ≥${stats.minLength} mm · `
+                    + `已隐藏 ${stats.hiddenByLength.toLocaleString()} 条短流线 · 校验通过`
+                );
+                this._applyFunctionalOverlay();
+            }
+        })().catch((error) => {
             console.error('[WhiteMatter] 纤维过滤失败:', error);
             this.onToast('纤维过滤失败', 'error');
-        } finally {
-            this._hideBusy();
-        }
+        }).finally(() => {
+            this._fiberFilterTask = null;
+        });
+        return this._fiberFilterTask;
     }
 
     _refreshRenderStatus() {
@@ -377,8 +402,9 @@ class WhiteMatterManager {
         const stats = this.threeViewer.getStats();
         this._setStatus(
             `显示 ${stats.visibleStreamlines.toLocaleString()} 条 · `
-            + `${stats.decimationStride === 1 ? '100%' : `${100 / stats.decimationStride}%`} 采样 · `
-            + `短流线阈值 ${stats.minLength} mm`
+            + `显示比例 ${stats.decimationStride === 1 ? '100%' : `${100 / stats.decimationStride}%`} · `
+            + `阈值 ≥${stats.minLength} mm · `
+            + `已隐藏 ${stats.hiddenByLength.toLocaleString()} 条短流线`
         );
     }
 
@@ -414,15 +440,20 @@ class WhiteMatterManager {
     }
 
     _applyFunctionalOverlay() {
-        this.threeViewer?.setFunctionalOverlay(
-            this.functionalOverlayEnabled ? this.currentNetwork : null
-        );
+        const enabled = this.functionalOverlayEnabled;
+        this.threeViewer?.setFunctionalOverlay(enabled ? this.currentNetwork : null);
+        const overlayStats = this.threeViewer?.getFunctionalOverlayStats?.();
 
         const status = document.getElementById('functionalOverlayStatus');
         if (status) {
-            status.textContent = this.functionalOverlayEnabled
-                ? `叠加：${WHITE_MATTER_NETWORKS[this.currentNetwork].label}（演示连接组）`
-                : '功能网络叠加已关闭';
+            if (!enabled) {
+                status.textContent = '功能网络叠加已关闭';
+            } else {
+                const label = WHITE_MATTER_NETWORKS[this.currentNetwork]?.label || this.currentNetwork;
+                const nodeCount = overlayStats?.nodeCount ?? 0;
+                const edgeCount = overlayStats?.edgeCount ?? 0;
+                status.textContent = `叠加：${label} · 当前纤维束起止节点 ${nodeCount} 个 · 连线 ${edgeCount} 条`;
+            }
         }
     }
 
@@ -497,6 +528,7 @@ class WhiteMatterManager {
 
     setViewMode(mode) {
         if (!['3d', 'matrix'].includes(mode)) return;
+        this._clearMatrixHighlight();
         this.viewMode = mode;
         document.querySelectorAll('[data-white-view]').forEach((button) => {
             button.classList.toggle('active', button.dataset.whiteView === mode);
@@ -602,6 +634,7 @@ class WhiteMatterManager {
             return;
         }
 
+        this._clearMatrixHighlight();
         const regions = data.regions;
         const size = regions.length;
         const degree = new Float64Array(size);
@@ -717,8 +750,21 @@ class WhiteMatterManager {
                 },
             }],
         }, true);
+        this.matrixIndexTemplate = this._activeYeoTemplate();
+        this.matrixIndexView = {
+            template: this.matrixIndexTemplate,
+            selectedIndices: selectedIndices.slice(),
+            regionIds: selectedIndices.map((index) => regions[index]?.id ?? null),
+            regionNames: selectedIndices.map((index) => regions[index]?.name ?? ''),
+        };
+        if (!this._validateMatrixIndexView()) {
+            console.error('[WhiteMatter] 结构矩阵与最强连接列表脑区索引不一致');
+        }
+
         this.matrixChart.resize();
-        this._renderTopConnections(visibleEdges.slice(0, 6), regions, scopeData);
+        this._bindMatrixBlankReset();
+        this._renderTopConnections(visibleEdges.slice(0, 6), regions, scopeData, selectedIndices);
+        this._applyMatrixHighlight();
 
         if (status) {
             status.innerHTML = ''
@@ -730,7 +776,7 @@ class WhiteMatterManager {
         }
     }
 
-    _renderTopConnections(edges, regions, scopeData) {
+    _renderTopConnections(edges, regions, scopeData, selectedIndices) {
         const container = document.getElementById('structuralTopConnections');
         if (!container) return;
         container.innerHTML = '';
@@ -742,8 +788,22 @@ class WhiteMatterManager {
             return;
         }
         for (const edge of edges) {
+            const matrixRow = selectedIndices.indexOf(edge.source);
+            const matrixColumn = selectedIndices.indexOf(edge.target);
+            if (matrixRow < 0 || matrixColumn < 0) continue;
+
             const item = document.createElement('div');
             item.className = 'structural-top-item';
+            item.dataset.sourceRegionIndex = String(edge.source);
+            item.dataset.targetRegionIndex = String(edge.target);
+            item.dataset.matrixRow = String(matrixRow);
+            item.dataset.matrixColumn = String(matrixColumn);
+            item.dataset.connectionKey = `${edge.source}:${edge.target}`;
+            item.tabIndex = 0;
+            item.setAttribute('role', 'button');
+            item.setAttribute('aria-controls', 'structuralMatrixChart');
+            item.setAttribute('aria-pressed', 'false');
+
             const title = document.createElement('strong');
             title.textContent = `${regions[edge.source].name} ↔ ${regions[edge.target].name}`;
             const count = document.createElement('span');
@@ -753,8 +813,175 @@ class WhiteMatterManager {
                 ? `${(edge.value / scopeData.mappedStreamlines * 100).toFixed(1)}%`
                 : '';
             item.append(title, count, share);
+
+            const activate = () => {
+                this._highlightMatrixConnection(edge.source, edge.target, matrixRow, matrixColumn);
+            };
+            item.addEventListener('click', activate);
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    activate();
+                }
+            });
             container.appendChild(item);
         }
+    }
+
+    _activeYeoTemplate() {
+        const select = document.getElementById('yeoTemplateSelect');
+        return select?.value === 'yeo17' ? 'yeo17' : 'yeo7';
+    }
+
+    _validateMatrixIndexView(source = null, target = null, matrixRow = null, matrixColumn = null) {
+        const view = this.matrixIndexView;
+        const regions = this.structuralConnectivity?.regions;
+        if (!view || !Array.isArray(regions)) return false;
+        if (view.template !== this.matrixIndexTemplate
+            || view.template !== this._activeYeoTemplate()) {
+            return false;
+        }
+        if (view.selectedIndices.length !== view.regionIds.length
+            || view.selectedIndices.length !== view.regionNames.length) {
+            return false;
+        }
+        for (let position = 0; position < view.selectedIndices.length; position++) {
+            const regionIndex = view.selectedIndices[position];
+            const region = regions[regionIndex];
+            if (!region
+                || region.id !== view.regionIds[position]
+                || region.name !== view.regionNames[position]) {
+                return false;
+            }
+        }
+        if (source === null && target === null) return true;
+
+        return view.selectedIndices[matrixRow] === source
+            && view.selectedIndices[matrixColumn] === target
+            && regions[source]?.id === view.regionIds[matrixRow]
+            && regions[target]?.id === view.regionIds[matrixColumn];
+    }
+
+    _highlightMatrixConnection(source, target, matrixRow, matrixColumn) {
+        if (!this._validateMatrixIndexView(source, target, matrixRow, matrixColumn)) {
+            console.error('[WhiteMatter] 连接列表与矩阵索引校验失败，已阻止错位高亮');
+            this._clearMatrixHighlight();
+            return;
+        }
+
+        this.matrixHighlight = {
+            key: `${source}:${target}`,
+            source,
+            target,
+            row: matrixRow,
+            column: matrixColumn,
+        };
+        document.querySelectorAll('#structuralTopConnections .structural-top-item').forEach((item) => {
+            const selected = item.dataset.connectionKey === this.matrixHighlight.key;
+            item.classList.toggle('selected', selected);
+            item.setAttribute('aria-pressed', String(selected));
+        });
+        this._applyMatrixHighlight();
+    }
+
+    _clearMatrixHighlight() {
+        this.matrixHighlight = null;
+        document.querySelectorAll('#structuralTopConnections .structural-top-item').forEach((item) => {
+            item.classList.remove('selected');
+            item.setAttribute('aria-pressed', 'false');
+        });
+        this._applyMatrixHighlight();
+    }
+
+    _applyMatrixHighlight() {
+        const chart = this.matrixChart;
+        if (!chart || chart.isDisposed()) return;
+
+        const highlight = this.matrixHighlight;
+        const rowCount = this.matrixIndexView?.selectedIndices.length || 0;
+        let shape = { x: 0, y: 0, width: 0, height: 0, r: 0 };
+        if (highlight && rowCount > 0 && this._validateMatrixIndexView(
+            highlight.source,
+            highlight.target,
+            highlight.row,
+            highlight.column,
+        )) {
+            const center = chart.convertToPixel(
+                { seriesIndex: 0 },
+                [highlight.column, highlight.row],
+            );
+            if (Array.isArray(center)) {
+                let cellWidth = chart.getWidth() / rowCount;
+                let cellHeight = chart.getHeight() / rowCount;
+                if (highlight.column < rowCount - 1) {
+                    const next = chart.convertToPixel(
+                        { seriesIndex: 0 },
+                        [highlight.column + 1, highlight.row],
+                    );
+                    if (Array.isArray(next)) cellWidth = Math.abs(next[0] - center[0]);
+                } else if (highlight.column > 0) {
+                    const previous = chart.convertToPixel(
+                        { seriesIndex: 0 },
+                        [highlight.column - 1, highlight.row],
+                    );
+                    if (Array.isArray(previous)) cellWidth = Math.abs(center[0] - previous[0]);
+                }
+                if (highlight.row < rowCount - 1) {
+                    const next = chart.convertToPixel(
+                        { seriesIndex: 0 },
+                        [highlight.column, highlight.row + 1],
+                    );
+                    if (Array.isArray(next)) cellHeight = Math.abs(next[1] - center[1]);
+                } else if (highlight.row > 0) {
+                    const previous = chart.convertToPixel(
+                        { seriesIndex: 0 },
+                        [highlight.column, highlight.row - 1],
+                    );
+                    if (Array.isArray(previous)) cellHeight = Math.abs(center[1] - previous[1]);
+                }
+
+                const inset = 1;
+                shape = {
+                    x: center[0] - cellWidth / 2 + inset,
+                    y: center[1] - cellHeight / 2 + inset,
+                    width: Math.max(0, cellWidth - inset * 2),
+                    height: Math.max(0, cellHeight - inset * 2),
+                    r: 0,
+                };
+            }
+        }
+
+        chart.setOption({
+            graphic: [{
+                id: 'structuralMatrixHighlight',
+                type: 'rect',
+                z: 100,
+                silent: false,
+                invisible: !highlight,
+                shape,
+                style: {
+                    fill: 'transparent',
+                    stroke: '#000000',
+                    lineWidth: 2.6,
+                },
+                onclick: () => {},
+            }],
+        }, false);
+    }
+
+    _bindMatrixBlankReset() {
+        const chart = this.matrixChart;
+        if (!chart || chart.isDisposed()) return;
+        if (this._matrixZr && this._matrixZrClickHandler) {
+            this._matrixZr.off('click', this._matrixZrClickHandler);
+        }
+        this._matrixZr = chart.getZr();
+        this._matrixZrClickHandler = (event) => {
+            if (!event.target || event.target.id === 'structuralMatrixHighlight') {
+                this._clearMatrixHighlight();
+            }
+        };
+        this._matrixZr.on('click', this._matrixZrClickHandler);
     }
 
     async loadLocalTract(file) {
@@ -787,10 +1014,6 @@ class WhiteMatterManager {
 
             this.isCustomTract = true;
             this._setDirectionLegend(true);
-            if (this.tractSelect) this.tractSelect.disabled = true;
-            const restore = document.getElementById('btnRestoreDemoTracts');
-            if (restore) restore.disabled = false;
-
             const groupCount = tractData.groups?.length || 0;
             const fiberCount = Math.max(0, tractData.offsets.length - 1);
             this._showTractInfo({
@@ -800,6 +1023,7 @@ class WhiteMatterManager {
                 color: [255, 196, 64],
             });
             this._refreshRenderStatus();
+            this._applyFunctionalOverlay();
             this.onToast('本地纤维束加载成功', 'success');
         } catch (error) {
             console.error('[WhiteMatter] 本地纤维束加载失败:', error);
@@ -831,11 +1055,9 @@ class WhiteMatterManager {
             (this._demoTractData.groups || []).map((group, index) => [String(group.id), index])
         );
         this.isCustomTract = false;
-        if (this.tractSelect) this.tractSelect.disabled = false;
-        const restore = document.getElementById('btnRestoreDemoTracts');
-        if (restore) restore.disabled = true;
         this.selectTract('overview');
         this._refreshRenderStatus();
+        this._applyFunctionalOverlay();
         this._hideBusy();
         this.onToast('已恢复演示纤维束', 'success');
     }
@@ -846,7 +1068,10 @@ class WhiteMatterManager {
 
     resize() {
         if (this.viewMode === 'matrix') {
-            try { this.matrixChart?.resize(); } catch (error) { /* ignore */ }
+            try {
+                this.matrixChart?.resize();
+                this._applyMatrixHighlight();
+            } catch (error) { /* ignore */ }
             return;
         }
         this.threeViewer?.resize();

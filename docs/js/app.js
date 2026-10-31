@@ -1,5 +1,7 @@
 /* ===== NeuroViz 主应用逻辑 ===== */
 
+window.hasIndividualData = false;
+
 class NeuroVizApp {
     constructor() {
         // Viewer instances
@@ -12,6 +14,10 @@ class NeuroVizApp {
         // State
         this.currentModule = 'module1';
         this.isDataLoaded = false;
+        this.hasIndividualData = window.hasIndividualData;
+        this.hasUserImportedData = false;
+        this.hasImportedIndividualFiles = false;
+        this.individualComparisonData = null;
         this.isLoggedIn = false;
         this.currentUser = null;
         this.fpsFrames = 0;
@@ -620,6 +626,8 @@ class NeuroVizApp {
 
         document.getElementById('historyModal').classList.remove('active');
         this.isDataLoaded = true;
+        this.hasImportedIndividualFiles = false;
+        this._setIndividualComparisonState(false);
         this.setToast(`已加载历史数据: ${item.name}`, 'success');
         document.getElementById('statusText').innerHTML =
             `<i class="fa-solid fa-circle-check" style="color:#4CAF50;"></i> 已加载: ${this.escapeHtml(item.name)}`;
@@ -695,6 +703,7 @@ class NeuroVizApp {
         const fileInput = document.getElementById('fileInput');
 
         btnImport.addEventListener('click', () => {
+            this._setHasIndividualData(true);
             importModal.classList.add('active');
         });
 
@@ -720,6 +729,7 @@ class NeuroVizApp {
             dropZone.classList.remove('dragover');
             const files = e.dataTransfer.files;
             if (files.length > 0) {
+                this._setHasIndividualData(true);
                 importModal.classList.remove('active');
                 this.triggerDataNaming(files, '多模态数据');
             }
@@ -727,6 +737,7 @@ class NeuroVizApp {
 
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
+                this._setHasIndividualData(true);
                 importModal.classList.remove('active');
                 this.triggerDataNaming(e.target.files, '多模态数据');
                 fileInput.value = '';
@@ -753,7 +764,9 @@ class NeuroVizApp {
     }
 
     triggerDataNaming(files, type) {
+        this._setHasIndividualData(true);
         this.pendingFiles = files;
+        this.hasImportedIndividualFiles = !!(files && files.length);
         this._pendingType = type || '多模态数据';
 
         const now = new Date();
@@ -810,6 +823,7 @@ class NeuroVizApp {
         const names = files ? Array.from(files).map(f => f.name).join(', ') : '无文件';
         this.setToast(`数据 "${name}" 已就绪 (${files ? files.length : 0} 个文件)`, 'success');
         this.isDataLoaded = true;
+        this._setIndividualComparisonState(this.hasImportedIndividualFiles, this.pendingIndividualMetrics || window.INDIVIDUAL_METRICS || []);
 
         document.getElementById('dataNameModal').classList.remove('active');
         document.getElementById('statusText').innerHTML =
@@ -823,7 +837,10 @@ class NeuroVizApp {
     }
 
     loadDemoData(silent = false) {
+        this._setHasIndividualData(false);
         this.isDataLoaded = true;
+        this.hasImportedIndividualFiles = false;
+        this._setIndividualComparisonState(false);
         if (!silent) {
             this.setToast('演示数据集加载成功！所有模块已就绪', 'success');
         }
@@ -1391,42 +1408,16 @@ class NeuroVizApp {
 
         const viewer = new NiiVueViewer('niivueMP', { viewMode: 'multiplanar', renderMode: 'volume' });
         this.viewers['viewer4'] = viewer;
-        viewer.loadAtlas(this.currentAtlas).catch(e => {
+        this.module4AtlasReady = viewer.loadAtlas(this.currentAtlas).catch(e => {
             console.error('[NeuroViz] 模块4数据加载失败:', e);
             this.setToast('多视图数据加载失败', 'error');
         });
 
-        const regionSearch = document.getElementById('regionSearch');
-        if (regionSearch) {
-            regionSearch.addEventListener('input', () => {
-                const query = regionSearch.value.toLowerCase();
-                if (query.length < 2) {
-                    document.getElementById('queryResult').innerHTML =
-                        '<p class="placeholder">点击3D视图中的脑区或搜索查看详情</p>';
-                    return;
-                }
-                const atlasRegions = (typeof ATLAS_REGIONS !== 'undefined' ? ATLAS_REGIONS[this.currentAtlas] : []) || [];
-                const allRegions = [
-                    ...atlasRegions,
-                    ...SUBCORTICAL_STRUCTURES.map(s => ({ id: s.id, name: s.name })),
-                ];
-                const results = allRegions.filter(r =>
-                    r.name.toLowerCase().includes(query) ||
-                    r.id.toLowerCase().includes(query) ||
-                    (r.aliases || []).some(a => a.toLowerCase().includes(query))
-                );
-
-                if (results.length > 0) {
-                    this.showRegionInfo(results[0].id, 'queryResult');
-                } else {
-                    document.getElementById('queryResult').innerHTML =
-                        '<p class="placeholder">未找到匹配的脑区</p>';
-                }
-            });
-        }
+        this.setupAnalysisRegionQuery(viewer);
 
         if (!this.chartManager) this.chartManager = new ChartManager();
         this.chartManager.initComparisonChart('comparisonChart');
+        this.chartManager.setComparisonDataState(window.hasIndividualData, this.individualComparisonData || []);
 
         window.addEventListener('resize', () => {
             if (this.sliceViewers) {
@@ -1434,6 +1425,182 @@ class NeuroVizApp {
             }
             if (this.chartManager) this.chartManager.resizeAll();
         });
+    }
+
+    setupAnalysisRegionQuery(viewer) {
+        this.analysisAtlasId = 'hcp360';
+        this.analysisAtlasCache = new Map();
+        this.analysisRegions = [];
+
+        const atlasSelect = document.getElementById('analysisAtlasSelect');
+        const searchInput = document.getElementById('regionSearch');
+        const searchButton = document.getElementById('btnRegionSearch');
+        const submitSearch = () => this._submitAnalysisRegionSearch();
+
+        atlasSelect?.addEventListener('change', async () => {
+            this.analysisAtlasId = atlasSelect.value;
+            if (searchInput) searchInput.value = '';
+            this._setAnalysisQueryPlaceholder('正在加载脑区名称列表…');
+            await this._loadAnalysisAtlas(this.analysisAtlasId);
+            this._setAnalysisQueryPlaceholder('点击列表中的脑区或搜索查看详情');
+        });
+        searchButton?.addEventListener('click', submitSearch);
+        searchInput?.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                submitSearch();
+            }
+        });
+
+        this._loadAnalysisAtlas(this.analysisAtlasId);
+    }
+
+    async _loadAnalysisAtlas(atlasId) {
+        try {
+            let data = this.analysisAtlasCache.get(atlasId);
+            if (!data) {
+                const response = await fetch(`./data/atlas_${atlasId}.json?v=100`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                data = await response.json();
+                this.analysisAtlasCache.set(atlasId, data);
+            }
+            this.analysisAtlasId = atlasId;
+            this.analysisRegions = Array.isArray(data.regions) ? data.regions : [];
+            this._renderAnalysisRegionList();
+            return this.analysisRegions;
+        } catch (error) {
+            console.error('[NeuroViz] 分区查询图谱加载失败:', error);
+            this._setAnalysisQueryPlaceholder('脑区名称列表加载失败');
+            return [];
+        }
+    }
+
+    _renderAnalysisRegionList() {
+        const list = document.getElementById('regionNameList');
+        if (!list) return;
+        list.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        this.analysisRegions.forEach((region) => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'region-name-item';
+            item.dataset.regionId = String(region.id);
+            item.textContent = region.name_zh || region.name_en || `ROI ${region.id}`;
+            item.addEventListener('click', () => this._selectAnalysisRegion(region));
+            fragment.appendChild(item);
+        });
+        list.appendChild(fragment);
+    }
+
+    _submitAnalysisRegionSearch() {
+        const input = document.getElementById('regionSearch');
+        const query = (input?.value || '').trim().toLowerCase();
+        if (!query) {
+            this._setAnalysisQueryPlaceholder('请输入脑区名称');
+            return;
+        }
+
+        const matches = this.analysisRegions.filter((region) => {
+            const nameZh = String(region.name_zh || '').toLowerCase();
+            const nameEn = String(region.name_en || '').toLowerCase();
+            return nameZh.includes(query) || nameEn.includes(query);
+        });
+        const exact = matches.find((region) =>
+            String(region.name_zh || '').toLowerCase() === query
+            || String(region.name_en || '').toLowerCase() === query
+        );
+        const region = exact || matches[0];
+        if (!region) {
+            this._setAnalysisQueryPlaceholder('未找到匹配的脑区');
+            return;
+        }
+        this._selectAnalysisRegion(region, { scroll: true });
+    }
+
+    async _selectAnalysisRegion(region, options = {}) {
+        if (!region) return;
+        const centroid = Array.isArray(region.centroid_mm)
+            ? region.centroid_mm.map(Number)
+            : null;
+        if (!centroid || centroid.length !== 3 || !centroid.every(Number.isFinite)) {
+            this._setAnalysisQueryPlaceholder('该脑区缺少有效质心坐标');
+            return;
+        }
+
+        const viewer = this.viewers['viewer4'];
+        try {
+            await (this.module4AtlasReady || Promise.resolve());
+            this._setAnalysisCrosshair(viewer, centroid);
+        } catch (error) {
+            console.error('[NeuroViz] 多视图质心跳转失败:', error);
+            this.setToast('多视图质心跳转失败', 'error');
+        }
+
+        document.querySelectorAll('#regionNameList .region-name-item').forEach((item) => {
+            item.classList.toggle('selected', item.dataset.regionId === String(region.id));
+        });
+        if (options.scroll) {
+            document.querySelector(`#regionNameList .region-name-item[data-region-id="${CSS.escape(String(region.id))}"]`)
+                ?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        this._showAnalysisRegionInfo(region, centroid);
+    }
+
+    _setAnalysisCrosshair(viewer, centroid) {
+        const nv = viewer?.nv;
+        if (!nv) return false;
+        if (typeof nv.setCrosshairLocation === 'function') {
+            nv.setCrosshairLocation(centroid, null);
+        } else {
+            const fraction = nv.mm2frac(centroid);
+            nv.scene.crosshairPos.set(fraction);
+            if (nv.scene.sceneData?.crosshairPos) {
+                nv.scene.sceneData.crosshairPos.set(fraction);
+            }
+        }
+        nv.drawScene?.();
+        return true;
+    }
+
+    _showAnalysisRegionInfo(region, centroid) {
+        const panel = document.getElementById('queryResult');
+        if (!panel) return;
+        const color = Array.isArray(region.color)
+            ? '#' + region.color.map((value) => Math.round(value).toString(16).padStart(2, '0')).join('')
+            : '#888888';
+        const name = region.name_zh || region.name_en || `ROI ${region.id}`;
+        const nameEn = region.name_en && region.name_en !== name ? region.name_en : '';
+        panel.innerHTML = `
+            <div class="region-info-card">
+                <h4><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${color};margin-right:6px;vertical-align:middle;"></span>${this.escapeHtml(name)} <small style="color:var(--text-muted);font-weight:400;">${this.escapeHtml(nameEn)}</small></h4>
+                <div class="info-row"><span>区域 ID</span><span>${this.escapeHtml(String(region.id))}</span></div>
+                <div class="info-row"><span>质心坐标</span><span>${centroid.map((value) => value.toFixed(1)).join(', ')}</span></div>
+                <div class="info-row"><span>体积</span><span>${Number(region.volume_mm3 || 0).toLocaleString()} mm³</span></div>
+            </div>
+        `;
+    }
+
+    _setAnalysisQueryPlaceholder(message) {
+        const panel = document.getElementById('queryResult');
+        if (panel) panel.innerHTML = `<p class="placeholder">${this.escapeHtml(message)}</p>`;
+    }
+
+    _setHasIndividualData(hasIndividualData) {
+        window.hasIndividualData = !!hasIndividualData;
+        this.hasIndividualData = window.hasIndividualData;
+        this.chartManager?.setComparisonDataState(
+            window.hasIndividualData,
+            this.individualComparisonData || [],
+        );
+    }
+
+    _setIndividualComparisonState(hasIndividualData, data = undefined) {
+        if (Array.isArray(data)) this.individualComparisonData = data;
+        this._setHasIndividualData(hasIndividualData);
+    }
+
+    setUserComparisonData(data) {
+        this._setIndividualComparisonState(window.hasIndividualData, Array.isArray(data) ? data : []);
     }
 
     // ===== 导出功能 =====

@@ -21,6 +21,8 @@ class NiiVueViewer {
         this.hemiFilter = 'both';
         this._pickPending = false;
         this._pickPointerDown = null;
+        this._activeSliceOrientation = null;
+        this.focus = { x: 0, y: 0, z: 0 };
 
         const container = document.getElementById(containerId);
         container.querySelectorAll('canvas').forEach(c => c.remove());
@@ -95,16 +97,32 @@ void main() {
         // 单击选区；拖拽旋转不能被误判为点击
         this.canvas.addEventListener('pointerdown', (e) => {
             this._pickPointerDown = { x: e.clientX, y: e.clientY, button: e.button };
+            this._activeSliceOrientation = e.button === 0
+                ? this._getSliceOrientationFromPointer(e)
+                : null;
+            if (this._activeSliceOrientation) {
+                this._setFocusFromPointer(e);
+            }
+        });
+        this.canvas.addEventListener('pointermove', (e) => {
+            if (e.buttons & 1 && this._activeSliceOrientation) {
+                this._setFocusFromPointer(e);
+            }
         });
         this.canvas.addEventListener('pointerup', (e) => {
             const down = this._pickPointerDown;
             this._pickPointerDown = null;
+            this._activeSliceOrientation = null;
             if (!down || down.button !== 0 || e.button !== 0) return;
             if (Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) return;
             if (this.functionalInteractionMode) return;
+            this._setFocusFromPointer(e);
             requestAnimationFrame(() => this._requestDepthPick());
         });
-        this.canvas.addEventListener('pointercancel', () => { this._pickPointerDown = null; });
+        this.canvas.addEventListener('pointercancel', () => {
+            this._pickPointerDown = null;
+            this._activeSliceOrientation = null;
+        });
     }
 
     /* ---------------- 统一入口 ---------------- */
@@ -344,6 +362,56 @@ void main() {
 
     _findReg(id) {
         return (this.regionMeta || []).find(r => r.id === id) || (this.subMeta || []).find(r => r.id === id) || null;
+    }
+
+    _getSliceOrientationFromPointer(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const column = x < rect.width * 0.5 ? 0 : 1;
+        const row = y < rect.height * 0.5 ? 0 : 1;
+        if (row === 0 && column === 0) return 'axial';
+        if (row === 0 && column === 1) return 'sagittal';
+        if (row === 1 && column === 0) return 'coronal';
+        return null;
+    }
+
+    /* ---------------- 唯一焦点入口：MNI(mm) ---------------- */
+    setFocus(mniArr) {
+        const mni = Array.from(mniArr || []).slice(0, 3).map(Number);
+        if (mni.length !== 3 || !mni.every(Number.isFinite) || !this.nv) return false;
+
+        this.focus.x = mni[0];
+        this.focus.y = mni[1];
+        this.focus.z = mni[2];
+
+        const frac = this.nv.mm2frac(mni);
+        if (this.nv.scene?.crosshairPos?.set) this.nv.scene.crosshairPos.set(frac);
+        if (this.nv.scene?.sceneData?.crosshairPos?.set) {
+            this.nv.scene.sceneData.crosshairPos.set(frac);
+        }
+
+        try {
+            this.nv.drawScene();
+        } catch (e) {
+            console.warn('drawScene warn:', e);
+        }
+        return true;
+    }
+
+    async _setFocusFromPointer(event) {
+        if (!this.nv || !this.canvas) return false;
+        const rect = this.canvas.getBoundingClientRect();
+        const localX = event.clientX - rect.left;
+        const localY = event.clientY - rect.top;
+        let mni = null;
+        if (typeof this.nv.canvas2mm === 'function') {
+            mni = await this.nv.canvas2mm(event);
+        } else if (typeof this.nv.screenXY2mm === 'function') {
+            mni = this.nv.screenXY2mm(localX, localY);
+        }
+        const mniArr = Array.isArray(mni) ? mni : (mni?.mm || mni?.coordinate || null);
+        return this.setFocus(mniArr);
     }
 
     /* ---------------- 点击拾取 ---------------- */

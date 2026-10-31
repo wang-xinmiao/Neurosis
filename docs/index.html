@@ -473,6 +473,10 @@
                                 <span class="slider-label" id="activationThresholdValue">Z ≥ 3.0</span>
                             </div>
                         </div>
+                        <div class="activation-loading" id="activationLoading" hidden>
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <span id="activationLoadingText">正在加载Yeo17激活图分区数据</span>
+                        </div>
                         <div class="activation-visualization" id="activationVisualization"></div>
                         <div class="chart-meta" id="activationMeta"></div>
                     </div>
@@ -499,7 +503,7 @@
                             <h3><i class="fa-solid fa-circle-notch"></i> 功能连接弦图</h3>
                             <div class="panel-controls range-controls">
                                 <label for="chordThreshold">连接阈值</label>
-                                <input type="range" id="chordThreshold" min="25" max="85" step="1" value="52" class="slider-sm">
+                                <input type="range" id="chordThreshold" min="0" max="85" step="1" value="52" class="slider-sm">
                                 <span class="slider-label" id="chordThresholdValue">0.52</span>
                                 <button class="small-action-btn" id="btnChordShowAll">显示全部连接</button>
                             </div>
@@ -562,13 +566,9 @@
                     <div class="panel-header">
                         <h3><i class="fa-solid fa-project-diagram"></i> <span id="whiteViewTitle">DTI 纤维束科研渲染</span></h3>
                         <div class="panel-controls white-3d-only">
-                            <button class="btn-outline-sm" id="btnImportTract" title="加载本地 .trx、.trk、.tck 或 .vtk 纤维束文件">
-                                <i class="fa-solid fa-file-import"></i> 导入纤维束
+                            <button class="btn-outline-sm" id="btnShowAllFibers" title="退出单条纤维束筛选并显示全部纤维束">
+                                <i class="fa-solid fa-filter-circle-xmark"></i> 全部纤维束
                             </button>
-                            <button class="btn-outline-sm" id="btnRestoreDemoTracts" disabled title="恢复内置演示纤维束">
-                                <i class="fa-solid fa-rotate-left"></i> 恢复演示
-                            </button>
-                            <button class="icon-btn" id="btnResetView3" title="重置视角"><i class="fa-solid fa-rotate"></i></button>
                         </div>
                     </div>
                     <div class="white-view-tabs" aria-label="白质连接显示方式">
@@ -580,20 +580,13 @@
                         </button>
                     </div>
                     <div class="white-matter-toolbar">
-                        <label class="white-control">
-                            <span>纤维束</span>
-                            <select id="tractSelect" class="select-sm">
-                                <option value="overview" selected>主要纤维束（分类着色）</option>
-                                <option value="all">全脑纤维流线（方向着色）</option>
-                                <option value="arcuate">弓状束 AF</option>
-                                <option value="cingulum">扣带束 CB</option>
-                                <option value="cst">皮质脊髓束 CST</option>
-                                <option value="ilf">下纵束 ILF</option>
-                                <option value="slf">上纵束 SLF</option>
-                                <option value="uncinate">钩束 UF</option>
-                                <option value="corpusCallosum">胼胝体 CC</option>
-                                <option value="ifof">额枕下束 IFOF</option>
-                            </select>
+                        <label class="toggle-label white-overlay-toggle">
+                            <input type="checkbox" id="toggleFuncOverlay">
+                            <span>叠加网络</span>
+                        </label>
+                        <label class="toggle-label">
+                            <input type="checkbox" id="toggleCortexShell" checked>
+                            <span>玻璃脑</span>
                         </label>
                         <label class="white-control range-controls">
                             <span>纤维粗细</span>
@@ -622,14 +615,6 @@
                                 <option value="attention">注意网络</option>
                                 <option value="ecn">执行控制 ECN</option>
                             </select>
-                        </label>
-                        <label class="toggle-label white-overlay-toggle">
-                            <input type="checkbox" id="toggleFuncOverlay">
-                            <span>叠加网络</span>
-                        </label>
-                        <label class="toggle-label">
-                            <input type="checkbox" id="toggleCortexShell" checked>
-                            <span>玻璃脑</span>
                         </label>
                     </div>
                     <div class="viewer-container" id="viewer3D3">
@@ -822,15 +807,32 @@
                         <h3><i class="fa-solid fa-magnifying-glass"></i> 分区信息查询</h3>
                     </div>
                     <div class="query-box">
-                        <input type="text" id="regionSearch" placeholder="搜索脑区名称...">
+                        <div class="region-query-controls">
+                            <div class="region-search-group">
+                                <input type="search" id="regionSearch" class="region-search-input" placeholder="搜索脑区名称..." autocomplete="off">
+                                <button type="button" id="btnRegionSearch" class="region-search-button" title="搜索脑区" aria-label="搜索脑区">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+                            <select id="analysisAtlasSelect" class="select-sm analysis-atlas-select" aria-label="分区图谱">
+                                <option value="hcp360" selected>360</option>
+                                <option value="destrieux148">148</option>
+                                <option value="aal116">116</option>
+                                <option value="dk68">68</option>
+                            </select>
+                        </div>
+                        <div class="region-name-list" id="regionNameList" aria-label="脑区名称列表"></div>
                         <div class="query-result" id="queryResult">
-                            <p class="placeholder">点击3D视图中的脑区或搜索查看详情</p>
+                            <p class="placeholder">点击列表中的脑区或搜索查看详情</p>
                         </div>
                     </div>
                     <div class="panel-header" style="border-top: 1px solid var(--border);">
                         <h3><i class="fa-solid fa-chart-simple"></i> 个体-模板对比</h3>
                     </div>
-                    <div class="comparison-container" id="comparisonChart"></div>
+                    <div class="comparison-container" id="comparisonChart">
+                        <div class="comparison-chart" id="comparisonZScoreChart"></div>
+                        <p class="comparison-empty" id="comparisonEmpty">还未导入个体数据</p>
+                    </div>
                     <div class="panel-header" style="border-top: 1px solid var(--border);">
                         <h3><i class="fa-solid fa-download"></i> 结果导出</h3>
                     </div>

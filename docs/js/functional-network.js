@@ -166,7 +166,7 @@ class MniSliceViewer {
             this.setSharedMni(mm);
         });
 
-        this.loadVolumes(network);
+        this.loadPromise = this.loadVolumes(network);
     }
 
     async cachedBuffer(url) {
@@ -188,7 +188,10 @@ class MniSliceViewer {
             try {
                 overlayBuffer = await this.cachedBuffer(`./data/demo_zstat_${key}.nii.gz`);
             } catch (error) {
-                // 网络资源缺失时使用兜底激活图，保持界面可交互而不是空白。
+                if (key.startsWith('y17_')) {
+                    console.warn(`[ActivationData] missing: ${key}`);
+                    throw error;
+                }
                 overlayBuffer = await this.cachedBuffer('./data/demo_zstat_smn.nii.gz');
             }
             const mni = await niivue.NVImage.loadFromUrl({ url: 'array.nii.gz', buffer: mniBuffer, name: 'MNI152_T1w_1mm.nii.gz', colormap: 'gray', opacity: 1.0, ignoreZeroVoxels: false });
@@ -250,6 +253,7 @@ class MniSliceViewer {
     }
 
     activationFileKey(network) {
+        if (String(network).startsWith('y17_')) return network;
         return ({
             y7_visual: 'visual',
             y7_somatomotor: 'somatomotor',
@@ -258,23 +262,6 @@ class MniSliceViewer {
             y7_limbic: 'limbic',
             y7_frontoparietal: 'frontoparietal',
             y7_default: 'default',
-            y17_visual_a: 'visual',
-            y17_visual_b: 'visual',
-            y17_somatomotor_a: 'somatomotor',
-            y17_somatomotor_b: 'somatomotor',
-            y17_dorsal_attention_a: 'dorsal',
-            y17_dorsal_attention_b: 'dorsal',
-            y17_salience_a: 'salience',
-            y17_salience_b: 'salience',
-            y17_salience_c: 'salience',
-            y17_salience_d: 'salience',
-            y17_limbic_a: 'limbic',
-            y17_limbic_b: 'limbic',
-            y17_control_a: 'frontoparietal',
-            y17_control_b: 'frontoparietal',
-            y17_default_a: 'default',
-            y17_default_b: 'default',
-            y17_default_c: 'default',
         })[network] || network;
     }
 
@@ -296,8 +283,10 @@ class MniSliceViewer {
 
     async setNetwork(network) {
         if (this.network === network && this.ready) return true;
+        if (this.network === network && this.loadPromise) return await this.loadPromise;
         this.ready = false;
-        return await this.loadVolumes(network);
+        this.loadPromise = this.loadVolumes(network);
+        return await this.loadPromise;
     }
 
     setThreshold(threshold) {
@@ -330,9 +319,10 @@ class FunctionalNetworkManager {
         this.activationNetwork = 'y7_somatomotor';
         this.activationProbe = null;
         this.heatmapNetworkFilter = null;
-        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordActiveNetworks = new Set(this.getChordNetworks().map((item) => item.id));
         this.chordOnlySelected = false;
         this.chordSelection = null;
+        this.chordFocusNetwork = null;
         this.data = null;
         this.charts = {};
         this.brainViewers = {};
@@ -372,9 +362,10 @@ class FunctionalNetworkManager {
                 if (this.currentView === 'heatmap') {
                     // 热力图初始状态始终是全网络合并大图。
                     this.heatmapNetworkFilter = null;
-        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordActiveNetworks = new Set(this.getChordNetworks().map((item) => item.id));
         this.chordOnlySelected = false;
         this.chordSelection = null;
+        this.chordFocusNetwork = null;
                     this.focusedNetwork = null;
                 }
                 document.querySelectorAll('#funcTabs .func-tab').forEach((item) => {
@@ -440,6 +431,9 @@ class FunctionalNetworkManager {
         if (chordShowAll) {
             chordShowAll.addEventListener('click', () => {
                 this.chordOnlySelected = false;
+                this.chordSelection = null;
+                this.chordFocusNetwork = null;
+                this.renderNetworkSidebar();
                 this.renderChord();
                 this.updateExplanation();
             });
@@ -539,7 +533,8 @@ class FunctionalNetworkManager {
     }
 
     getNetworkDefinition(networkId) {
-        return this.getYeoNetworks().find((network) => network.id === networkId) || YEO_OTHER_NETWORK;
+        const definition = this.getYeoNetworks().find((network) => network.id === networkId) || YEO_OTHER_NETWORK;
+        return this.labelColors?.get(networkId) ? { ...definition, color: this.labelColors.get(networkId) } : definition;
     }
 
     clearTopologyHighlightState() {
@@ -553,17 +548,134 @@ class FunctionalNetworkManager {
         this.brainViewers.topology?.setFunctionalHighlightIds([]);
     }
 
+    getChordNetworks() {
+        const source = this.yeoTemplate === 'yeo17' ? YEO_NETWORK_TEMPLATES.yeo17 : YEO_NETWORK_TEMPLATES.yeo7;
+        return source.filter((network) => network.id !== 'other');
+    }
+
+    async findLocalYeo17Labels() {
+        const candidates = [
+            './data/yeo17_labels.csv',
+            './data/yeo17_labels.tsv',
+            './data/Yeo17_labels.csv',
+            './data/yeo17_network_labels.csv',
+            './data/yeo17_network_labels.tsv',
+        ];
+        for (const url of candidates) {
+            try {
+                const response = await fetch(url, { cache: 'no-store' });
+                if (response.ok) return { url, text: await response.text() };
+            } catch (error) { /* continue to next local candidate */ }
+        }
+        return null;
+    }
+
+    parseYeo17Labels(text) {
+        const rows = text.replace(/\r/g, '').split('\n').map((line) => line.trim()).filter(Boolean);
+        if (!rows.length) throw new Error('标签表为空');
+        const delimiter = rows[0].includes('\t') ? '\t' : ',';
+        let fields = rows[0].split(delimiter).map((value) => value.trim());
+        let start = 0;
+        let idIndex = 0, nameIndex = 1, networkIndex = 2, colorIndex = 3;
+        if (!/^\d+$/.test(fields[0])) {
+            const lower = fields.map((value) => value.toLowerCase());
+            idIndex = Math.max(0, lower.findIndex((value) => /(^|_)(roi_)?id$|label_id|index/.test(value)));
+            nameIndex = Math.max(1, lower.findIndex((value) => /name|label/.test(value)));
+            networkIndex = Math.max(2, lower.findIndex((value) => /network|group|yeo/.test(value)));
+            colorIndex = Math.max(3, lower.findIndex((value) => /color|hex|rgb/.test(value)));
+            start = 1;
+        }
+        return rows.slice(start).map((line) => {
+            const values = line.split(delimiter).map((value) => value.trim());
+            return {
+                id: Number(values[idIndex]),
+                name: values[nameIndex] || `ROI_${values[idIndex]}`,
+                network: values[networkIndex] || 'other',
+                color: values[colorIndex] || null,
+            };
+        }).filter((row) => Number.isFinite(row.id));
+    }
+
+    validateYeo17Labels(labels) {
+        const ids = new Set();
+        labels.forEach((label) => {
+            if (ids.has(label.id)) throw new Error(`Yeo17标签ID重复：${label.id}`);
+            if (!label.name || !label.network || !label.color) {
+                throw new Error(`Yeo17标签字段不完整：ROI ${label.id}`);
+            }
+            ids.add(label.id);
+        });
+        if (!this.data) return;
+        if (labels.length !== this.data.regions.length) {
+            throw new Error(`Yeo17标签数量 ${labels.length} 与当前图谱 ${this.data.regions.length} 个ROI不匹配`);
+        }
+        const regionIds = new Set(this.data.regions.map((region) => region.id));
+        const missing = [...ids].filter((id) => !regionIds.has(id));
+        if (missing.length) throw new Error(`Yeo17标签ID与当前ROI编号不匹配：${missing.slice(0, 4).join(',')}`);
+    }
+
+    applyYeo17Labels(labels) {
+        const byId = new Map(labels.map((label) => [label.id, label]));
+        this.labelColors = new Map();
+        this.data.regions.forEach((region) => {
+            const label = byId.get(region.id);
+            if (!label) return;
+            const mapped = this.mapYeo17LabelToNetwork(label.network, region, Number(region.index) || 0);
+            region.network = mapped;
+            if (label.color) this.labelColors.set(mapped, label.color);
+        });
+    }
+
+    mapYeo17LabelToNetwork(value, region, index) {
+        const text = String(value || '').toLowerCase();
+        const match = YEO_NETWORK_TEMPLATES.yeo17.find((network) =>
+            network.id === value || network.label.toLowerCase() === text || network.short.toLowerCase() === text);
+        return match?.id || this.mapRegionToYeoNetwork(region, index);
+    }
+
+    logActivationStatus(state, message) {
+        console.info(`[ActivationData] ${state}: ${message}`);
+    }
+
+    setActivationLoading(visible, message) {
+        const loading = document.getElementById('activationLoading');
+        const text = document.getElementById('activationLoadingText');
+        if (text && message) text.textContent = message;
+        if (loading) loading.hidden = !visible;
+    }
+
     async setYeoTemplate(template) {
         this.yeoTemplate = template === 'yeo17' ? 'yeo17' : 'yeo7';
-        if (this.resourceManager) {
-            try {
-                this.templateResource = await this.resourceManager.ensure(this.yeoTemplate === 'yeo17' ? 'schaefer17' : 'schaefer7');
-            } catch (error) {
-                this.templateResource = null;
-                this.onToast(`网络图谱资源暂不可用：${error.message}`, 'error');
-            }
+        if (this.yeoTemplate === 'yeo17' && !String(this.activationNetwork).startsWith('y17_')) {
+            this.activationNetwork = 'y17_visual_a';
+        } else if (this.yeoTemplate === 'yeo7' && String(this.activationNetwork).startsWith('y17_')) {
+            this.activationNetwork = 'y7_visual';
         }
-        if (this.data) {
+        const status = document.getElementById('functionalDataStatus');
+        let labelsApplied = false;
+        if (this.yeoTemplate === 'yeo17') {
+            const localLabels = await this.findLocalYeo17Labels();
+            if (localLabels) {
+                try {
+                    const labels = this.parseYeo17Labels(localLabels.text);
+                    this.validateYeo17Labels(labels);
+                    this.applyYeo17Labels(labels);
+                    labelsApplied = true;
+                    if (status) status.textContent = `找到本地Yeo17标签文件 · ${localLabels.url}`;
+                } catch (error) {
+                    if (status) status.textContent = `Yeo17标签校验失败：${error.message}`;
+                    this.onToast(`Yeo17标签数据缺失或不可用：${error.message}`, 'error');
+                }
+            } else {
+                this.labelColors = null;
+                if (status) status.textContent = '使用内置Yeo17网络映射（渲染成功）';
+                console.info('[Yeo17Labels] status: built-in mapping ready; local file not required for current render');
+            }
+        } else {
+            this.labelColors = null;
+            if (status) status.textContent = 'Yeo7内置网络映射已就绪';
+        }
+        if (this.data && !labelsApplied) {
             this.data.regions.forEach((region, index) => {
                 region.network = this.mapRegionToYeoNetwork(region, index);
             });
@@ -572,9 +684,10 @@ class FunctionalNetworkManager {
         this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((network) => network.id));
         this.focusedNetwork = null;
         this.heatmapNetworkFilter = null;
-        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordActiveNetworks = new Set(this.getChordNetworks().map((item) => item.id));
         this.chordOnlySelected = false;
         this.chordSelection = null;
+        this.chordFocusNetwork = null;
         this.activationProbe = null;
         this.networkRenderer?.setFocusNetwork(null);
         this.renderNetworkControls();
@@ -582,6 +695,7 @@ class FunctionalNetworkManager {
         this.updateExplanation();
         if (this.currentView === 'topology') this.refreshTopologyStyles();
         else if (this.currentView === 'heatmap') this.renderHeatmap();
+        else if (this.currentView === 'chord') this.renderChord();
         else if (this.currentView === 'activation') await this.renderActivation();
     }
 
@@ -617,13 +731,15 @@ class FunctionalNetworkManager {
     }
 
     getSidebarNetworks() {
-        if (this.currentView === 'activation' || this.currentView === 'chord') {
-            return YEO_NETWORK_TEMPLATES.yeo7.filter((network) => network.id !== 'other');
+        if (this.currentView === 'activation') {
+            return this.getChordNetworks();
         }
+        if (this.currentView === 'chord') return this.getChordNetworks();
         return this.getYeoNetworks();
     }
 
     getActivationNetworkDefinition(networkId) {
+        if (this.yeoTemplate === 'yeo17') return this.getNetworkDefinition(networkId);
         return YEO_NETWORK_TEMPLATES.yeo7.find((network) => network.id === networkId)
             || YEO_NETWORK_TEMPLATES.yeo7[YEO_NETWORK_TEMPLATES.yeo7.length - 1];
     }
@@ -644,17 +760,24 @@ class FunctionalNetworkManager {
         });
 
         legend.innerHTML = networks.map((network) => `
-            <label class="yeo-legend-item ${this.focusedNetwork === network.id ? 'active' : ''}" data-network="${network.id}">
-                <input class="yeo-legend-check" type="checkbox" data-network="${network.id}" ${this.chordActiveNetworks.has(network.id) ? 'checked' : ''}>
+            <button class="yeo-legend-item ${(this.currentView === 'chord' ? this.chordFocusNetwork === network.id : this.focusedNetwork === network.id) ? 'active' : ''}" data-network="${network.id}">
                 <span class="network-dot" style="background:${network.color};"></span>
                 <span>${network.label}</span>
-            </label>
+            </button>
         `).join('');
         legend.querySelectorAll('.yeo-legend-item').forEach((button) => {
             button.addEventListener('click', async (event) => {
                 if (event.target.matches('.yeo-legend-check')) return;
                 const network = button.dataset.network;
-                if (this.currentView === 'chord') return;
+                if (this.currentView === 'chord') {
+                    this.chordFocusNetwork = this.chordFocusNetwork === network ? null : network;
+                    this.chordOnlySelected = false;
+                    this.chordSelection = null;
+                    this.renderNetworkSidebar();
+                    this.renderChord();
+                    this.updateExplanation();
+                    return;
+                }
                 const checkbox = button.querySelector('.yeo-legend-check');
                 const sameNetwork = this.focusedNetwork === network;
                 this.clearTopologyHighlightState();
@@ -678,7 +801,6 @@ class FunctionalNetworkManager {
                     this.activationProbe = null;
                     this.activationNetwork = network;
                     this.focusedNetwork = network;
-                    await Promise.all(this.sliceViewers.map((viewer) => viewer.setNetwork(network)));
                     this.renderNetworkSidebar();
                     await this.renderActivation();
                     this.updateExplanation();
@@ -692,17 +814,6 @@ class FunctionalNetworkManager {
                 this.renderNetworkSidebar();
                 if (this.currentView === 'topology') this.renderTopology();
                 this.updateExplanation();
-            });
-        });
-
-        legend.querySelectorAll('.yeo-legend-check').forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-                const network = checkbox.dataset.network;
-                if (checkbox.checked) this.chordActiveNetworks.add(network);
-                else this.chordActiveNetworks.delete(network);
-                this.chordSelection = null;
-                this.chordOnlySelected = false;
-                if (this.currentView === 'chord') this.renderChord();
             });
         });
 
@@ -850,9 +961,10 @@ class FunctionalNetworkManager {
             this.topologySelection = null;
             this.heatmapPair = null;
             this.heatmapNetworkFilter = null;
-        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordActiveNetworks = new Set(this.getChordNetworks().map((item) => item.id));
         this.chordOnlySelected = false;
         this.chordSelection = null;
+        this.chordFocusNetwork = null;
             this.focusedNetwork = null;
             this.updateControlLabels();
             this.renderCurrentView();
@@ -1694,13 +1806,19 @@ class FunctionalNetworkManager {
                 interpretation = `${sourceDef.description} 对端脑区属于${targetDef.label}。`;
             }
         } else if (this.currentView === 'chord' && this.chordSelection) {
-            const source = YEO_NETWORK_TEMPLATES.yeo7.find((network) => network.id === this.chordSelection.sourceNetwork);
-            const target = YEO_NETWORK_TEMPLATES.yeo7.find((network) => network.id === this.chordSelection.targetNetwork);
-            networkText = source && target ? `${source.short} ↔ ${target.short}` : '功能连接弦图';
-            regionText = source?.label || '—';
-            targetText = target?.label || '—';
-            valueText = `连接强度 ${Number(this.chordSelection.value || 0).toFixed(3)}`;
-            interpretation = `当前弦图连接：${source?.label || '未知'} ↔ ${target?.label || '未知'}。`;
+            const source = this.data.regions[this.chordSelection.source];
+            const target = this.data.regions[this.chordSelection.target];
+            const sourceNetwork = this.getNetworkDefinition(source?.network);
+            const targetNetwork = this.getNetworkDefinition(target?.network);
+            networkText = `${sourceNetwork.short} ↔ ${targetNetwork.short}`;
+            regionText = source?.name || '—';
+            targetText = target?.name || '—';
+            valueText = `r = ${Number(this.chordSelection.value || 0).toFixed(3)}`;
+            interpretation = `当前选中 ROI 连接：${source?.name || '未知'} ↔ ${target?.name || '未知'}。`;
+        } else if (this.currentView === 'chord' && this.chordFocusNetwork) {
+            const network = this.getNetworkDefinition(this.chordFocusNetwork);
+            networkText = network?.label || '—';
+            interpretation = `当前只显示与${network?.label || '所选网络'}相关的网络间平均连接。`;
         } else if (this.currentView === 'heatmap' && this.heatmapPair) {
             const source = this.data.regions[this.heatmapPair.source];
             const target = this.data.regions[this.heatmapPair.target];
@@ -1725,35 +1843,25 @@ class FunctionalNetworkManager {
         if (!container || !this.data) return;
         container.innerHTML = '';
 
-        const networks = YEO_NETWORK_TEMPLATES.yeo7.filter((network) => network.id !== 'other');
-        const activeNetworks = networks.filter((network) => this.chordActiveNetworks.has(network.id));
         const threshold = Number(document.getElementById('chordThreshold')?.value || 52) / 100;
-        const indicesByNetwork = new Map(activeNetworks.map((network) => [network.id, []]));
-        this.data.regions.forEach((region, index) => {
-            if (indicesByNetwork.has(region.network)) indicesByNetwork.get(region.network).push(index);
-        });
+        const allRegions = this.data.regions.map((region, index) => ({ ...region, index }));
+        // 外圈ROI位置和颜色永久固定；图例只筛选中间连线。
+        const ringRegions = allRegions;
+        const visibleRegions = allRegions;
 
+        // ROI级连接：只保留两个ROI之间的连接，不做网络平均聚合。
         const pairs = [];
-        const flows = new Map(activeNetworks.map((network) => [network.id, 0]));
-        for (let i = 0; i < activeNetworks.length; i++) {
-            for (let j = i + 1; j < activeNetworks.length; j++) {
-                const source = activeNetworks[i].id;
-                const target = activeNetworks[j].id;
-                const sourceIndices = indicesByNetwork.get(source) || [];
-                const targetIndices = indicesByNetwork.get(target) || [];
-                let value = 0;
-                let count = 0;
-                sourceIndices.forEach((sourceIndex) => {
-                    targetIndices.forEach((targetIndex) => {
-                        value = Math.max(value, Math.abs(this.data.matrix[sourceIndex][targetIndex]));
-                        count++;
-                    });
-                });
-                if (!count) continue;
-                if (value < threshold) continue;
-                pairs.push({ source, target, value });
-                flows.set(source, (flows.get(source) || 0) + value);
-                flows.set(target, (flows.get(target) || 0) + value);
+        const flows = new Map(visibleRegions.map((region) => [region.index, 0]));
+        for (let i = 0; i < visibleRegions.length; i++) {
+            for (let j = i + 1; j < visibleRegions.length; j++) {
+                const source = visibleRegions[i];
+                const target = visibleRegions[j];
+                const value = Math.abs(Number(this.data.matrix[source.index][target.index]) || 0);
+                if (value <= threshold) continue;
+                if (this.chordFocusNetwork && (source.network !== this.chordFocusNetwork || target.network !== this.chordFocusNetwork)) continue;
+                pairs.push({ source: source.index, target: target.index, value });
+                flows.set(source.index, (flows.get(source.index) || 0) + value);
+                flows.set(target.index, (flows.get(target.index) || 0) + value);
             }
         }
 
@@ -1762,106 +1870,95 @@ class FunctionalNetworkManager {
         const size = Math.min(width, height);
         const cx = width / 2;
         const cy = height / 2;
-        const radius = size * 0.37;
-        const ringWidth = 12;
-        const totalFlow = [...flows.values()].reduce((sum, value) => sum + value, 0) || 1;
-        const angles = new Map();
-        let cursorAngle = -Math.PI / 2;
-        activeNetworks.forEach((network) => {
-            const span = (flows.get(network.id) || 0) / totalFlow * Math.PI * 2;
-            angles.set(network.id, { start: cursorAngle, end: cursorAngle + span });
-            cursorAngle += span;
-        });
-
+        const radius = size * 0.39;
+        const ringWidth = 7;
         const ns = 'http://www.w3.org/2000/svg';
         const svg = document.createElementNS(ns, 'svg');
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
         svg.setAttribute('role', 'img');
-        svg.setAttribute('aria-label', 'Yeo7 功能连接弦图');
+        svg.setAttribute('aria-label', 'Yeo7 ROI功能连接弦图');
         svg.classList.add('chord-svg');
+
         const make = (tag, attrs = {}) => {
-            const el = document.createElementNS(ns, tag);
-            Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
-            return el;
+            const element = document.createElementNS(ns, tag);
+            Object.entries(attrs).forEach(([key, value]) => element.setAttribute(key, value));
+            return element;
         };
         const pointAt = (angle, r = radius) => ({ x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r });
 
-        activeNetworks.forEach((network) => {
-            const range = angles.get(network.id);
-            const start = pointAt(range.start, radius + ringWidth / 2);
-            const end = pointAt(range.end, radius + ringWidth / 2);
-            const large = range.end - range.start > Math.PI ? 1 : 0;
-            const path = make('path', {
-                d: `M ${start.x} ${start.y} A ${radius + ringWidth / 2} ${radius + ringWidth / 2} 0 ${large} 1 ${end.x} ${end.y}`,
+        // 每个ROI一段外圈，整段统一使用所属Yeo7网络颜色。
+        const ringSpan = Math.PI * 2 / Math.max(1, ringRegions.length);
+        const angles = new Map();
+        let cursor = -Math.PI / 2;
+        ringRegions.forEach((region) => {
+            angles.set(region.index, { start: cursor, end: cursor + ringSpan });
+            cursor += ringSpan;
+            const range = angles.get(region.index);
+            const r = radius + ringWidth / 2;
+            const start = pointAt(range.start, r);
+            const end = pointAt(range.end, r);
+            const network = this.getNetworkDefinition(region.network);
+            svg.appendChild(make('path', {
+                d: `M ${start.x} ${start.y} A ${r} ${r} 0 ${ringSpan > Math.PI ? 1 : 0} 1 ${end.x} ${end.y}`,
                 fill: 'none',
                 stroke: network.color,
                 'stroke-width': ringWidth,
                 'stroke-linecap': 'butt',
-                opacity: 0.95,
-            });
-            svg.appendChild(path);
-            const label = make('text', {
-                x: pointAt((range.start + range.end) / 2, radius + 30).x,
-                y: pointAt((range.start + range.end) / 2, radius + 30).y + 3,
-                'text-anchor': 'middle',
-                fill: network.color,
-                'font-size': '10',
-                'font-weight': '600',
-            });
-            label.textContent = network.short;
-            svg.appendChild(label);
+                opacity: 0.96,
+            }));
         });
 
-        const cursors = new Map(activeNetworks.map((network) => [network.id, angles.get(network.id).start]));
-        const renderPairs = this.chordOnlySelected && this.chordSelection
-            ? pairs.filter((pair) => pair.source === this.chordSelection.sourceNetwork && pair.target === this.chordSelection.targetNetwork)
-            : pairs;
-
-        renderPairs.forEach((pair) => {
+        const ribbonCursors = new Map(visibleRegions.map((region) => [region.index, angles.get(region.index).start]));
+        pairs.forEach((pair) => {
             const sourceRange = angles.get(pair.source);
             const targetRange = angles.get(pair.target);
-            const sourceOut = flows.get(pair.source) || 1;
-            const targetOut = flows.get(pair.target) || 1;
-            const sourceSpan = (pair.value / sourceOut) * (sourceRange.end - sourceRange.start);
-            const targetSpan = (pair.value / targetOut) * (targetRange.end - targetRange.start);
-            const sourceStart = cursors.get(pair.source);
-            const sourceEnd = sourceStart + sourceSpan;
-            const targetStart = cursors.get(pair.target);
-            const targetEnd = targetStart + targetSpan;
-            cursors.set(pair.source, sourceEnd);
-            cursors.set(pair.target, targetEnd);
+            if (!sourceRange || !targetRange) return;
+            const sourceFlow = flows.get(pair.source) || 1;
+            const targetFlow = flows.get(pair.target) || 1;
+            const sourceSpan = (pair.value / sourceFlow) * (sourceRange.end - sourceRange.start);
+            const targetSpan = (pair.value / targetFlow) * (targetRange.end - targetRange.start);
+            const sourceStart = ribbonCursors.get(pair.source);
+            const targetStart = ribbonCursors.get(pair.target);
+            ribbonCursors.set(pair.source, sourceStart + sourceSpan);
+            ribbonCursors.set(pair.target, targetStart + targetSpan);
 
-            const a = pointAt(sourceStart, radius - 2);
-            const b = pointAt(sourceEnd, radius - 2);
-            const c = pointAt(targetEnd, radius - 2);
-            const d = pointAt(targetStart, radius - 2);
-            const ribbon = make('path', {
-                d: `M ${a.x} ${a.y} A ${radius - 2} ${radius - 2} 0 ${sourceSpan > Math.PI ? 1 : 0} 1 ${b.x} ${b.y} C ${cx} ${cy}, ${cx} ${cy}, ${c.x} ${c.y} A ${radius - 2} ${radius - 2} 0 ${targetSpan > Math.PI ? 1 : 0} 1 ${d.x} ${d.y} C ${cx} ${cy}, ${cx} ${cy}, ${a.x} ${a.y} Z`,
-                fill: (YEO_NETWORK_TEMPLATES.yeo7.find((item) => item.id === pair.source) || YEO_OTHER_NETWORK).color,
-                opacity: this.chordSelection && this.chordSelection.sourceNetwork === pair.source && this.chordSelection.targetNetwork === pair.target ? 0.9 : 0.42,
-                stroke: this.chordSelection && this.chordSelection.sourceNetwork === pair.source && this.chordSelection.targetNetwork === pair.target ? '#FACC15' : 'none',
-                'stroke-width': this.chordSelection && this.chordSelection.sourceNetwork === pair.source && this.chordSelection.targetNetwork === pair.target ? 1.2 : 0,
+            const source = this.data.regions[pair.source];
+            const target = this.data.regions[pair.target];
+            const sourceNetwork = this.getNetworkDefinition(source.network);
+            const selected = this.chordSelection?.source === pair.source && this.chordSelection?.target === pair.target;
+            const a = pointAt(sourceStart, radius - 3);
+            const b = pointAt(targetStart, radius - 3);
+            const controlA = { x: cx + (a.x - cx) * 0.18, y: cy + (a.y - cy) * 0.18 };
+            const controlB = { x: cx + (b.x - cx) * 0.18, y: cy + (b.y - cy) * 0.18 };
+
+            // ROI级独立描边弦线，无填充面。
+            const line = make('path', {
+                d: `M ${a.x} ${a.y} C ${controlA.x} ${controlA.y}, ${controlB.x} ${controlB.y}, ${b.x} ${b.y}`,
+                fill: 'none',
+                stroke: selected ? '#FACC15' : sourceNetwork.color,
+                'stroke-width': String(0.45 + Math.min(4.5, pair.value * 8.5) + (selected ? 1.2 : 0)),
+                'stroke-opacity': selected ? 0.95 : 0.24,
+                'stroke-linecap': 'round',
                 'data-source': pair.source,
                 'data-target': pair.target,
             });
             const title = make('title');
-            const sourceDef = YEO_NETWORK_TEMPLATES.yeo7.find((item) => item.id === pair.source);
-            const targetDef = YEO_NETWORK_TEMPLATES.yeo7.find((item) => item.id === pair.target);
-            title.textContent = `${sourceDef.label} ↔ ${targetDef.label}：${pair.value.toFixed(3)}`;
-            ribbon.appendChild(title);
-            ribbon.addEventListener('click', () => {
-                this.chordSelection = { sourceNetwork: pair.source, targetNetwork: pair.target, value: pair.value };
-                this.chordOnlySelected = true;
+            const targetNetwork = this.getNetworkDefinition(target.network);
+            title.textContent = `${source.name}（${sourceNetwork.short}） ↔ ${target.name}（${targetNetwork.short}）：r = ${pair.value.toFixed(3)}`;
+            line.appendChild(title);
+            line.addEventListener('click', () => {
+                this.chordSelection = { source: pair.source, target: pair.target, value: pair.value };
                 this.renderChord();
                 this.updateExplanation();
             });
-            svg.appendChild(ribbon);
+            svg.appendChild(line);
         });
 
         container.appendChild(svg);
+
         const meta = document.getElementById('chordMeta');
         if (meta) {
-            meta.textContent = `Yeo7 · ${activeNetworks.length} 个网络 · ${renderPairs.length} 条网络弦 · 阈值 ${threshold.toFixed(2)} · 点击弦图切换单连接`;
+            meta.textContent = `${this.yeoTemplate === 'yeo17' ? 'Yeo17' : 'Yeo7'} ROI级 · ${visibleRegions.length} 个ROI扇区 · ${pairs.length} 条ROI连接 · 阈值 ${threshold.toFixed(2)}`;
         }
         this.updateExplanation();
     }
@@ -1909,14 +2006,30 @@ class FunctionalNetworkManager {
 
     async renderActivation() {
         if (!this.sliceViewers.length) await this.buildActivationCanvasLayout();
+        const network = this.getActivationNetworkDefinition(this.activationNetwork);
+        const isYeo17 = this.yeoTemplate === 'yeo17';
+        this.logActivationStatus('loading', `${network.label} 分区掩码/标签数据`);
+        this.setActivationLoading(true, isYeo17 ? '正在加载Yeo17激活图分区数据' : '正在加载激活图分区数据');
+        const results = await Promise.all(this.sliceViewers.map((viewer) => viewer.setNetwork(this.activationNetwork)));
+        const loaded = results.every(Boolean);
+        if (!loaded) {
+            this.logActivationStatus('missing', `${network.label} 不存在对应激活分区数据`);
+            this.setActivationLoading(true, isYeo17 ? '不存在Yeo17激活分区数据' : '不存在当前网络激活分区数据');
+            this.onToast(isYeo17 ? '不存在Yeo17激活分区数据' : '不存在当前网络激活分区数据', 'error');
+            this.updateExplanation();
+            return false;
+        }
+
         const threshold = Number(document.getElementById('activationThreshold')?.value || 3);
-        await Promise.all(this.sliceViewers.map((viewer) => viewer.setNetwork(this.activationNetwork)));
         this.sliceViewers.forEach((viewer) => viewer.setThreshold(threshold));
+        this.logActivationStatus('complete', `${network.label} 分区掩码/标签数据加载完成`);
+        this.setActivationLoading(false);
         const meta = document.getElementById('activationMeta');
         if (meta) {
-            meta.textContent = `${this.getActivationNetworkDefinition(this.activationNetwork).label} · MNI152 灰度底层 + 体素级 Z 图透明叠加 · |Z| ≥ ${threshold.toFixed(1)}`;
+            meta.textContent = `${network.label} · MNI152 灰度底层 + 体素级 Z 图透明叠加 · |Z| ≥ ${threshold.toFixed(1)}`;
         }
         this.updateExplanation();
+        return true;
     }
 
     setHeatmapPair(source, target) {

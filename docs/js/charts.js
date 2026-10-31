@@ -1,8 +1,8 @@
 /* ===== NeuroViz 图表可视化模块 ===== */
 
-/* ===== 演示数据：个体-模板 Z-score 偏差 =====
-   ⚠ 占位假数据：数值由固定公式生成，仅用于界面演示。
-   接入真实个体数据（皮层厚度/体积/表面积）时，替换本函数返回值即可。 */
+/* ===== 内置演示模板基准：模板 Z-score 偏差 =====
+   ⚠ 占位假数据：数值由固定公式生成，仅用于模板基准展示。
+   真实个体数据通过 setUserComparisonData 单独传入，不复用本演示模板。 */
 function generateZScores() {
     const regions = [
         '左额上回', '左额中回', '左中央前回', '左中央后回',
@@ -18,6 +18,33 @@ function generateZScores() {
     }));
 }
 window.generateZScores = generateZScores;
+
+const MNI152_TEMPLATE_STATS = Object.freeze({
+    thickness: { mean: 0, std: 1 },
+    volume: { mean: 0, std: 1 },
+    area: { mean: 0, std: 1 },
+});
+
+function resolveComparisonMetric(row, metric, stats) {
+    const zKey = `${metric}Z`;
+    const zAltKey = `${metric}_zscore`;
+    const zValue = Number(row?.[zKey] ?? row?.[zAltKey]);
+    if (Number.isFinite(zValue)) return zValue;
+    const rawValue = Number(row?.[metric]);
+    return Number.isFinite(rawValue) ? (rawValue - stats[metric].mean) / stats[metric].std : 0;
+}
+
+function calculateComparisonZScores(individualMetrics, templateStats = MNI152_TEMPLATE_STATS) {
+    return (Array.isArray(individualMetrics) ? individualMetrics : []).map((row) => ({
+        name: row?.name || row?.region || `ROI ${row?.id ?? ''}`,
+        thickness: resolveComparisonMetric(row, 'thickness', templateStats),
+        volume: resolveComparisonMetric(row, 'volume', templateStats),
+        area: resolveComparisonMetric(row, 'area', templateStats),
+    }));
+}
+
+window.MNI152_TEMPLATE_STATS = MNI152_TEMPLATE_STATS;
+window.calculateComparisonZScores = calculateComparisonZScores;
 
 class ChartManager {
     constructor() {
@@ -244,21 +271,62 @@ class ChartManager {
     }
 
     initComparisonChart(containerId) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        if (this.charts[containerId]) this.charts[containerId].dispose();
+        this.comparisonContainerId = containerId;
+        window.hasIndividualData = !!window.hasIndividualData;
+        this.comparisonHasIndividualData = window.hasIndividualData;
+        this.comparisonIndividualData = [];
+        this._renderComparisonPanel();
+        return this.charts.comparisonChart || null;
+    }
 
-        const chart = echarts.init(container);
-        this.charts[containerId] = chart;
+    setComparisonDataState(hasIndividualData, individualMetrics = []) {
+        window.hasIndividualData = !!hasIndividualData;
+        this.comparisonHasIndividualData = window.hasIndividualData;
+        this.comparisonIndividualData = Array.isArray(individualMetrics) ? individualMetrics : [];
+        this._renderComparisonPanel();
+    }
 
-        const zScores = generateZScores();
+    setComparisonIndividualData(individualData) {
+        this.setComparisonDataState(true, individualData);
+    }
 
-        const option = {
+    _renderComparisonPanel() {
+        const chartContainer = document.getElementById('comparisonZScoreChart')
+            || document.getElementById(this.comparisonContainerId || 'comparisonChart');
+        const emptyState = document.getElementById('comparisonEmpty')
+            || document.getElementById('comparisonIndividualEmpty');
+        if (!chartContainer) return;
+
+        if (this.charts.comparisonChart) {
+            this.charts.comparisonChart.dispose();
+            delete this.charts.comparisonChart;
+        }
+
+        const hasIndividualData = !!window.hasIndividualData;
+        chartContainer.hidden = !hasIndividualData;
+        if (emptyState) emptyState.hidden = hasIndividualData;
+        if (!hasIndividualData) return;
+
+        const chart = echarts.init(chartContainer, null, {
+            devicePixelRatio: window.devicePixelRatio || 1,
+        });
+        this.charts.comparisonChart = chart;
+        const individualZScores = calculateComparisonZScores(
+            this.comparisonIndividualData,
+            MNI152_TEMPLATE_STATS,
+        );
+        chart.setOption(this._buildComparisonOption(individualZScores));
+        return chart;
+    }
+
+    _buildComparisonOption(zScores) {
+        const rows = Array.isArray(zScores) ? zScores : [];
+        return {
             tooltip: {
                 trigger: 'axis',
                 axisPointer: { type: 'shadow' },
                 formatter: (params) => {
-                    let html = `<strong>${params[0].name}</strong><br/>`;
+                    let html = `<strong>${params[0]?.name || ''}</strong><br/>`;
                     params.forEach(p => {
                         const color = p.value >= 0 ? '#e53935' : '#1E88E5';
                         html += `<span style="color:${color}">${p.seriesName}: ${p.value > 0 ? '+' : ''}${p.value.toFixed(2)} σ</span><br/>`;
@@ -282,14 +350,14 @@ class ChartManager {
             },
             yAxis: {
                 type: 'category',
-                data: zScores.map(z => z.name).reverse(),
+                data: rows.map(z => z.name).reverse(),
                 axisLabel: { fontSize: 10, color: '#2C3E50' },
             },
             series: [
                 {
                     name: '皮层厚度 Z-score',
                     type: 'bar',
-                    data: zScores.map(z => z.thickness).reverse(),
+                    data: rows.map(z => z.thickness).reverse(),
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                             { offset: 0, color: '#00BCD4' },
@@ -302,7 +370,7 @@ class ChartManager {
                 {
                     name: '体积 Z-score',
                     type: 'bar',
-                    data: zScores.map(z => z.volume).reverse(),
+                    data: rows.map(z => z.volume).reverse(),
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                             { offset: 0, color: '#4ECDC4' },
@@ -314,7 +382,7 @@ class ChartManager {
                 {
                     name: '表面积 Z-score',
                     type: 'bar',
-                    data: zScores.map(z => z.area).reverse(),
+                    data: rows.map(z => z.area).reverse(),
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                             { offset: 0, color: '#FFE66D' },
@@ -325,9 +393,6 @@ class ChartManager {
                 },
             ],
         };
-
-        chart.setOption(option);
-        return chart;
     }
 
     initNetworkStats(containerId) {
