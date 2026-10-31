@@ -330,6 +330,9 @@ class FunctionalNetworkManager {
         this.activationNetwork = 'y7_somatomotor';
         this.activationProbe = null;
         this.heatmapNetworkFilter = null;
+        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordOnlySelected = false;
+        this.chordSelection = null;
         this.data = null;
         this.charts = {};
         this.brainViewers = {};
@@ -366,17 +369,12 @@ class FunctionalNetworkManager {
                     this.activationNetwork = 'y7_visual';
                     this.activationProbe = null;
                 }
-                if (this.currentView === 'topology') {
-                    this.clearTopologyHighlightState();
-                    this.topologyAllMode = true;
-                    this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((item) => item.id));
-                    this.focusedNetwork = null;
-                    this.networkRenderer?.setFocusNetwork(null);
-                    this.networkRenderer?.setPickingLocked(true);
-                }
                 if (this.currentView === 'heatmap') {
                     // 热力图初始状态始终是全网络合并大图。
                     this.heatmapNetworkFilter = null;
+        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordOnlySelected = false;
+        this.chordSelection = null;
                     this.focusedNetwork = null;
                 }
                 document.querySelectorAll('#funcTabs .func-tab').forEach((item) => {
@@ -434,6 +432,15 @@ class FunctionalNetworkManager {
                 this.clearTopologyHighlightState();
                 this.topologyAllMode = true;
                 this.networkRenderer?.setPickingLocked(true);
+                this.updateExplanation();
+            });
+        }
+
+        const chordShowAll = document.getElementById('btnChordShowAll');
+        if (chordShowAll) {
+            chordShowAll.addEventListener('click', () => {
+                this.chordOnlySelected = false;
+                this.renderChord();
                 this.updateExplanation();
             });
         }
@@ -565,6 +572,9 @@ class FunctionalNetworkManager {
         this.topologyActiveNetworks = new Set(this.getYeoNetworks().map((network) => network.id));
         this.focusedNetwork = null;
         this.heatmapNetworkFilter = null;
+        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordOnlySelected = false;
+        this.chordSelection = null;
         this.activationProbe = null;
         this.networkRenderer?.setFocusNetwork(null);
         this.renderNetworkControls();
@@ -607,9 +617,10 @@ class FunctionalNetworkManager {
     }
 
     getSidebarNetworks() {
-        return this.currentView === 'activation'
-            ? YEO_NETWORK_TEMPLATES.yeo7.filter((network) => network.id !== 'other')
-            : this.getYeoNetworks();
+        if (this.currentView === 'activation' || this.currentView === 'chord') {
+            return YEO_NETWORK_TEMPLATES.yeo7.filter((network) => network.id !== 'other');
+        }
+        return this.getYeoNetworks();
     }
 
     getActivationNetworkDefinition(networkId) {
@@ -633,14 +644,18 @@ class FunctionalNetworkManager {
         });
 
         legend.innerHTML = networks.map((network) => `
-            <button class="yeo-legend-item ${this.focusedNetwork === network.id ? 'active' : ''}" data-network="${network.id}">
+            <label class="yeo-legend-item ${this.focusedNetwork === network.id ? 'active' : ''}" data-network="${network.id}">
+                <input class="yeo-legend-check" type="checkbox" data-network="${network.id}" ${this.chordActiveNetworks.has(network.id) ? 'checked' : ''}>
                 <span class="network-dot" style="background:${network.color};"></span>
                 <span>${network.label}</span>
-            </button>
+            </label>
         `).join('');
-        legend.querySelectorAll('[data-network]').forEach((button) => {
-            button.addEventListener('click', async () => {
+        legend.querySelectorAll('.yeo-legend-item').forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                if (event.target.matches('.yeo-legend-check')) return;
                 const network = button.dataset.network;
+                if (this.currentView === 'chord') return;
+                const checkbox = button.querySelector('.yeo-legend-check');
                 const sameNetwork = this.focusedNetwork === network;
                 this.clearTopologyHighlightState();
                 if (this.currentView === 'topology') {
@@ -677,6 +692,17 @@ class FunctionalNetworkManager {
                 this.renderNetworkSidebar();
                 if (this.currentView === 'topology') this.renderTopology();
                 this.updateExplanation();
+            });
+        });
+
+        legend.querySelectorAll('.yeo-legend-check').forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                const network = checkbox.dataset.network;
+                if (checkbox.checked) this.chordActiveNetworks.add(network);
+                else this.chordActiveNetworks.delete(network);
+                this.chordSelection = null;
+                this.chordOnlySelected = false;
+                if (this.currentView === 'chord') this.renderChord();
             });
         });
 
@@ -824,6 +850,9 @@ class FunctionalNetworkManager {
             this.topologySelection = null;
             this.heatmapPair = null;
             this.heatmapNetworkFilter = null;
+        this.chordActiveNetworks = new Set(YEO_NETWORK_TEMPLATES.yeo7.filter((item) => item.id !== 'other').map((item) => item.id));
+        this.chordOnlySelected = false;
+        this.chordSelection = null;
             this.focusedNetwork = null;
             this.updateControlLabels();
             this.renderCurrentView();
@@ -1664,6 +1693,14 @@ class FunctionalNetworkManager {
                 valueText = `r = ${Number(selection.value).toFixed(3)}`;
                 interpretation = `${sourceDef.description} 对端脑区属于${targetDef.label}。`;
             }
+        } else if (this.currentView === 'chord' && this.chordSelection) {
+            const source = YEO_NETWORK_TEMPLATES.yeo7.find((network) => network.id === this.chordSelection.sourceNetwork);
+            const target = YEO_NETWORK_TEMPLATES.yeo7.find((network) => network.id === this.chordSelection.targetNetwork);
+            networkText = source && target ? `${source.short} ↔ ${target.short}` : '功能连接弦图';
+            regionText = source?.label || '—';
+            targetText = target?.label || '—';
+            valueText = `连接强度 ${Number(this.chordSelection.value || 0).toFixed(3)}`;
+            interpretation = `当前弦图连接：${source?.label || '未知'} ↔ ${target?.label || '未知'}。`;
         } else if (this.currentView === 'heatmap' && this.heatmapPair) {
             const source = this.data.regions[this.heatmapPair.source];
             const target = this.data.regions[this.heatmapPair.target];
@@ -1681,6 +1718,152 @@ class FunctionalNetworkManager {
         setText('funcInfoTarget', targetText);
         setText('funcInfoValue', valueText);
         setText('funcInfoInterpretation', interpretation);
+    }
+
+    renderChord() {
+        const container = document.getElementById('chartChord');
+        if (!container || !this.data) return;
+        container.innerHTML = '';
+
+        const networks = YEO_NETWORK_TEMPLATES.yeo7.filter((network) => network.id !== 'other');
+        const activeNetworks = networks.filter((network) => this.chordActiveNetworks.has(network.id));
+        const threshold = Number(document.getElementById('chordThreshold')?.value || 52) / 100;
+        const indicesByNetwork = new Map(activeNetworks.map((network) => [network.id, []]));
+        this.data.regions.forEach((region, index) => {
+            if (indicesByNetwork.has(region.network)) indicesByNetwork.get(region.network).push(index);
+        });
+
+        const pairs = [];
+        const flows = new Map(activeNetworks.map((network) => [network.id, 0]));
+        for (let i = 0; i < activeNetworks.length; i++) {
+            for (let j = i + 1; j < activeNetworks.length; j++) {
+                const source = activeNetworks[i].id;
+                const target = activeNetworks[j].id;
+                const sourceIndices = indicesByNetwork.get(source) || [];
+                const targetIndices = indicesByNetwork.get(target) || [];
+                let value = 0;
+                let count = 0;
+                sourceIndices.forEach((sourceIndex) => {
+                    targetIndices.forEach((targetIndex) => {
+                        value = Math.max(value, Math.abs(this.data.matrix[sourceIndex][targetIndex]));
+                        count++;
+                    });
+                });
+                if (!count) continue;
+                if (value < threshold) continue;
+                pairs.push({ source, target, value });
+                flows.set(source, (flows.get(source) || 0) + value);
+                flows.set(target, (flows.get(target) || 0) + value);
+            }
+        }
+
+        const width = Math.max(520, container.clientWidth || 820);
+        const height = Math.max(470, container.clientHeight || 600);
+        const size = Math.min(width, height);
+        const cx = width / 2;
+        const cy = height / 2;
+        const radius = size * 0.37;
+        const ringWidth = 12;
+        const totalFlow = [...flows.values()].reduce((sum, value) => sum + value, 0) || 1;
+        const angles = new Map();
+        let cursorAngle = -Math.PI / 2;
+        activeNetworks.forEach((network) => {
+            const span = (flows.get(network.id) || 0) / totalFlow * Math.PI * 2;
+            angles.set(network.id, { start: cursorAngle, end: cursorAngle + span });
+            cursorAngle += span;
+        });
+
+        const ns = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(ns, 'svg');
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        svg.setAttribute('role', 'img');
+        svg.setAttribute('aria-label', 'Yeo7 功能连接弦图');
+        svg.classList.add('chord-svg');
+        const make = (tag, attrs = {}) => {
+            const el = document.createElementNS(ns, tag);
+            Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+            return el;
+        };
+        const pointAt = (angle, r = radius) => ({ x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r });
+
+        activeNetworks.forEach((network) => {
+            const range = angles.get(network.id);
+            const start = pointAt(range.start, radius + ringWidth / 2);
+            const end = pointAt(range.end, radius + ringWidth / 2);
+            const large = range.end - range.start > Math.PI ? 1 : 0;
+            const path = make('path', {
+                d: `M ${start.x} ${start.y} A ${radius + ringWidth / 2} ${radius + ringWidth / 2} 0 ${large} 1 ${end.x} ${end.y}`,
+                fill: 'none',
+                stroke: network.color,
+                'stroke-width': ringWidth,
+                'stroke-linecap': 'butt',
+                opacity: 0.95,
+            });
+            svg.appendChild(path);
+            const label = make('text', {
+                x: pointAt((range.start + range.end) / 2, radius + 30).x,
+                y: pointAt((range.start + range.end) / 2, radius + 30).y + 3,
+                'text-anchor': 'middle',
+                fill: network.color,
+                'font-size': '10',
+                'font-weight': '600',
+            });
+            label.textContent = network.short;
+            svg.appendChild(label);
+        });
+
+        const cursors = new Map(activeNetworks.map((network) => [network.id, angles.get(network.id).start]));
+        const renderPairs = this.chordOnlySelected && this.chordSelection
+            ? pairs.filter((pair) => pair.source === this.chordSelection.sourceNetwork && pair.target === this.chordSelection.targetNetwork)
+            : pairs;
+
+        renderPairs.forEach((pair) => {
+            const sourceRange = angles.get(pair.source);
+            const targetRange = angles.get(pair.target);
+            const sourceOut = flows.get(pair.source) || 1;
+            const targetOut = flows.get(pair.target) || 1;
+            const sourceSpan = (pair.value / sourceOut) * (sourceRange.end - sourceRange.start);
+            const targetSpan = (pair.value / targetOut) * (targetRange.end - targetRange.start);
+            const sourceStart = cursors.get(pair.source);
+            const sourceEnd = sourceStart + sourceSpan;
+            const targetStart = cursors.get(pair.target);
+            const targetEnd = targetStart + targetSpan;
+            cursors.set(pair.source, sourceEnd);
+            cursors.set(pair.target, targetEnd);
+
+            const a = pointAt(sourceStart, radius - 2);
+            const b = pointAt(sourceEnd, radius - 2);
+            const c = pointAt(targetEnd, radius - 2);
+            const d = pointAt(targetStart, radius - 2);
+            const ribbon = make('path', {
+                d: `M ${a.x} ${a.y} A ${radius - 2} ${radius - 2} 0 ${sourceSpan > Math.PI ? 1 : 0} 1 ${b.x} ${b.y} C ${cx} ${cy}, ${cx} ${cy}, ${c.x} ${c.y} A ${radius - 2} ${radius - 2} 0 ${targetSpan > Math.PI ? 1 : 0} 1 ${d.x} ${d.y} C ${cx} ${cy}, ${cx} ${cy}, ${a.x} ${a.y} Z`,
+                fill: (YEO_NETWORK_TEMPLATES.yeo7.find((item) => item.id === pair.source) || YEO_OTHER_NETWORK).color,
+                opacity: this.chordSelection && this.chordSelection.sourceNetwork === pair.source && this.chordSelection.targetNetwork === pair.target ? 0.9 : 0.42,
+                stroke: this.chordSelection && this.chordSelection.sourceNetwork === pair.source && this.chordSelection.targetNetwork === pair.target ? '#FACC15' : 'none',
+                'stroke-width': this.chordSelection && this.chordSelection.sourceNetwork === pair.source && this.chordSelection.targetNetwork === pair.target ? 1.2 : 0,
+                'data-source': pair.source,
+                'data-target': pair.target,
+            });
+            const title = make('title');
+            const sourceDef = YEO_NETWORK_TEMPLATES.yeo7.find((item) => item.id === pair.source);
+            const targetDef = YEO_NETWORK_TEMPLATES.yeo7.find((item) => item.id === pair.target);
+            title.textContent = `${sourceDef.label} ↔ ${targetDef.label}：${pair.value.toFixed(3)}`;
+            ribbon.appendChild(title);
+            ribbon.addEventListener('click', () => {
+                this.chordSelection = { sourceNetwork: pair.source, targetNetwork: pair.target, value: pair.value };
+                this.chordOnlySelected = true;
+                this.renderChord();
+                this.updateExplanation();
+            });
+            svg.appendChild(ribbon);
+        });
+
+        container.appendChild(svg);
+        const meta = document.getElementById('chordMeta');
+        if (meta) {
+            meta.textContent = `Yeo7 · ${activeNetworks.length} 个网络 · ${renderPairs.length} 条网络弦 · 阈值 ${threshold.toFixed(2)} · 点击弦图切换单连接`;
+        }
+        this.updateExplanation();
     }
 
     disposeSliceViewers() {

@@ -1671,9 +1671,7 @@ body {
 
 .chord-container {
     overflow: hidden;
-    background:
-        radial-gradient(circle at center, rgba(15, 118, 110, 0.06), transparent 58%),
-        var(--white);
+    background: #fff;
 }
 
 .functional-chord-svg {
